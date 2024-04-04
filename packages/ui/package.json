@@ -6,7 +6,9 @@
   ],
   "exports": {
     "./styles.css": "./dist/index.css",
-    "./card": "./src/card.tsx"
+    "./card": "./src/card.tsx",
+    "./utils" : "./utils/index.ts",
+    "./background-gradient": "./src/background-gradient.tsx"
   },
   "license": "MIT",
   "scripts": {
