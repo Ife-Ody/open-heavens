@@ -1,4 +1,25 @@
-import { BackgroundGradient } from "../components/background-gradient";
+import { Post, allPosts } from 'contentlayer/generated';
+import { compareDesc, format, parseISO } from 'date-fns';
+import Link from 'next/link';
+import { BackgroundGradient } from 'src/components/background-gradient';
+import { Mdx } from 'src/components/mdx-components';
+
+function PostCard(post: Post) {
+  console.log(post)
+  return (
+    <div className="mb-8">
+      <h2 className="mb-1 text-xl">
+        <Link href={post.slug} className="text-blue-700 hover:text-blue-900 dark:text-blue-400">
+          {post.title}
+        </Link>
+      </h2>
+      <time dateTime={post.date} className="mb-2 block text-xs text-gray-600">
+        {format(parseISO(post.date), 'LLLL d, yyyy')}
+      </time>
+      <Mdx post={post.body.code} />
+    </div>
+  )
+}
 
 function Gradient({
   conic,
@@ -19,11 +40,13 @@ function Gradient({
 }
 
 export default function Page(): JSX.Element {
+  const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)))
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-8 md:p-24 gap-6">
       <h1 className="text-3xl">Open Heavens Reader</h1>
       <div className="relative">
         <BackgroundGradient className="rounded-[22px] max-w-sm p-4 sm:p-10 bg-white dark:bg-zinc-900 flex flex-col gap-3">
+          <Gradient/>
           <p className="text-base sm:text-xl text-black mt-4 mb-2 dark:text-neutral-200 text-center sm:text-left">
             A simple reader for the Open Heavens devotional
           </p>
@@ -47,6 +70,9 @@ export default function Page(): JSX.Element {
           </div>
         </BackgroundGradient>
       </div>
+      {posts.map((post, idx) => (
+        <PostCard key={idx} {...post} />
+      ))}
     </main>
   );
 }
