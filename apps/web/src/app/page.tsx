@@ -18,6 +18,7 @@ function PostCard(post: Post) {
       <time dateTime={post.date} className="mb-2 block text-xs text-gray-600">
         {format(parseISO(post.date), "LLLL d, yyyy")}
       </time>
+      <p className="text-amber-500 p-3">{post.verse}</p>
       <Mdx post={post.body.code} />
     </div>
   );
@@ -46,11 +47,10 @@ export default function Page(): JSX.Element {
     compareDesc(new Date(a.date), new Date(b.date)),
   );
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen p-8 md:p-24 gap-6">
+    <main className="flex flex-col items-center justify-center min-h-screen p-8 md:p-24 gap-6 relative">
       <h1 className="text-3xl">Open Heavens Reader</h1>
       <div className="relative">
         <BackgroundGradient className="rounded-[22px] max-w-sm p-4 sm:p-10 bg-white dark:bg-zinc-900 flex flex-col gap-3">
-          <Gradient />
           <p className="text-base sm:text-xl text-black mt-4 mb-2 dark:text-neutral-200 text-center sm:text-left">
             A simple reader for the Open Heavens devotional
           </p>
@@ -77,6 +77,7 @@ export default function Page(): JSX.Element {
       {posts.map((post, idx) => (
         <PostCard key={idx} {...post} />
       ))}
+      <Gradient />
     </main>
   );
 }

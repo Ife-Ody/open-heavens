@@ -33,6 +33,15 @@ export const Post = defineDocumentType(() => ({
       type: "date",
       required: true,
     },
+    verse: {
+      type: "string",
+    },
+    reading: {
+      type: "string",
+    },
+    point: {
+      type: "string",
+    },
     published: {
       type: "boolean",
       default: true,
