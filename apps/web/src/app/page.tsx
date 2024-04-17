@@ -41,9 +41,9 @@ export default function Page(): JSX.Element {
             . <span className="uppercase font-medium">WITHOUT THE ADS</span>
           </p>
           <div className="w-full">
-            <button className="rounded-full mx-auto sm:m-0 uppercase px-3 py-1 text-white flex items-center space-x-1 bg-black mt-4 text-xs font-bold dark:bg-zinc-800">
+            <span className="rounded-full mx-auto sm:m-0 uppercase px-3 py-1 text-white inline-flex items-center space-x-1 bg-black mt-4 text-xs font-bold dark:bg-zinc-800">
               <span>Coming Soon</span>
-            </button>
+            </span>
           </div>
         </BackgroundGradient>
       </div>
