@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
+import { SelectSingleEventHandler } from "react-day-picker";
 
 export function DatePicker() {
   const [date, setDate] = React.useState<Date>(new Date(Date.now()));
@@ -35,7 +36,7 @@ export function DatePicker() {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={setDate as SelectSingleEventHandler}
           initialFocus
         />
       </PopoverContent>
