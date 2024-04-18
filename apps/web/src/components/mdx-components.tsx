@@ -1,6 +1,8 @@
+"use client"
 import { cn } from "@repo/ui/utils";
 import { useMDXComponent } from "next-contentlayer/hooks";
 import * as React from "react";
+import { useSettings } from "src/app/context/settings-context";
 
 type componentProps = {
   className?: string;
@@ -69,12 +71,12 @@ const components = {
       {...props}
     />
   ),
-  p: ({ className, ...props }: componentProps) => (
-    <p
-      className={cn("leading-7 [&:not(:first-child)]:mt-6", className)}
-      {...props}
-    />
-  ),
+  // p: ({ className, ...props }: componentProps) => (
+  //   <p
+  //     className={cn("leading-7 [&:not(:first-child)]:mt-6", className)}
+  //     {...props}
+  //   />
+  // ),
   ul: ({ className, ...props }: componentProps) => (
     <ul className={cn("my-6 ml-6 list-disc", className)} {...props} />
   ),
@@ -103,7 +105,7 @@ const components = {
   ),
   hr: ({ ...props }) => <hr className="my-4 md:my-8" {...props} />,
   table: ({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) => (
-    <div className="my-6 w-full overflow-y-auto">
+    <div className="w-full my-6 overflow-y-auto">
       <table className={cn("w-full", className)} {...props} />
     </div>
   ),
@@ -160,10 +162,21 @@ interface MdxProps {
 
 export function Mdx({ post }: MdxProps) {
   const Component = useMDXComponent(post);
-
+  const settings = useSettings();
+  const { fontSize } = settings;
+  const p = {p: ({ className, ...props }: componentProps) => (
+    <p
+      className={cn(
+        "leading-7 [&:not(:first-child)]:mt-6",
+        `text-${fontSize}`,
+        className,
+      )}
+      {...props}
+    />
+  )}
   return (
-    <div className="mdx">
-      <Component components={components} />
+    <div className="text-justify mdx">
+      <Component components={{...components, ...p}} />
     </div>
   );
 }
