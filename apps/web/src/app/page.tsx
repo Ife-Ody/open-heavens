@@ -8,7 +8,17 @@ import { Mdx } from "src/components/mdx-components";
 
 export const generateMetadata = () => {
   const post = allPosts.find((post) => isToday(new Date(post.date)));
-  return { title: post?.title };
+  return {
+    title: `Open Heavens for today - ${new Date().toLocaleDateString(
+      "en-GB",
+      {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      },
+    )}: ${post?.title}`,
+  };
 };
 
 function PostCard(post: Post) {
