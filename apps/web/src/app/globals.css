@@ -2,30 +2,91 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background: 213 6% 95%;
+    --foreground: 213 5% 10%;
+    --card: 213 6% 90%;
+    --card-foreground: 213 5% 15%;
+    --popover: 213 6% 95%;
+    --popover-foreground: 213 95% 10%;
+    --primary: 213 70% 41%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 213 10% 70%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 175 10% 85%;
+    --muted-foreground: 213 5% 35%;
+    --accent: 175 10% 80%;
+    --accent-foreground: 213 5% 15%;
+    --destructive: 0 50% 30%;
+    --destructive-foreground: 213 5% 90%;
+    --border: 213 20% 50%;
+    --input: 213 20% 28%;
+    --ring: 213 70% 41%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 213 10% 10%;
+    --foreground: 213 5% 90%;
+    --card: 213 6% 10%;
+    --card-foreground: 213 5% 90%;
+    --popover: 213 10% 5%;
+    --popover-foreground: 213 5% 90%;
+    --primary: 213 70% 51%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 213 10% 20%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 175 10% 25%;
+    --muted-foreground: 213 5% 60%;
+    --accent: 175 10% 25%;
+    --accent-foreground: 213 5% 90%;
+    --destructive: 0 50% 30%;
+    --destructive-foreground: 213 5% 90%;
+    --border: 213 20% 28%;
+    --input: 213 20% 28%;
+    --ring: 213 70% 41%;
+    --radius: 0.5rem;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
-h1 {
-  font-size: 2rem;
+[data-rehype-pretty-code-fragment] code {
+  @apply grid min-w-full p-0 text-sm text-black break-words bg-transparent border-0 rounded-none;
+  counter-reset: line;
+  box-decoration-break: clone;
+}
+[data-rehype-pretty-code-fragment] .line {
+  @apply px-4 py-1;
+}
+[data-rehype-pretty-code-fragment] [data-line-numbers] > .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 1rem;
+  margin-right: 1rem;
+  text-align: right;
+  color: gray;
+}
+[data-rehype-pretty-code-fragment] .line--highlighted {
+  @apply bg-slate-300 bg-opacity-10;
+}
+[data-rehype-pretty-code-fragment] .line-highlighted span {
+  @apply relative;
+}
+[data-rehype-pretty-code-fragment] .word--highlighted {
+  @apply p-1 rounded-md bg-slate-300 bg-opacity-10;
+}
+[data-rehype-pretty-code-title] {
+  @apply px-4 py-2 mt-4 text-sm font-medium;
+}
+[data-rehype-pretty-code-title] + pre {
+  @apply mt-0;
 }

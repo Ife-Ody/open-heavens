@@ -1,51 +1,54 @@
-import { BackgroundGradient } from "../components/background-gradient";
+import FontsizeSelector from "@/components/fontsize-selector";
+import { SettingsDrawer } from "@/components/settings-drawer";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { DatePicker } from "@/components/ui/date-picker";
+import { Post, allPosts } from "contentlayer/generated";
+import { isToday } from "date-fns";
+import { Mdx } from "src/components/mdx-components";
 
-function Gradient({
-  conic,
-  className,
-  small,
-}: {
-  small?: boolean;
-  conic?: boolean;
-  className?: string;
-}): JSX.Element {
+export const generateMetadata = () => {
+  const post = allPosts.find((post) => isToday(new Date(post.date)));
+  return { title: post?.title };
+};
+
+function PostCard(post: Post) {
   return (
-    <span
-      className={`absolute mix-blend-normal will-change-[filter] rounded-[100%] ${
-        small ? "blur-[32px]" : "blur-[75px]"
-      } ${conic ? "bg-glow-conic" : ""} ${className}`}
-    />
+    <div className="flex flex-col gap-3 mb-8">
+      <h1 className="mb-1 text-4xl font-semibold">{post.title}</h1>
+      <div className="">
+        <p className="p-3 border-l-2 text-primary">{post.verse}</p>
+      </div>
+      <div className="flex flex-col gap-1">
+        <h2 className="text-xl font-bold uppercase">Read:</h2>
+        <p className="text-primary">{post.reading}</p>
+      </div>
+      <Mdx post={post.body.code} />
+    </div>
   );
 }
 
-export default function Page(): JSX.Element {
+const Header = () => {
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen p-8 md:p-24 gap-6">
-      <h1 className="text-3xl">Open Heavens Reader</h1>
-      <div className="relative">
-        <BackgroundGradient className="rounded-[22px] max-w-sm p-4 sm:p-10 bg-white dark:bg-zinc-900 flex flex-col gap-3">
-          <p className="text-base sm:text-xl text-black mt-4 mb-2 dark:text-neutral-200 text-center sm:text-left">
-            A simple reader for the Open Heavens devotional
-          </p>
-          <p className=" text-neutral-600 dark:text-neutral-400 text-balance leading-relaxed text-center sm:text-left">
-            Is it possible to have a simplified reader for the RCCG Open Heavens
-            devotional? Something that is comfortable and easy to read where you
-            won't need to strain your eyes. A similar reading experience to the{" "}
-            <a
-              className="dark:text-amber-600"
-              target="_"
-              href="https://bible.com"
-            >
-              bible app
-            </a>
-            . <span className="uppercase font-medium">WITHOUT THE ADS</span>
-          </p>
-          <div className="w-full">
-            <span className="rounded-full mx-auto sm:m-0 uppercase px-3 py-1 text-white inline-flex items-center space-x-1 bg-black mt-4 text-xs font-bold dark:bg-zinc-800">
-              <span>Coming Soon</span>
-            </span>
-          </div>
-        </BackgroundGradient>
+    <div className="flex justify-between w-full gap-3 p-3 rounded">
+      <DatePicker></DatePicker>
+      <SettingsDrawer></SettingsDrawer>
+      {/* on desktop the settigns should expand */}
+      <div className="hidden gap-3 sm:flex">
+        <FontsizeSelector sample={false}></FontsizeSelector>
+        <ThemeToggle />
+      </div>
+    </div>
+  );
+};
+
+export default function Page(): JSX.Element {
+  const post = allPosts.find((post) => isToday(new Date(post.date)));
+  return (
+    <main className="relative flex flex-col items-center justify-center min-h-screen gap-6 p-8 md:px-24">
+      <Header />
+      <div className="flex-1">
+        {post && <PostCard {...post} />}
+        {!post && <h1>Could not find the post for today</h1>}
       </div>
     </main>
   );
