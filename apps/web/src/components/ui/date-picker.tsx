@@ -1,7 +1,6 @@
 "use client";
 
 import { format } from "date-fns";
-import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -13,9 +12,11 @@ import {
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { SelectSingleEventHandler } from "react-day-picker";
+import { useSettings } from "src/app/context/settings-context";
 
 export function DatePicker() {
-  const [date, setDate] = React.useState<Date>(new Date(Date.now()));
+  const settings = useSettings();
+  const { date, setDate } = settings;
 
   return (
     <Popover>

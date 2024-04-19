@@ -7,6 +7,8 @@ export const SettingsContext = createContext({
   setTheme: (theme: string) => {},
   fontSize: "md",
   setFontSize: (fontSize: string) => {},
+  date: new Date(),
+  setDate: (date: Date) => {},
 });
 
 export const useSettings = () => {
@@ -19,9 +21,10 @@ export const useSettings = () => {
 export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   const { theme, setTheme } = useTheme();
   const [fontSize, setFontSize] = useState("md");
+  const [date, setDate] = useState(new Date());
   return (
     <SettingsContext.Provider
-      value={{ theme: theme || "light", setTheme, fontSize, setFontSize }}
+      value={{ theme: theme || "light", setTheme, fontSize, setFontSize, date, setDate}}
     >
       {children}
     </SettingsContext.Provider>
