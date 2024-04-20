@@ -1,6 +1,6 @@
 "use client";
 
-import { format } from "date-fns";
+import { addDays, format } from "date-fns";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -37,6 +37,10 @@ export function DatePicker() {
         <Calendar
           mode="single"
           selected={date}
+          disabled={{
+            before: new Date(2024, 3, 18),
+            after: addDays(new Date(), 1),
+          }}
           onSelect={setDate as SelectSingleEventHandler}
           initialFocus
         />
