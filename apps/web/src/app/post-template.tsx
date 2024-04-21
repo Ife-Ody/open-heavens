@@ -36,7 +36,6 @@ export function PostTemplate({ post }: { post: Post }): JSX.Element {
           },
         })}
       </div>
-      <br />
       <div>
         {post.pointHeader && (
           <h2 className="text-xl font-bold uppercase leading-0">
@@ -47,6 +46,18 @@ export function PostTemplate({ post }: { post: Post }): JSX.Element {
           <p className={cn("leading-7 text-justify", `text-${fontSize}`)}>
             {post.pointText}
           </p>
+        )}
+      </div>
+      <div>
+        {post.bibleInOneYear && (
+          <>
+            <h2 className="mt-3 text-xl font-bold uppercase">
+              Bible in one Year {post.bibleInOneYear}
+            </h2>
+            <p className={cn("font-semibold text-primary", `text-${fontSize}`)}>
+              {post.bibleInOneYear}
+            </p>
+          </>
         )}
       </div>
     </div>
