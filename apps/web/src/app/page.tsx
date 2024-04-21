@@ -1,10 +1,10 @@
-import { allPosts } from "contentlayer/generated";
 import { isToday } from "date-fns";
-import { SelectedPost } from "src/app/post-template";
+import { posts } from "src/app/content/posts";
+import { SelectedPost } from "@/components/post-template";
 import { Header } from "./Header";
 
 export const generateMetadata = () => {
-  const post = allPosts.find((post) => isToday(new Date(post.date)));
+  const post = posts.find((post) => isToday(new Date(post.date)));
   return {
     title: `Open Heavens for today - ${new Date().toLocaleDateString(
       "en-GB",
