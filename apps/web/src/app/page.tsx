@@ -1,7 +1,7 @@
 import { allPosts } from "contentlayer/generated";
 import { isToday } from "date-fns";
+import { SelectedPost } from "src/app/post-template";
 import { Header } from "./Header";
-import { PostCard } from "./PostCard";
 
 export const generateMetadata = () => {
   const post = allPosts.find((post) => isToday(new Date(post.date)));
@@ -23,7 +23,7 @@ export default function Page(): JSX.Element {
     <main className="relative flex flex-col items-center justify-center min-h-screen gap-6 p-8 pb-16 md:px-24">
       <Header />
       <div className="flex-1">
-        { <PostCard />}
+        { <SelectedPost />}
       </div>
     </main>
   );
