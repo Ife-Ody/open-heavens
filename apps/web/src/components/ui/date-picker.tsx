@@ -38,7 +38,7 @@ export function DatePicker() {
           mode="single"
           selected={date}
           disabled={{
-            before: new Date(2024, 3, 18),
+            before: new Date(2023, 0, 1),
             after: addDays(new Date(), 1),
           }}
           onSelect={setDate as SelectSingleEventHandler}
