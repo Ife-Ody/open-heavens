@@ -7,6 +7,8 @@ import { Inter } from "next/font/google";
 import { SettingsProvider } from "./context/settings-context";
 import "./globals.css";
 
+import type { JSX } from "react";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

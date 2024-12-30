@@ -3,6 +3,8 @@ import { posts } from "src/app/content/posts";
 import { SelectedPost } from "@/components/post-template";
 import { Header } from "./Header";
 
+import type { JSX } from "react";
+
 export const generateMetadata = () => {
   const post = posts.find((post) => isToday(new Date(post.date)));
   return {

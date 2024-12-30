@@ -1,10 +1,11 @@
-"use client";
-
+"use client";;
 import { cn, titleCase } from "@/lib/utils";
 import { isSameDay } from "date-fns";
 import parse from "html-react-parser";
 import { Post, posts } from "src/app/content/posts";
 import { useSettings } from "src/app/context/settings-context";
+
+import type { JSX } from "react";
 
 export function PostTemplate({ post }: { post: Post }): JSX.Element {
   const settings = useSettings();
