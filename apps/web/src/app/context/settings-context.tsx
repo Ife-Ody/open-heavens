@@ -2,11 +2,20 @@
 import { useTheme } from "next-themes";
 import { ReactNode, createContext, useContext, useState } from "react";
 
-export const SettingsContext = createContext({
+interface SettingsContextType {
+  theme: string;
+  setTheme: (theme: string) => void;
+  fontSize: number;
+  setFontSize: (size: number) => void;
+  date: Date;
+  setDate: (date: Date) => void;
+}
+
+export const SettingsContext = createContext<SettingsContextType>({
   theme: "light",
   setTheme: (theme: string) => {},
-  fontSize: "md",
-  setFontSize: (fontSize: string) => {},
+  fontSize: 16,
+  setFontSize: (size: number) => {},
   date: new Date(),
   setDate: (date: Date) => {},
 });
@@ -18,15 +27,15 @@ export const useSettings = () => {
   return useContext(SettingsContext);
 };
 
-export const SettingsProvider = ({ children }: { children: ReactNode }) => {
+export function SettingsProvider({ children }: { children: ReactNode }) {
   const { theme, setTheme } = useTheme();
-  const [fontSize, setFontSize] = useState("md");
+  const [fontSize, setFontSize] = useState(16);
   const [date, setDate] = useState(new Date());
   return (
     <SettingsContext.Provider
-      value={{ theme: theme || "light", setTheme, fontSize, setFontSize, date, setDate}}
+      value={{ theme: theme || "light", setTheme, fontSize, setFontSize, date, setDate }}
     >
-      {children}
+      <div style={{ fontSize: `${fontSize}px` }}>{children}</div>
     </SettingsContext.Provider>
   );
-};
+}

@@ -15,19 +15,31 @@ export function PostTemplate({ post }: { post: Post }): JSX.Element {
 
   return (
     <div className="flex flex-col gap-3 whitespace-wrap">
-      <h1 className="mb-1 text-4xl font-semibold">{titleCase(post.title)}</h1>
-      <h2 className="mt-3 text-xl font-bold uppercase">Memory Verse</h2>
+      <h1 className={cn(`text-[${fontSize * 1.5}px] font-semibold`)}>
+        {titleCase(post.title)}
+      </h1>
+      <h2 className={cn(`text-[${fontSize + 2}px] font-bold uppercase`)}>
+        Memory Verse
+      </h2>
       <blockquote className="p-3 pl-6 italic border-l-2 text-muted-foreground">
         {post.memorizeText}
       </blockquote>
-      <p className="font-semibold text-primary">{post.memorizeVerse} (KJV)</p>
-      <h2 className="mt-3 text-xl font-bold uppercase">Read</h2>
-      <p className="font-semibold text-primary">{post.read}</p>
-      <h2 className="mt-3 text-xl font-bold uppercase">Message</h2>
+      <p className={cn("font-semibold text-primary", `text-[${fontSize}px]`)}>
+        {post.memorizeVerse} (KJV)
+      </p>
+      <h2 className={cn(`text-[${fontSize + 2}px] font-bold uppercase`)}>
+        Read
+      </h2>
+      <p className={cn("font-semibold text-primary", `text-[${fontSize}px]`)}>
+        {post.read}
+      </p>
+      <h2 className={cn(`text-[${fontSize + 2}px] font-bold uppercase`)}>
+        Message
+      </h2>
       <div
         className={cn(
           "leading-7 text-justify whitespace-normal break-words",
-          `text-${fontSize}`,
+          `text-[${fontSize}px]`,
         )}
       >
         {parse(post.bodyText, {
@@ -39,12 +51,16 @@ export function PostTemplate({ post }: { post: Post }): JSX.Element {
       </div>
       <div>
         {post.pointHeader && (
-          <h2 className="text-xl font-bold uppercase leading-0">
+          <h2
+            className={cn(
+              `text-[${fontSize + 2}px] font-bold uppercase leading-0`,
+            )}
+          >
             {post.pointHeader}
           </h2>
         )}
         {post.pointText && (
-          <p className={cn("leading-7 text-justify", `text-${fontSize}`)}>
+          <p className={cn("leading-7 text-justify", `text-[${fontSize}px]`)}>
             {post.pointText}
           </p>
         )}
@@ -52,10 +68,15 @@ export function PostTemplate({ post }: { post: Post }): JSX.Element {
       <div>
         {post.bibleInOneYear && (
           <>
-            <h2 className="mt-3 text-xl font-bold uppercase">
+            <h2 className={cn(`text-[${fontSize + 2}px] font-bold uppercase`)}>
               Bible in one Year {post.bibleInOneYear}
             </h2>
-            <p className={cn("font-semibold text-primary", `text-${fontSize}`)}>
+            <p
+              className={cn(
+                "font-semibold text-primary",
+                `text-[${fontSize}px]`,
+              )}
+            >
               {post.bibleInOneYear}
             </p>
           </>

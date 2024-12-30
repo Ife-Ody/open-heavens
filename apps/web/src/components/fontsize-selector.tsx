@@ -1,54 +1,48 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { useSettings } from "src/app/context/settings-context";
 import { Button } from "./ui/button";
 
-const fontSizes = ["sm", "md", "lg", "xl", "2xl"];
-
-function getNextFontSize(current: string) {
-  const currentIndex = fontSizes.indexOf(current);
-  if (currentIndex >= fontSizes.length - 1) return current;
-  const nextIndex = currentIndex + 1;
-  return fontSizes[nextIndex] ?? "md";
-}
-
-function getPreviousFontSize(current: string) {
-  const currentIndex = fontSizes.indexOf(current);
-  if (currentIndex <= 0) return current;
-  const nextIndex = currentIndex - 1;
-  return fontSizes[nextIndex] ?? "md";
-}
+const MIN_FONT_SIZE = 12;
+const MAX_FONT_SIZE = 32;
+const STEP_SIZE = 2;
 
 const FontsizeSelector = ({ sample = true }) => {
-  const settings = useSettings();
-  const { fontSize, setFontSize } = settings;
+  const { fontSize, setFontSize } = useSettings();
+
+  const decrease = () => {
+    setFontSize(Math.max(MIN_FONT_SIZE, fontSize - STEP_SIZE));
+  };
+
+  const increase = () => {
+    setFontSize(Math.min(MAX_FONT_SIZE, fontSize + STEP_SIZE));
+  };
+
   return (
     <div className="flex items-center justify-center gap-3 rounded-md">
       <Button
         variant="outline"
         size="icon"
         className="text-xs"
-        onClick={() => {
-          setFontSize(getPreviousFontSize(fontSize));
-        }}
+        onClick={decrease}
+        disabled={fontSize <= MIN_FONT_SIZE}
       >
         A
       </Button>
+      <span className="min-w-[3ch] text-center text-lg">{fontSize}px</span>
       <Button
         variant="outline"
         size="icon"
         className="text-xl"
-        onClick={() => {
-          setFontSize(getNextFontSize(fontSize));
-        }}
+        onClick={increase}
+        disabled={fontSize >= MAX_FONT_SIZE}
       >
         A
       </Button>
       {sample && (
-        <div className={cn("bg-muted rounded h-full px-1 text-center items-center justify-center flex", `text-${fontSize}`)}>
+        <p className="flex items-center justify-center h-full px-2 rounded bg-muted">
           Sample Text
-        </div>
+        </p>
       )}
     </div>
   );
