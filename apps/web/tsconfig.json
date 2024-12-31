@@ -4,7 +4,6 @@
     "plugins": [{ "name": "next" }],
     "baseUrl": ".",
     "paths": {
-      "contentlayer/generated": ["./.contentlayer/generated"],
       "@/components/*": ["src/components/*"],
       "@/lib/*": ["./src/lib/*"]
     },
@@ -15,11 +14,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".contentlayer/generated",
-    "contentlayer.config.js"
+    "/packages/ui/src/**/*.tsx"
   ],
   "exclude": ["node_modules"],
-  "paths": {
-    "contentlayer/generated": ["./.contentlayer/generated"],
-  }
 }
