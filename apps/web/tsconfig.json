@@ -7,7 +7,8 @@
       "contentlayer/generated": ["./.contentlayer/generated"],
       "@/components/*": ["src/components/*"],
       "@/lib/*": ["./src/lib/*"]
-    }
+    },
+    "target": "ES2020"
   },
   "include": [
     "next-env.d.ts",

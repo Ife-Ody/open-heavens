@@ -6,8 +6,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { SettingsProvider } from "./context/settings-context";
 import "./globals.css";
+import '../styles/bible-reference.css';
 
 import type { JSX } from "react";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }): JSX.Element {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
           inter.className,
@@ -38,8 +40,8 @@ export default function RootLayout({
         >
           <SettingsProvider>{children}</SettingsProvider>
         </ThemeProvider>
-        <Analytics/>
-        <SpeedInsights/>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

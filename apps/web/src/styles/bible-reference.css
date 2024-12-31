@@ -1,0 +1,17 @@
+.bible-reference-container {
+  margin-top: 1rem;
+}
+
+.bible-reference-mount {
+  display: inline;
+}
+
+/* Add styles for verse formatting */
+.text-muted-foreground p {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.text-muted-foreground p:last-child {
+  margin-bottom: 0;
+} 

@@ -1,6 +1,7 @@
 "use client"
 import { useTheme } from "next-themes";
-import { ReactNode, createContext, useContext, useState } from "react";
+import { ReactNode, createContext, useContext } from "react";
+import { useLocalStorage } from "@/lib/hooks/use-local-storage";
 
 interface SettingsContextType {
   theme: string;
@@ -29,13 +30,14 @@ export const useSettings = () => {
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const { theme, setTheme } = useTheme();
-  const [fontSize, setFontSize] = useState(16);
-  const [date, setDate] = useState(new Date());
+  const [fontSize, setFontSize] = useLocalStorage<number>("fontSize", 16);
+  const [date, setDate] = useLocalStorage<Date>("selectedDate", new Date());
+
   return (
     <SettingsContext.Provider
       value={{ theme: theme || "light", setTheme, fontSize, setFontSize, date, setDate }}
     >
-      <div style={{ fontSize: `${fontSize}px` }}>{children}</div>
+      <div style={{ fontSize: `${fontSize}px` }} suppressHydrationWarning>{children}</div>
     </SettingsContext.Provider>
   );
 }

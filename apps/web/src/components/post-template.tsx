@@ -6,6 +6,7 @@ import { Post, posts } from "src/app/content/posts";
 import { useSettings } from "src/app/context/settings-context";
 
 import type { JSX } from "react";
+import BibleReference from './bible-reference';
 
 export function PostTemplate({ post }: { post: Post }): JSX.Element {
   const settings = useSettings();
@@ -30,9 +31,9 @@ export function PostTemplate({ post }: { post: Post }): JSX.Element {
       <h2 className={cn(`text-[${fontSize + 2}px] font-bold uppercase`)}>
         Read
       </h2>
-      <p className={cn("font-semibold text-primary", `text-[${fontSize}px]`)}>
-        {post.read}
-      </p>
+      <div className={cn("font-semibold text-primary", `text-[${fontSize}px]`)}>
+        <BibleReference content={post.read} />
+      </div>
       <h2 className={cn(`text-[${fontSize + 2}px] font-bold uppercase`)}>
         Message
       </h2>
@@ -42,10 +43,11 @@ export function PostTemplate({ post }: { post: Post }): JSX.Element {
           `text-[${fontSize}px]`,
         )}
       >
+        {/* <BibleReference content={post.bodyText} /> */}
         {parse(post.bodyText, {
           transform(reactNode, domNode, index) {
             // this will wrap every element in a paragraph tag
-            return <p>{reactNode}</p>;
+            return <p key={index}>{reactNode}</p>;
           },
         })}
       </div>
@@ -69,16 +71,16 @@ export function PostTemplate({ post }: { post: Post }): JSX.Element {
         {post.bibleInOneYear && (
           <>
             <h2 className={cn(`text-[${fontSize + 2}px] font-bold uppercase`)}>
-              Bible in one Year {post.bibleInOneYear}
+              Bible in one Year
             </h2>
-            <p
+            <div
               className={cn(
                 "font-semibold text-primary",
                 `text-[${fontSize}px]`,
               )}
             >
-              {post.bibleInOneYear}
-            </p>
+              <BibleReference content={post.bibleInOneYear} />
+            </div>
           </>
         )}
       </div>
