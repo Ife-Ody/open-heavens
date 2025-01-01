@@ -12,6 +12,18 @@ export type Post = {
 }
 export const posts: Array<Post> = [
   {
+    "id": 20250101,
+    "date": "2025-01-01",
+    "title": "GOD HAS HELPED YOU",
+    "read": "Psalm 124:1-8",
+    "memorizeText": "There is none like unto the God of Jeshurun, who rideth upon the heaven in thy help, and in his excellency on the sky.",
+    "memorizeVerse": "Deuteronomy 33:26",
+    "bodyText": "It is a new year, and you have every reason to thank God. You may think that last year did not go as you planned, but believe me, if not for God's mercy, you wouldn't have survived the year (Lamentations 3:22). This is why you shouldn't make the mistake of complaining to God and grumbling about things that didn't go as you wanted. Rather, you should thank Him for bringing you this far. If you go into the year with thanksgiving, you are assured of access to the One who can make you have a great year (Psalm 100:4). However, if you go into the year with complaints, especially complaints against the only One who can help you, you are treading dangerously. Numbers 11:1 says: <br>And when the people complained, it displeased the LORD: and the LORD heard it; and his anger was kindled; and the fire of the LORD burnt among them, and consumed them that were in the uttermost parts of the camp. <br>In 1 Samuel 7:12, Prophet Samuel said, “Hitherto you have helped us.” In other words, this means, “In the journeys thus far, we have received help from you.” This is a statement of survivors — those who say, “Thank God I have made it thus far.” Today's Bible reading says that if the Lord had not been on our side, we would not be where we are now. <br>You can never tell how many battles God has fought for you. You may not even know how many victories He has given you. As for me, thus far in my journey of life, God has helped me. Despite everything the devil has tried, I am still here. If you are a survivor, you should really spend some time thanking God for all He has done for you. <br>If you passed through tough situations last year and you are alive now and reading this, then you have indeed been helped by God. If last year went smoothly for you, despite all the troubles in the world, then you have also been helped by God, for without Him, you could not have achieved anything (John 15:5). Whichever your case was, you should be very grateful to Him for all the help He rendered to you (1 Thessalonians 5:18). <br>Beloved, go ahead now and sing praises to the Lord. Spend the day thinking about His goodness to you, and ensure you enter into this new year with thanksgiving. It is the foundation for receiving more from Him.",
+    "pointText": "Give thanks to God for all He has done for you, and be prepared to receive more from Him this year.",
+    "pointHeader": "Key Point",
+    "bibleInOneYear": "Genesis 1-4"
+  },
+  {
     id: 366,
     date: "2024-12-31",
     title: "PRAYERS FOR 2025",
