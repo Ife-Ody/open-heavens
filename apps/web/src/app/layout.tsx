@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/bible-reference.css";
 import { SettingsProvider } from "./context/settings-context";
+import "@repo/ui/styles.css";
 import "./globals.css";
 import { constructMetadata } from "@repo/utils";
 
