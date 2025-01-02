@@ -2,13 +2,13 @@
 
 import { addDays, format } from "date-fns";
 
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@repo/ui";
+import { Calendar } from "@repo/ui";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@repo/ui";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { SelectSingleEventHandler } from "react-day-picker";

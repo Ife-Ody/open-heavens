@@ -8,7 +8,7 @@ import {
 import { Cog } from "lucide-react";
 import FontsizeSelector from "./fontsize-selector";
 import { ThemeToggle } from "./theme-toggle";
-import { Button } from "./ui/button";
+import { Button } from "@repo/ui";
 
 export const SettingsDrawer = () => {
   return (

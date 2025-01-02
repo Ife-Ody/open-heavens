@@ -8,7 +8,8 @@
     "./styles.css": "./dist/index.css",
     "./components": "./src/index.tsx",
     "./utils": "./utils/index.ts",
-    "./background-gradient": "./src/background-gradient.tsx"
+    "./background-gradient": "./src/background-gradient.tsx",
+    ".": "./src/index.tsx"
   },
   "license": "MIT",
   "scripts": {
@@ -24,7 +25,7 @@
     "@repo/eslint-config": "*",
     "@repo/tailwind-config": "*",
     "@repo/typescript-config": "*",
-    "@types/react": "^18.2.61",
+    "@types/react": "^19.0.0",
     "autoprefixer": "^10.4.18",
     "postcss": "^8.4.35",
     "react": "19.0.0",
