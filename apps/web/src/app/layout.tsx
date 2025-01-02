@@ -4,19 +4,16 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import "../styles/bible-reference.css";
 import { SettingsProvider } from "./context/settings-context";
 import "./globals.css";
-import '../styles/bible-reference.css';
+import { constructMetadata } from "@repo/utils";
 
 import type { JSX } from "react";
-import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "RCCG Open Heavens Reader",
-  description: "A simple reader for the Open Heavens devotional",
-};
+export const metadata: Metadata = constructMetadata();
 
 export default function RootLayout({
   children,

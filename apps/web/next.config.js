@@ -2,8 +2,7 @@
 
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
-  transpilePackages: ["@repo/ui"],
+  transpilePackages: ["@repo/ui", "@repo/utils"],
 };
 
 module.exports = nextConfig;
