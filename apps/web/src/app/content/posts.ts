@@ -9,13 +9,13 @@ export type Post = {
   pointText: string | null;
   pointHeader: string | null;
   bibleInOneYear: string;
-  status?: string;
-  review_title?: string;
-  review_image?: string;
-  review_link?: string;
+  status?: string | null;
+  review_title?: string | null;
+  review_image?: string | null;
+  review_link?: string | null;
   hymn_id?: number;
-  created_at?: string;
-  updated_at?: string;
+  created_at?: string | null;
+  updated_at?: string | null;
   deleted_at?: string | null;
 };
 export const posts: Array<Post> = [
