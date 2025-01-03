@@ -11,7 +11,7 @@ export const Header = () => {
       {/* on desktop the settigns should expand */}
       <div className="items-center hidden gap-3 sm:flex">
         <FontsizeSelector sample={false}></FontsizeSelector>
-        <ThemeToggle />
+        <ThemeToggle iconOnly={true} />
       </div>
     </div>
   );

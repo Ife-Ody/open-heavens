@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@repo/ui/components/dropdown-menu";
 
-const ThemeToggle = function ({ iconOnly = true }: { iconOnly: boolean }) {
+const ThemeToggle = function ({ iconOnly = true }: { iconOnly?: boolean }) {
   const { setTheme } = useTheme();
 
   return (
