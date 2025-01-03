@@ -11,6 +11,8 @@ interface SettingsContextType {
   setFontSize: (size: number) => void;
   date: Date;
   setDate: (date: Date) => void;
+  version: string;
+  setVersion: (version: string) => void;
 }
 
 export const SettingsContext = createContext<SettingsContextType>({
@@ -20,6 +22,8 @@ export const SettingsContext = createContext<SettingsContextType>({
   setFontSize: (size: number) => {},
   date: new Date(),
   setDate: (date: Date) => {},
+  version: "kjv",
+  setVersion: (version: string) => {},
 });
 
 export const useSettings = () => {
@@ -33,6 +37,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const { theme, setTheme } = useTheme();
   const [fontSize, setFontSize] = useLocalStorage<number>("fontSize", 16);
   const router = useRouter();
+  const [version, setVersion] = useLocalStorage<string>("version", "kjv");
   //attempt to get the date from the url
   const dateParam = useParams().date as string | undefined;
   const date = dateParam ? new Date(dateParam) : new Date();
@@ -43,9 +48,9 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
   return (
     <SettingsContext.Provider
-      value={{ theme: theme || "light", setTheme, fontSize, setFontSize, date, setDate }}
+      value={{ theme: theme || "light", setTheme, fontSize, setFontSize, date, setDate, version, setVersion }}
     >
-      <div style={{ fontSize: `${fontSize}px` }} suppressHydrationWarning>{children}</div>
+      <div className="h-full" style={{ fontSize: `${fontSize}px` }} suppressHydrationWarning>{children}</div>
     </SettingsContext.Provider>
   );
 }

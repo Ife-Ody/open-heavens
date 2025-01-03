@@ -35,7 +35,8 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2",
-    "@repo/utils": "*"
+    "@repo/utils": "*",
+    "@repo/bible": "*"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "15.1.3",
