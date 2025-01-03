@@ -39,8 +39,8 @@ export function DatePicker() {
           selected={date}
           disabled={{
             before: new Date(2023, 0, 1),
-            after: addDays(new Date(), 1),
-            // after: new Date(2024, 11, 31),
+            // after: addDays(new Date(), 1),
+            after: new Date(2025, 11, 31),
           }}
           onSelect={setDate as SelectSingleEventHandler}
           initialFocus

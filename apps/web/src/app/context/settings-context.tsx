@@ -2,6 +2,7 @@
 import { useTheme } from "next-themes";
 import { ReactNode, createContext, useContext } from "react";
 import { useLocalStorage } from "@/lib/hooks/use-local-storage";
+import { useParams, useRouter } from "next/navigation";
 
 interface SettingsContextType {
   theme: string;
@@ -31,7 +32,14 @@ export const useSettings = () => {
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const { theme, setTheme } = useTheme();
   const [fontSize, setFontSize] = useLocalStorage<number>("fontSize", 16);
-  const [date, setDate] = useLocalStorage<Date>("selectedDate", new Date());
+  const router = useRouter();
+  //attempt to get the date from the url
+  const dateParam = useParams().date as string | undefined;
+  const date = dateParam ? new Date(dateParam) : new Date();
+
+  const setDate = (date: Date) => {
+    router.push(`/${date.toISOString().split('T')[0]}`);
+  }
 
   return (
     <SettingsContext.Provider
