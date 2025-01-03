@@ -44,12 +44,7 @@ export function PostTemplate({ post }: { post: Post }): JSX.Element {
         )}
       >
         {/* <BibleReference content={post.bodyText} /> */}
-        {parse(post.bodyText, {
-          transform(reactNode, domNode, index) {
-            // this will wrap every element in a paragraph tag
-            return <p key={index}>{reactNode}</p>;
-          },
-        })}
+        {parse(post.bodyText)}
       </div>
       <div>
         {post.pointHeader && (
