@@ -4,7 +4,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
+} from "@repo/ui/components/drawer";
 import { Cog } from "lucide-react";
 import FontsizeSelector from "./fontsize-selector";
 import { ThemeToggle } from "./theme-toggle";
@@ -27,7 +27,7 @@ export const SettingsDrawer = () => {
           </div>
           <div className="flex flex-col items-center justify-center gap-2 py-6">
             <div>Theme</div>
-            <ThemeToggle />
+            <ThemeToggle iconOnly={true}  />
           </div>
         </DrawerHeader>
       </DrawerContent>

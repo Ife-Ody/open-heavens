@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@repo/ui/theme";
 import { cn } from "@repo/ui/utils";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";

@@ -1,39 +1,70 @@
-"use client"
+"use client";
 
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons"
-import { useTheme } from "next-themes"
-
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "@repo/ui/theme";
 import { Button } from "@repo/ui/components/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@repo/ui/components/dropdown-menu"
+} from "@repo/ui/components/dropdown-menu";
 
-export function ThemeToggle() {
-  const { setTheme } = useTheme()
+const ThemeToggle = function ({ iconOnly = true }: { iconOnly: boolean }) {
+  const { setTheme } = useTheme();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
+        {iconOnly ? (
+          <Button
+            variant="ghost"
+            size="icon"
+            id="vbtheme-toggle"
+            className="focus-visible:ring-0 text-muted-foreground"
+          >
+            <Sun size={16} className="block dark:hidden" />
+            <Moon size={16} className="hidden dark:block" />
+            <span className="sr-only">Toggle theme</span>
+          </Button>
+        ) : (
+          <Button
+            variant="ghost"
+            id="vbtheme-toggle"
+            className="inline-flex items-center justify-start w-full gap-2 p-2"
+          >
+            <Sun
+              size={16}
+              className="block dark:hidden text-muted-foreground group-hover:text-foreground"
+            />
+            <Moon
+              size={16}
+              className="hidden dark:block text-muted-foreground group-hover:text-foreground"
+            />
+            <span>Theme</span>
+          </Button>
+        )}
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+      <DropdownMenuContent side="right" className="w-48" align="end">
+        <DropdownMenuItem
+          className="font-medium"
+          onClick={() => setTheme("light")}
+        >
+          <Sun size={16} className="block mr-2 text-muted-foreground" />
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem
+          className="font-medium"
+          onClick={() => setTheme("dark")}
+        >
+          <Moon size={16} className="block mr-2 text-muted-foreground" />
           Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
-}
+  );
+};
+
+export { ThemeToggle };
+
+//TODO: Ensure the theme toggle applies the theme instantly, maybe use the applicationStore to get this effect.

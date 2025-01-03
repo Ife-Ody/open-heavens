@@ -8,10 +8,10 @@
     "./styles.css": "./dist/index.css",
     "./components": "./src/index.tsx",
     "./utils": "./utils/index.ts",
-    "./background-gradient": "./src/background-gradient.tsx",
     "./lib/*": "./src/lib/*.ts",
     "./components/*": "./src/components/*.tsx",
-    "./hooks/*": "./src/hooks/*.ts"
+    "./hooks/*": "./src/hooks/*.ts",
+    "./theme": "./src/theme/index.tsx"
   },
   "license": "MIT",
   "scripts": {
