@@ -3,6 +3,7 @@ import { isSameDay } from "date-fns";
 import { posts } from "src/app/content/posts";
 
 import { Header } from "../Header";
+import { constructMetadata } from "@repo/utils";
 
 export const generateMetadata = async ({
   params,
@@ -13,13 +14,13 @@ export const generateMetadata = async ({
   const date = new Date(dateParam);
 
   const post = posts.find((post) => isSameDay(new Date(post.date), date));
-  return {
+  return constructMetadata({
     title: `Open Heavens for today ${date.getFullYear()} - ${date.toLocaleDateString("en-GB", {
       weekday: "long",
       month: "long", 
       day: "numeric",
     })}: ${post?.title}`,
-  };
+  });
 };
 
 export default async function Page() {

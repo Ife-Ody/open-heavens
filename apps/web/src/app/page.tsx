@@ -4,10 +4,11 @@ import { SelectedPost } from "@/components/post-template";
 import { Header } from "./Header";
 
 import type { JSX } from "react";
+import { constructMetadata } from "@repo/utils";
 
 export const generateMetadata = () => {
   const post = posts.find((post) => isToday(new Date(post.date)));
-  return {
+  return constructMetadata({
     title: `Open Heavens for today - ${new Date().toLocaleDateString(
       "en-GB",
       {
@@ -17,7 +18,7 @@ export const generateMetadata = () => {
         day: "numeric",
       },
     )}: ${post?.title}`,
-  };
+  });
 };
 
 export default function Page(): JSX.Element {
