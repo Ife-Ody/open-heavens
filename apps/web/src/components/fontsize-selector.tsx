@@ -1,7 +1,7 @@
 "use client";
 
 import { useSettings } from "src/app/context/settings-context";
-import { Button } from "@repo/ui";
+import { Button } from "@repo/ui/components/button";
 
 const MIN_FONT_SIZE = 12;
 const MAX_FONT_SIZE = 32;

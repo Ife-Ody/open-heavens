@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from 'react';
-import { Button } from "@repo/ui";
-import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui";
+import { Button } from "@repo/ui/components/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import { useSettings } from 'src/app/context/settings-context';
 import { cn } from '@repo/ui/utils';
 
