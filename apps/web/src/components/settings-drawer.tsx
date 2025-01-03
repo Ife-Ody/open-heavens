@@ -14,7 +14,7 @@ export const SettingsDrawer = () => {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button className="sm:hidden" variant="outline" size="icon">
+        <Button className="sm:hidden" variant="outline" size="icon" aria-label="Settings">
           <Cog size={16} />
         </Button>
       </DrawerTrigger>

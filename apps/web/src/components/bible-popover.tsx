@@ -27,14 +27,14 @@ export function BiblePopover({ reference, content, onClose }: BiblePopoverProps)
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
-        <Button variant="link" className={cn("h-auto p-0", `text-[${fontSize}px]`)} >
+        <Button variant="link" className={cn("h-auto p-0", `text-[${fontSize}px]`)} aria-label={reference}>
           {reference}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 max-h-[80vh] overflow-y-auto">
+      <PopoverContent className="w-80 max-h-[80vh] overflow-y-auto" aria-label={reference}>
         <div className="grid gap-4">
           <div className="space-y-2">
-            <h4 className="font-medium leading-none">{reference}</h4>
+            <h1 className="font-medium leading-none">{reference}</h1>
             <div className="space-y-2 text-sm text-muted-foreground">
               {content ? (
                 content.split('\n').map((verse, index) => (
