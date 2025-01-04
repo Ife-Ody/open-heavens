@@ -1,15 +1,24 @@
-type Version = "kjv" | "net" | "asv";
-
-type BibleVerse = {
-    book_name: string;
-    book: number;
-    chapter: number;
-    verse: number;
-    text: string;
+export interface BibleVerse {
+  book_name: string;
+  chapter: number;
+  verse: number;
+  text: string;
 }
 
+export interface BibleVersion {
+  verses: BibleVerse[];
+}
 
-interface Bible {
+export interface VerseRange {
+  start?: number;
+  end?: number;
+}
+
+export type VerseSelector = number | number[] | VerseRange;
+
+export type Version = "kjv" | "net" | "asv";
+
+export interface Bible {
     metadata: {
         name: string;
         shortname: string;

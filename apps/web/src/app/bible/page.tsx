@@ -1,9 +1,10 @@
-import BibleReader from "./bible-reader";
+import { constructMetadata } from "@repo/utils";
+import { BibleReader } from "./bible-reader";
 
-export default async function Page() {
-  return (
-    <div className="h-full">
-      <BibleReader />
-    </div>
-  );
+export const metadata = constructMetadata({
+  title: "Open Heavens App - Bible",
+});
+
+export default async function BiblePage() {
+  return <BibleReader />;
 }

@@ -801,6 +801,16 @@ body {
   border-collapse: collapse;
 }
 
+@keyframes pulse {
+  50% {
+    opacity: .5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 .cursor-default {
   cursor: default;
 }
@@ -914,6 +924,10 @@ body {
   background-color: hsl(var(--primary));
 }
 
+.bg-primary\/10 {
+  background-color: hsl(var(--primary) / 0.1);
+}
+
 .bg-secondary {
   background-color: hsl(var(--secondary));
 }
@@ -1003,6 +1017,11 @@ body {
 
 .text-\[0\.8rem\] {
   font-size: 0.8rem;
+}
+
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 .text-lg {
@@ -1204,6 +1223,27 @@ body {
 
 [data-rehype-pretty-code-title] + pre {
   margin-top: 0px;
+}
+
+.file\:border-0::file-selector-button {
+  border-width: 0px;
+}
+
+.file\:bg-transparent::file-selector-button {
+  background-color: transparent;
+}
+
+.file\:text-sm::file-selector-button {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.file\:font-medium::file-selector-button {
+  font-weight: 500;
+}
+
+.file\:text-foreground::file-selector-button {
+  color: hsl(var(--foreground));
 }
 
 .placeholder\:text-muted-foreground::-moz-placeholder {
@@ -1443,6 +1483,13 @@ body {
 
   .sm\:text-left {
     text-align: left;
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
   }
 }
 

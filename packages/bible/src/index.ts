@@ -1,31 +1,61 @@
 import { versions } from './en'
+import type { BibleVerse, VerseSelector } from './types'
 
-function getBibleVerseRange(version: string, book: string, chapter: number, verses?: number[]) {
-    if (!version) {
-        version = "kjv";
+export type { BibleVerse, BibleVersion, VerseRange, VerseSelector } from './types'
+
+export class Bible {
+    version: string = 'kjv'
+
+    constructor(version: string = 'kjv') {
+        this.setVersion(version)
     }
 
-    const versionBible = versions[version as keyof typeof versions]
-
-    if (!versionBible) {
-        throw new Error(`Version ${version} not found`)
+    setVersion(version: string): Bible {
+        if (!versions[version as keyof typeof versions]) {
+            throw new Error(`Version ${version} not found`)
+        }
+        this.version = version
+        return this
     }
 
-    if (!book) {
-        book = "Genesis";
+    getVerses(book: string, chapter: number, verseSelector?: VerseSelector): BibleVerse[] {
+        const versionBible = versions[this.version as keyof typeof versions]
+
+        if (!book || !chapter) {
+            throw new Error('Book and chapter are required')
+        }
+
+        const verses = versionBible.verses.filter((verse: BibleVerse) => verse.book_name === book && verse.chapter === chapter)
+
+        if (verses.length === 0) {
+            throw new Error(`No verses found for ${book} ${chapter}`)
+        }
+
+        if (!verseSelector) {
+            return verses
+        }
+
+        // Handle different verse selection formats
+        if (typeof verseSelector === 'number') {
+            return verses.filter((v: BibleVerse) => v.verse === verseSelector)
+        }
+
+        if (Array.isArray(verseSelector)) {
+            return verses.filter((v: BibleVerse) => verseSelector.includes(v.verse))
+        }
+
+        // Handle verse range
+        const { start = 1, end = Math.max(...verses.map((v: BibleVerse) => v.verse)) } = verseSelector
+        return verses.filter((v: BibleVerse) => v.verse >= start && v.verse <= end)
     }
 
-    if (!chapter) {
-        chapter = 1;
+    getMaxChapter(book: string): number {
+        const versionBible = versions[this.version as keyof typeof versions]
+        return Math.max(...versionBible.verses.filter((v: BibleVerse) => v.book_name === book).map((v: BibleVerse) => v.chapter))
     }
-
-    if (!verses) {
-        verses = [];
-    }
-
-    const bibleVerses = versionBible.verses.filter((verse) => verse.book_name === book && verse.chapter === chapter && (verses.length === 0 || verses.includes(verse.verse)))
-
-    return bibleVerses
 }
 
-export { getBibleVerseRange }
+// Convenience function for one-off usage
+export function getBibleVerseRange(version: string, book: string, chapter: number, verseSelector?: VerseSelector): BibleVerse[] {
+    return new Bible(version).getVerses(book, chapter, verseSelector)
+}
