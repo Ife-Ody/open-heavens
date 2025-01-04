@@ -3,7 +3,7 @@ import { isSameDay } from "date-fns";
 import { posts } from "src/app/content/posts";
 
 import { Header } from "../Header";
-import { constructMetadata } from "@repo/utils";
+import { constructMetadata, truncate } from "@repo/utils";
 
 export const generateMetadata = async ({
   params,
@@ -20,6 +20,7 @@ export const generateMetadata = async ({
       month: "long", 
       day: "numeric",
     })}: ${post?.title}`,
+    description: `${truncate(post?.bodyText, 160)}...`,
   });
 };
 
