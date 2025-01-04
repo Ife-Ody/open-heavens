@@ -5,7 +5,7 @@
     "**/*.css"
   ],
   "exports": {
-    "./styles.css": "./src/index.css",
+    "./styles.css": "./dist/index.css",
     "./components": "./src/index.tsx",
     "./utils": "./utils/index.ts",
     "./lib/*": "./src/lib/*.ts",
@@ -15,9 +15,9 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "tailwindcss -i ./src/styles.css -o ./src/index.css",
+    "build": "tailwindcss -i ./src/styles.css -o ./dist/index.css",
     "lint": "eslint src/",
-    "dev": "tailwindcss -i ./src/styles.css -o ./src/index.css --watch",
+    "dev": "tailwindcss -i ./src/styles.css -o ./dist/index.css --watch",
     "type-check": "tsc --noEmit"
   },
   "peerDependencies": {

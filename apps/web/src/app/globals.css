@@ -58,35 +58,20 @@
   }
 }
 
-[data-rehype-pretty-code-fragment] code {
-  @apply grid min-w-full p-0 text-sm text-black break-words bg-transparent border-0 rounded-none;
-  counter-reset: line;
-  box-decoration-break: clone;
+.bible-reference-container {
+  margin-top: 1rem;
 }
-[data-rehype-pretty-code-fragment] .line {
-  @apply px-4 py-1;
+
+.bible-reference-mount {
+  display: inline;
 }
-[data-rehype-pretty-code-fragment] [data-line-numbers] > .line::before {
-  counter-increment: line;
-  content: counter(line);
-  display: inline-block;
-  width: 1rem;
-  margin-right: 1rem;
-  text-align: right;
-  color: gray;
+
+/* Add styles for verse formatting */
+.text-muted-foreground p {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
 }
-[data-rehype-pretty-code-fragment] .line--highlighted {
-  @apply bg-slate-300 bg-opacity-10;
-}
-[data-rehype-pretty-code-fragment] .line-highlighted span {
-  @apply relative;
-}
-[data-rehype-pretty-code-fragment] .word--highlighted {
-  @apply p-1 rounded-md bg-slate-300 bg-opacity-10;
-}
-[data-rehype-pretty-code-title] {
-  @apply px-4 py-2 mt-4 text-sm font-medium;
-}
-[data-rehype-pretty-code-title] + pre {
-  @apply mt-0;
-}
+
+.text-muted-foreground p:last-child {
+  margin-bottom: 0;
+} 

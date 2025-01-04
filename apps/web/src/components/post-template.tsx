@@ -6,12 +6,13 @@ import { Post, posts } from "src/app/content/posts";
 import { useSettings } from "src/app/context/settings-context";
 
 import type { JSX } from "react";
+import { useBible } from "src/app/context/bible-context";
 import BibleReference from "./bible-reference";
 
 export function PostTemplate({ post }: { post: Post }): JSX.Element {
   const settings = useSettings();
   const { fontSize } = settings;
-
+  const { openDialog, setBook, setChapter } = useBible();
   if (!post) return <EmptyPost />;
 
   return (

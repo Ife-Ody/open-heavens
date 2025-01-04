@@ -1,16 +1,12 @@
-import { ThemeProvider } from "@repo/ui/theme";
 import { cn } from "@repo/ui/utils";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { constructMetadata } from "@repo/utils";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "../styles/bible-reference.css";
-import { SettingsProvider } from "./context/settings-context";
 import "@repo/ui/styles.css";
 import "./globals.css";
-import { constructMetadata } from "@repo/utils";
 
 import type { JSX } from "react";
+import RootProviders from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,17 +25,7 @@ export default function RootLayout({
           "min-h-screen bg-background font-sans antialiased",
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          storageKey="ortheme"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <SettingsProvider>{children}</SettingsProvider>
-        </ThemeProvider>
-        <Analytics />
-        <SpeedInsights />
+        <RootProviders>{children}</RootProviders>
       </body>
     </html>
   );

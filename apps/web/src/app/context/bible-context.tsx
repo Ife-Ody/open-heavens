@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect } from 'react'
 import { Bible, BibleVerse } from '@repo/bible'
+import { BibleDialog } from '../bible/bible-dialog';
 
 interface BibleContextType {
   bible: Bible
@@ -13,6 +14,7 @@ interface BibleContextType {
   setVersion: (version: string) => void
   loadVerses: (verseSelector?: number | number[]) => void
   loading: boolean
+  openDialog: () => void
 }
 
 const BibleContext = createContext<BibleContextType | undefined>(undefined)
@@ -23,7 +25,7 @@ export function BibleProvider({ children }: { children: React.ReactNode }) {
   const [currentChapter, setCurrentChapter] = useState(1)
   const [currentVerses, setCurrentVerses] = useState<BibleVerse[]>([])
   const [loading, setLoading] = useState(true)
-
+  const [dialogOpen, setDialogOpen] = useState(false)
   useEffect(() => {
     loadVerses()
   }, [currentBook])
@@ -58,7 +60,6 @@ export function BibleProvider({ children }: { children: React.ReactNode }) {
   }
 
   const loadVerses = (verseSelector?: number | number[]) => {
-    setLoading(true)
     try {
       const verses = bible.getVerses(currentBook, currentChapter, verseSelector)
       setCurrentVerses(verses)
@@ -68,6 +69,10 @@ export function BibleProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setLoading(false)
     }
+  }
+
+  const openDialog = () => {
+    setDialogOpen(true)
   }
 
   return (
@@ -82,9 +87,11 @@ export function BibleProvider({ children }: { children: React.ReactNode }) {
         setVersion,
         loadVerses,
         loading,
+        openDialog,
       }}
     >
       {children}
+      <BibleDialog open={dialogOpen} onOpenChange={setDialogOpen}/>
     </BibleContext.Provider>
   )
 }

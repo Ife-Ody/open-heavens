@@ -18,7 +18,7 @@ export function BibleReader() {
   const { fontSize } = useSettings();
 
   return (
-    <div className="flex flex-col h-full max-w-2xl gap-6 p-4 mx-auto">
+    <div className="flex flex-col h-full max-w-3xl gap-6 p-3 mx-auto">
       <BibleHeader />
       <div className="flex flex-col flex-1 gap-4 px-6 overflow-y-auto">
         <h1 className="text-2xl font-bold">
@@ -41,7 +41,7 @@ export function BibleReader() {
           ))
         )}
       </div>
-      <div className="flex justify-between shrink-0">
+      <div className="flex justify-between py-3 mb-3 shrink-0">
         <Button
           onClick={() => setChapter(Math.max(1, currentChapter - 1))}
           className="rounded-full"
