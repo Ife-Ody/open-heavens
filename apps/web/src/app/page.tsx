@@ -3,7 +3,7 @@ import { isToday } from "date-fns";
 import { posts } from "src/app/content/posts";
 import { Header } from "./Header";
 
-import { constructMetadata } from "@repo/utils";
+import { constructMetadata, truncate } from "@repo/utils";
 import type { JSX } from "react";
 
 export const generateMetadata = () => {
@@ -15,6 +15,7 @@ export const generateMetadata = () => {
       month: "long",
       day: "numeric",
     })}: ${post?.title}`,
+    description: `${truncate(post?.bodyText, 160)}...`,
   });
 };
 
