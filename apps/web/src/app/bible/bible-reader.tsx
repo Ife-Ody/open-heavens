@@ -1,11 +1,11 @@
 "use client";
 
 import { Button } from "@repo/ui/components/button";
+import { Skeleton } from "@repo/ui/components/skeleton";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useBible } from "../context/bible-context";
 import { useSettings } from "../context/settings-context";
 import { BibleHeader } from "./components/bible-header";
-import { Skeleton } from "@repo/ui/components/skeleton";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 export function BibleReader() {
   const {
     bible,

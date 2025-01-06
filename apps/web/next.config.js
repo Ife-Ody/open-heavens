@@ -14,7 +14,15 @@ const nextConfig = {
         source: "/_proxy/posthog/ingest/:path*",
         destination: "https://eu.i.posthog.com/:path*",
       },
+      {
+        source: "/_proxy/posthog/ingest/decide",
+        destination: "https://eu.i.posthog.com/decide",
+      },
     ];
+  },
+  skipTrailingSlashRedirect: true,
+  experimental: {
+    reactCompiler: true,
   },
 };
 

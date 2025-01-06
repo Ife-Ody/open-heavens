@@ -53,6 +53,11 @@ export class Bible {
         const versionBible = versions[this.version as keyof typeof versions]
         return Math.max(...versionBible.verses.filter((v: BibleVerse) => v.book_name === book).map((v: BibleVerse) => v.chapter))
     }
+
+    getMaxVerse(book: string, chapter: number): number {
+        const versionBible = versions[this.version as keyof typeof versions]
+        return Math.max(...versionBible.verses.filter((v: BibleVerse) => v.book_name === book && v.chapter === chapter).map((v: BibleVerse) => v.verse))
+    }
 }
 
 // Convenience function for one-off usage

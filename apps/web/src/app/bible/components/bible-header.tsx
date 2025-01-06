@@ -1,7 +1,7 @@
 "use client";
 
-import { useBible } from "../../context/bible-context";
-import { useSettings } from "../../context/settings-context";
+import { Button } from "@repo/ui/components/button";
+import { Input } from "@repo/ui/components/input";
 import {
   Select,
   SelectContent,
@@ -9,32 +9,106 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@repo/ui/components/select";
-import { Input } from "@repo/ui/components/input";
-import { Button } from "@repo/ui/components/button";
+import { useMemo } from "react";
+import { useBible } from "../../context/bible-context";
+import { useSettings } from "../../context/settings-context";
+import { MIN_FONT_SIZE, STEP_SIZE } from "@/components/fontsize-selector";
+import { MAX_FONT_SIZE } from "@/components/fontsize-selector";
 
 const versions = ["kjv", "net", "asv"] as const;
 
 const books = [
-  "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy",
-  "Joshua", "Judges", "Ruth", "1 Samuel", "2 Samuel",
-  "1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles", "Ezra",
-  "Nehemiah", "Esther", "Job", "Psalms", "Proverbs",
-  "Ecclesiastes", "Song of Solomon", "Isaiah", "Jeremiah", "Lamentations",
-  "Ezekiel", "Daniel", "Hosea", "Joel", "Amos",
-  "Obadiah", "Jonah", "Micah", "Nahum", "Habakkuk",
-  "Zephaniah", "Haggai", "Zechariah", "Malachi",
-  "Matthew", "Mark", "Luke", "John", "Acts",
-  "Romans", "1 Corinthians", "2 Corinthians", "Galatians", "Ephesians",
-  "Philippians", "Colossians", "1 Thessalonians", "2 Thessalonians",
-  "1 Timothy", "2 Timothy", "Titus", "Philemon", "Hebrews",
-  "James", "1 Peter", "2 Peter", "1 John", "2 John",
-  "3 John", "Jude", "Revelation"
+  "Genesis",
+  "Exodus",
+  "Leviticus",
+  "Numbers",
+  "Deuteronomy",
+  "Joshua",
+  "Judges",
+  "Ruth",
+  "1 Samuel",
+  "2 Samuel",
+  "1 Kings",
+  "2 Kings",
+  "1 Chronicles",
+  "2 Chronicles",
+  "Ezra",
+  "Nehemiah",
+  "Esther",
+  "Job",
+  "Psalms",
+  "Proverbs",
+  "Ecclesiastes",
+  "Song of Solomon",
+  "Isaiah",
+  "Jeremiah",
+  "Lamentations",
+  "Ezekiel",
+  "Daniel",
+  "Hosea",
+  "Joel",
+  "Amos",
+  "Obadiah",
+  "Jonah",
+  "Micah",
+  "Nahum",
+  "Habakkuk",
+  "Zephaniah",
+  "Haggai",
+  "Zechariah",
+  "Malachi",
+  "Matthew",
+  "Mark",
+  "Luke",
+  "John",
+  "Acts",
+  "Romans",
+  "1 Corinthians",
+  "2 Corinthians",
+  "Galatians",
+  "Ephesians",
+  "Philippians",
+  "Colossians",
+  "1 Thessalonians",
+  "2 Thessalonians",
+  "1 Timothy",
+  "2 Timothy",
+  "Titus",
+  "Philemon",
+  "Hebrews",
+  "James",
+  "1 Peter",
+  "2 Peter",
+  "1 John",
+  "2 John",
+  "3 John",
+  "Jude",
+  "Revelation",
 ] as const;
 
 export function BibleHeader() {
-  const { currentBook, currentChapter, bible, setVersion, setChapter, setBook } =
-    useBible();
+  const {
+    currentBook,
+    currentChapter,
+    bible,
+    setVersion,
+    setChapter,
+    setBook,
+  } = useBible();
   const { fontSize, setFontSize } = useSettings();
+
+  const maxChapter = useMemo(
+    () => bible.getMaxChapter(currentBook),
+    [currentBook],
+  );
+
+  const decrease = () => {
+    setFontSize(Math.max(MIN_FONT_SIZE, fontSize - STEP_SIZE));
+  };
+
+  const increase = () => {
+    setFontSize(Math.min(MAX_FONT_SIZE, fontSize + STEP_SIZE));
+  };
 
   return (
     <div className="flex items-center justify-between p-4 border-b">
@@ -58,10 +132,7 @@ export function BibleHeader() {
         </Select>
 
         <div className="flex items-center gap-2">
-          <Select
-            value={currentBook}
-            onValueChange={setBook}
-          >
+          <Select value={currentBook} onValueChange={setBook}>
             <SelectTrigger className="w-40">
               <SelectValue placeholder="Select Book" />
             </SelectTrigger>
@@ -77,27 +148,26 @@ export function BibleHeader() {
           <Input
             type="number"
             value={currentChapter}
-            onChange={(e) => setChapter(parseInt(e.target.value) || 1)}
+            onChange={(e) => {
+              let val = parseInt(e.target.value) || 1;
+              if (val > maxChapter) {
+                val = maxChapter;
+              }
+              setChapter(val);
+            }}
             className="w-16"
             min={1}
+            max={maxChapter}
           />
         </div>
       </div>
 
       <div className="flex items-center space-x-4">
-        <Button
-          onClick={() => setFontSize((fontSize || 16) - 2)}
-          size="icon"
-          variant="ghost"
-        >
+        <Button onClick={decrease} size="icon" variant="ghost">
           A-
         </Button>
         <span className="text-sm">{fontSize}px</span>
-        <Button
-          onClick={() => setFontSize((fontSize || 16) + 2)}
-          variant="ghost"
-          size="icon"
-        >
+        <Button onClick={increase} variant="ghost" size="icon">
           A+
         </Button>
       </div>

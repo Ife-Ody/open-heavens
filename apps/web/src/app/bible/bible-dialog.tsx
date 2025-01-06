@@ -8,7 +8,13 @@ import {
   DialogTrigger,
 } from "src/components/ui/dialog";
 
-export function BibleDialog({ children, open, onOpenChange }: { children?: React.ReactNode, open: boolean, onOpenChange: (open: boolean) => void }) {
+export function BibleDialog({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   const customVariants: Variants = {
     initial: {
       scale: 0.9,
@@ -29,8 +35,12 @@ export function BibleDialog({ children, open, onOpenChange }: { children?: React
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange} variants={customVariants} transition={customTransition}>
-      <DialogTrigger className="px-4 py-2 text-sm">{children}</DialogTrigger>
+    <Dialog
+      open={open}
+      onOpenChange={onOpenChange}
+      variants={customVariants}
+      transition={customTransition}
+    >
       <DialogContent className="p-6 bg-background">
         <DialogHeader>
           <DialogTitle className="sr-only">Bible</DialogTitle>

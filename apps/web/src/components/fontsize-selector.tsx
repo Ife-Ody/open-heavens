@@ -3,9 +3,9 @@
 import { useSettings } from "src/app/context/settings-context";
 import { Button } from "@repo/ui/components/button";
 
-const MIN_FONT_SIZE = 12;
-const MAX_FONT_SIZE = 32;
-const STEP_SIZE = 2;
+export const MIN_FONT_SIZE = 12;
+export const MAX_FONT_SIZE = 32;
+export const STEP_SIZE = 2;
 
 const FontsizeSelector = ({ sample = true }) => {
   const { fontSize, setFontSize } = useSettings();
