@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: HOME_DOMAIN,
       lastModified: new Date(),
-      changeFrequency: "daily",
+      changeFrequency: "hourly",
       priority: 1,
     },
     {
@@ -19,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...posts.map((post) => ({
       url: `${HOME_DOMAIN}/${post.date}`,
       lastModified: new Date(post.date),
-      changeFrequency: "weekly" as const,
+      changeFrequency: "daily" as const,
       priority: 0.5,
     })),
   ];

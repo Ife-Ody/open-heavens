@@ -22,7 +22,8 @@ export function BiblePopover({ reference, content, onClose }: BiblePopoverProps)
     }
   };
 
-  const {fontSize} = useSettings();
+  const settings = useSettings();
+  const { fontSize } = settings;
 
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
@@ -41,7 +42,7 @@ export function BiblePopover({ reference, content, onClose }: BiblePopoverProps)
                   <p key={index}>{verse}</p>
                 ))
               ) : (
-                'Loading...'
+                <p className={cn(`text-[${fontSize}px]`)}>Loading...</p>
               )}
             </div>
           </div>

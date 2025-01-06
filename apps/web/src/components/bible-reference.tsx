@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BibleTagger } from '../lib/bible-tagger';
 import { BiblePopover } from './bible-popover';
+import { useSettings } from 'src/app/context/settings-context';
 
 interface BibleReferenceProps {
   content: string;
@@ -18,6 +19,8 @@ export default function BibleReference({ content }: BibleReferenceProps) {
     reference: string;
     content: string;
   }>>([]);
+  const settings = useSettings();
+  const { fontSize } = settings;
 
   // Keep track of roots to clean up
   const rootsRef = useRef<Array<{ root: ReturnType<typeof createRoot>; element: HTMLElement }>>([]);
@@ -62,7 +65,7 @@ export default function BibleReference({ content }: BibleReferenceProps) {
     // Create the formatted content with references
     const formattedContent = textContent.replace(
       tagger.getReferenceRegex(),
-      (match) => `<span class="bible-reference-placeholder" data-reference="${match}">${match}</span>`
+      (match) => `<span class="bible-reference-placeholder text-[${fontSize}px]" data-reference="${match}">${match}</span>`
     );
 
     // Set the initial content with references marked but not yet processed
@@ -124,7 +127,7 @@ export default function BibleReference({ content }: BibleReferenceProps) {
   return (
     <div 
       ref={containerRef} 
-      className="bible-reference-container"
+      className={`bible-reference-container text-[${fontSize}px]`}
       dangerouslySetInnerHTML={{ __html: processedContent }}
     />
   );

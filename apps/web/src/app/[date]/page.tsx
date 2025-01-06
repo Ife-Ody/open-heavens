@@ -15,11 +15,12 @@ export const generateMetadata = async ({
 
   const post = posts.find((post) => isSameDay(new Date(post.date), date));
   return constructMetadata({
-    title: `Open Heavens for today ${date.getFullYear()} - ${date.toLocaleDateString("en-GB", {
+    title: `${truncate(`${date.toLocaleDateString("en-GB", {
       weekday: "long",
-      month: "long", 
       day: "numeric",
-    })}: ${post?.title}`,
+      month: "long", 
+      year: "numeric",
+    })} - ${post?.title} - Open Heavens today`, 60)}`,
     description: `${truncate(post?.bodyText, 160)}...`,
   });
 };

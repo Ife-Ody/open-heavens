@@ -53,7 +53,7 @@ export function constructMetadata({
             ...(video && {
                 player: video,
             }),
-            creator: '@ife_Ody',
+            creator: '@Ife_Ody',
         },
         icons,
         metadataBase: new URL(HOME_DOMAIN),
