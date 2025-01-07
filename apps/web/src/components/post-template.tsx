@@ -1,33 +1,59 @@
 "use client";
-import { cn, titleCase } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { isSameDay } from "date-fns";
 import parse from "html-react-parser";
 import { Post, posts } from "src/app/content/posts";
 import { useSettings } from "src/app/context/settings-context";
 
+import { UserDisplay } from "@repo/ui/components/user-display";
 import type { JSX } from "react";
-import { useBible } from "src/app/context/bible-context";
+import { hymns } from "src/app/content/hymns";
 import BibleReference from "./bible-reference";
 
 export function PostTemplate({ post }: { post: Post }): JSX.Element {
   const settings = useSettings();
   const { fontSize } = settings;
-  const { openDialog, setBook, setChapter } = useBible();
+  // const { openDialog, setBook, setChapter } = useBible();
   if (!post) return <EmptyPost />;
 
   return (
-    <article className="flex flex-col gap-3 whitespace-wrap">
-      <header>
+    <article className="flex flex-col gap-8 whitespace-wrap">
+      {/* <button onClick={() => openDialog()}>Open Bible</button>
+      <Dialog>
+        <DialogTrigger>OPEWEFSDFSDFSD</DialogTrigger>
+        <DialogContent>
+          <BibleReader />
+        </DialogContent>
+      </Dialog>
+      <BibleReader /> */}
+      <header className="flex flex-col gap-3">
         <h1
           className={cn(`text-[${fontSize * 1.5}px] font-semibold`)}
           itemProp="headline"
         >
-          {titleCase(post.title)}
+          {post.title}
         </h1>
         <meta
           itemProp="datePublished"
           content={new Date(post.date).toISOString()}
         />
+        <div
+          className={cn(`text-[${fontSize}px] font-medium flex flex-col gap-2`)}
+          itemProp="author"
+          itemScope
+          itemType="https://schema.org/Person"
+        >
+          <UserDisplay
+            user={{
+              username: "eaadeboye.com",
+              profile: {
+                firstname: "Pastor",
+                lastname: "E.A. Adeboye",
+                avatar: "/adeboye.webp",
+              },
+            }}
+          />
+        </div>
       </header>
 
       <section aria-label="Memory Verse">
@@ -96,7 +122,57 @@ export function PostTemplate({ post }: { post: Post }): JSX.Element {
           </div>
         </section>
       )}
+
+      {post.hymn_id && (
+        <section aria-label="Hymn" className="flex flex-col gap-3">
+          <h2 className={cn(`text-[${fontSize + 2}px] font-bold uppercase`)}>
+            Hymn
+          </h2>
+          <div
+            className={cn(
+              "leading-7 text-justify whitespace-normal break-words",
+              `text-[${fontSize}px]`,
+            )}
+          >
+            <Hymn hymn_id={post.hymn_id} />
+          </div>
+        </section>
+      )}
     </article>
+  );
+}
+
+interface Hymn {
+  id: number;
+  hymn_number: number;
+  title: string;
+  hymn_image: string;
+  hymn_url: string;
+  lyrics: string;
+}
+
+function Hymn({ hymn_id }: { hymn_id: number }): JSX.Element {
+  const hymn = hymns.find((hymn) => hymn.id === hymn_id);
+  const settings = useSettings();
+  const { fontSize } = settings;
+
+  if (!hymn) return <div>Hymn not found</div>;
+  return (
+    <div className="flex flex-col gap-6">
+      <h3 className={cn(`text-[${fontSize}px] font-bold uppercase`)}>
+        Title: {hymn?.title}
+      </h3>
+      {/* <iframe
+        src={`https://www.youtube.com/embed/${new URL(hymn?.hymn_url!).searchParams.get('v')}`}
+        width={560}
+        height={315}
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        className="rounded-lg"
+      /> */}
+      <div className={cn(`text-[${fontSize}px]`)}>{parse(hymn?.lyrics!)}</div>
+    </div>
   );
 }
 
