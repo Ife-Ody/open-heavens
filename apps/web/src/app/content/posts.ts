@@ -18077,7 +18077,7 @@ export const posts: Array<Post> = [
     pointText:
       "The meaning of promotion in God's kingdom is more work and sacrifices.",
     pointHeader: "Key Point:",
-    bibleInOneYear: "bibleInOneYear",
+    bibleInOneYear: "Genesis 24-25",
     status: "1",
     review_title: "Open Heavens Review",
     review_image:
