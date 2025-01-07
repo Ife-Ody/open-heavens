@@ -5,7 +5,7 @@ import { DatePicker } from "@/components/ui/date-picker";
 
 export const Header = () => {
   return (
-    <div className="flex items-center justify-between w-full gap-3 p-3 rounded">
+    <div className="flex items-center justify-between w-full gap-3 py-3 rounded">
       <DatePicker></DatePicker>
       <SettingsDrawer></SettingsDrawer>
       {/* on desktop the settings should expand */}
