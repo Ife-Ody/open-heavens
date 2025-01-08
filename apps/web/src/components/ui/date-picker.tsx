@@ -45,6 +45,11 @@ export function DatePicker() {
           onSelect={setDate as SelectSingleEventHandler}
           initialFocus
         />
+        <div className="flex justify-center p-3">
+          <Button variant={"outline"} onClick={() => setDate(new Date())}>
+            Go to Today: {format(new Date(), "PP")}
+          </Button>
+        </div>
       </PopoverContent>
     </Popover>
   );

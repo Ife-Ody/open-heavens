@@ -272,7 +272,3 @@ export default function HymnPageClient({ hymn_id }: { hymn_id: string }) {
     </div>
   );
 }
-
-export async function generateStaticParams() {
-  return hymns.map((hymn) => ({ hymn_id: hymn.id.toString() }));
-}
