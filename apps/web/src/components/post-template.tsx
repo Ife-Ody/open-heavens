@@ -164,12 +164,10 @@ function Hymn({ hymn_id }: { hymn_id: number }): JSX.Element {
       </h3>
       <iframe
         src={`https://www.youtube.com/embed/${new URL(hymn?.hymn_url!).searchParams.get('v')}`}
-        width={560}
-        height={315}
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
-        className="rounded-lg"
+        className="w-full max-w-3xl rounded-lg aspect-video"
       />
       <div className={cn(`text-[${fontSize}px]`)}>{parse(hymn?.lyrics!)}</div>
     </div>

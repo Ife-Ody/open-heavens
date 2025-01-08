@@ -240,7 +240,7 @@ export default function HymnPageClient({ hymn_id }: { hymn_id: string }) {
                 title={hymn.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
-                className="absolute top-0 left-0 w-full h-full shadow-lg rounded-xl"
+                className="absolute top-0 left-0 w-full h-full max-w-3xl shadow-lg rounded-xl aspect-video"
               />
             ) : (
               <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full rounded-lg bg-muted">
