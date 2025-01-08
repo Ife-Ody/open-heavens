@@ -162,7 +162,7 @@ function Hymn({ hymn_id }: { hymn_id: number }): JSX.Element {
       <h3 className={cn(`text-[${fontSize}px] font-bold uppercase`)}>
         Title: {hymn?.title}
       </h3>
-      {/* <iframe
+      <iframe
         src={`https://www.youtube.com/embed/${new URL(hymn?.hymn_url!).searchParams.get('v')}`}
         width={560}
         height={315}
@@ -170,7 +170,7 @@ function Hymn({ hymn_id }: { hymn_id: number }): JSX.Element {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
         className="rounded-lg"
-      /> */}
+      />
       <div className={cn(`text-[${fontSize}px]`)}>{parse(hymn?.lyrics!)}</div>
     </div>
   );

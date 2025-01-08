@@ -6,7 +6,7 @@ import { ReactNode, useEffect } from "react";
 import PostHogPageView from "@/components/layout/posthog-pageview";
 import { BibleProvider } from "./context/bible-context";
 import { SettingsProvider } from "./context/settings-context";
-
+import { Toaster } from "@repo/ui/components/sonner";
 if (typeof window !== "undefined") {
 }
 
@@ -30,7 +30,7 @@ export default function RootProviders({ children }: { children: ReactNode }) {
         disableTransitionOnChange
       >
         <PostHogPageView />
-        {/* <Toaster /> */}
+        <Toaster />
         {/* <TooltipProvider> */}
         <SettingsProvider>
           <BibleProvider>{children}</BibleProvider>
