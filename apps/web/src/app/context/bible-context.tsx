@@ -83,8 +83,9 @@ export function BibleProvider({ children }: { children: React.ReactNode }) {
         openDialog,
       }}
     >
-      {children}
-      <BibleDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+      <BibleDialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        {children}
+      </BibleDialog>
     </BibleContext.Provider>
   );
 }

@@ -18,14 +18,7 @@ export function PostTemplate({ post }: { post: Post }): JSX.Element {
 
   return (
     <article className="flex flex-col gap-8 whitespace-wrap">
-      {/* <button onClick={() => openDialog()}>Open Bible</button>
-      <Dialog>
-        <DialogTrigger>OPEWEFSDFSDFSD</DialogTrigger>
-        <DialogContent>
-          <BibleReader />
-        </DialogContent>
-      </Dialog>
-      <BibleReader /> */}
+      {/* <button onClick={() => openDialog()}>Open Bible</button> */}
       <header className="flex flex-col gap-3">
         <h1
           className={cn(`text-[${fontSize * 1.5}px] font-semibold`)}
@@ -163,7 +156,7 @@ function Hymn({ hymn_id }: { hymn_id: number }): JSX.Element {
         Title: {hymn?.title}
       </h3>
       <iframe
-        src={`https://www.youtube.com/embed/${new URL(hymn?.hymn_url!).searchParams.get('v')}`}
+        src={`https://www.youtube.com/embed/${new URL(hymn?.hymn_url!).searchParams.get("v")}`}
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen

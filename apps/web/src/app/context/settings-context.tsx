@@ -1,8 +1,8 @@
 "use client"
-import { useTheme } from "next-themes";
-import { ReactNode, createContext, useContext } from "react";
 import { useLocalStorage } from "@/lib/hooks/use-local-storage";
+import { useTheme } from "next-themes";
 import { useParams, useRouter } from "next/navigation";
+import { ReactNode, createContext, useContext } from "react";
 
 interface SettingsContextType {
   theme: string;

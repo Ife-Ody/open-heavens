@@ -14,6 +14,7 @@ import { useBible } from "../../context/bible-context";
 import { useSettings } from "../../context/settings-context";
 import { MIN_FONT_SIZE, STEP_SIZE } from "@/components/fontsize-selector";
 import { MAX_FONT_SIZE } from "@/components/fontsize-selector";
+import { cn } from "@repo/utils";
 
 const versions = ["kjv", "net", "asv"] as const;
 
@@ -86,7 +87,7 @@ const books = [
   "Revelation",
 ] as const;
 
-export function BibleHeader() {
+export function BibleHeader({ className }: { className?: string }) {
   const {
     currentBook,
     currentChapter,
@@ -111,15 +112,20 @@ export function BibleHeader() {
   };
 
   return (
-    <div className="flex items-center justify-between p-4 border-b">
-      <div className="flex items-center gap-6">
+    <div
+      className={cn(
+        "flex items-center flex-col sm:flex-row justify-between p-4 gap-4",
+        className,
+      )}
+    >
+      <div className="flex items-center">
         <Select
           value={bible.version}
           onValueChange={(value) => {
             setVersion(value);
           }}
         >
-          <SelectTrigger className="w-24">
+          <SelectTrigger className="w-20 rounded-r-none max-w-max">
             <SelectValue placeholder="Select Version" />
           </SelectTrigger>
           <SelectContent>
@@ -131,38 +137,43 @@ export function BibleHeader() {
           </SelectContent>
         </Select>
 
-        <div className="flex items-center gap-2">
-          <Select value={currentBook} onValueChange={setBook}>
-            <SelectTrigger className="w-40">
-              <SelectValue placeholder="Select Book" />
-            </SelectTrigger>
-            <SelectContent>
-              {books.map((book) => (
-                <SelectItem key={book} value={book}>
-                  {book}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        <Select value={currentBook} onValueChange={setBook}>
+          <SelectTrigger className="w-40 rounded-l-none max-w-max">
+            <SelectValue placeholder="Select Book" />
+          </SelectTrigger>
+          <SelectContent>
+            {books.map((book) => (
+              <SelectItem key={book} value={book}>
+                {book}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
-          <Input
-            type="number"
-            value={currentChapter}
-            onChange={(e) => {
-              let val = parseInt(e.target.value) || 1;
-              if (val > maxChapter) {
-                val = maxChapter;
-              }
-              setChapter(val);
-            }}
-            className="w-16"
-            min={1}
-            max={maxChapter}
-          />
-        </div>
+        <Select
+          value={currentChapter.toString()}
+          onValueChange={(value) => {
+            let val = parseInt(value) || 1;
+            if (val > maxChapter) {
+              val = maxChapter;
+            }
+            setChapter(val);
+          }}
+        >
+          <SelectTrigger className="w-16 ml-1">
+            <SelectValue placeholder="Select Chapter" />
+          </SelectTrigger>
+          <SelectContent>
+            {Array.from({ length: maxChapter }, (_, i) => i + 1).map((chapter) => (
+              <SelectItem key={chapter} value={chapter.toString()}>
+                {chapter}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
-      <div className="flex items-center space-x-4">
+      <div className="items-center hidden gap-4 sm:flex">
         <Button onClick={decrease} size="icon" variant="ghost">
           A-
         </Button>
