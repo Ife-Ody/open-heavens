@@ -1,7 +1,11 @@
 "use client";
 
+import {
+  MAX_FONT_SIZE,
+  MIN_FONT_SIZE,
+  STEP_SIZE,
+} from "@/components/fontsize-selector";
 import { Button } from "@repo/ui/components/button";
-import { Input } from "@repo/ui/components/input";
 import {
   Select,
   SelectContent,
@@ -9,12 +13,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@repo/ui/components/select";
+import { cn } from "@repo/utils";
 import { useMemo } from "react";
 import { useBible } from "../../context/bible-context";
 import { useSettings } from "../../context/settings-context";
-import { MIN_FONT_SIZE, STEP_SIZE } from "@/components/fontsize-selector";
-import { MAX_FONT_SIZE } from "@/components/fontsize-selector";
-import { cn } from "@repo/utils";
 
 const versions = ["kjv", "net", "asv"] as const;
 
@@ -88,20 +90,10 @@ const books = [
 ] as const;
 
 export function BibleHeader({ className }: { className?: string }) {
-  const {
-    currentBook,
-    currentChapter,
-    bible,
-    setVersion,
-    setChapter,
-    setBook,
-  } = useBible();
+  const { bible, book, chapter, setVersion, setChapter, setBook, setSelectedVerses } = useBible();
   const { fontSize, setFontSize } = useSettings();
 
-  const maxChapter = useMemo(
-    () => bible.getMaxChapter(currentBook),
-    [currentBook],
-  );
+  const maxChapter = useMemo(() => bible.getMaxChapter(book), [book]);
 
   const decrease = () => {
     setFontSize(Math.max(MIN_FONT_SIZE, fontSize - STEP_SIZE));
@@ -122,6 +114,9 @@ export function BibleHeader({ className }: { className?: string }) {
         <Select
           value={bible.version}
           onValueChange={(value) => {
+            setBook("Genesis");
+            setChapter(1);
+            setSelectedVerses([]);
             setVersion(value);
           }}
         >
@@ -137,7 +132,14 @@ export function BibleHeader({ className }: { className?: string }) {
           </SelectContent>
         </Select>
 
-        <Select value={currentBook} onValueChange={setBook}>
+        <Select
+          value={book}
+          onValueChange={(value) => {
+            setBook(value);
+            setChapter(1);
+            setSelectedVerses([]);
+          }}
+        >
           <SelectTrigger className="w-40 rounded-l-none max-w-max">
             <SelectValue placeholder="Select Book" />
           </SelectTrigger>
@@ -151,24 +153,27 @@ export function BibleHeader({ className }: { className?: string }) {
         </Select>
 
         <Select
-          value={currentChapter.toString()}
+          value={chapter.toString()}
           onValueChange={(value) => {
             let val = parseInt(value) || 1;
             if (val > maxChapter) {
               val = maxChapter;
             }
             setChapter(val);
+            setSelectedVerses([]);
           }}
         >
           <SelectTrigger className="w-16 ml-1">
             <SelectValue placeholder="Select Chapter" />
           </SelectTrigger>
           <SelectContent>
-            {Array.from({ length: maxChapter }, (_, i) => i + 1).map((chapter) => (
-              <SelectItem key={chapter} value={chapter.toString()}>
-                {chapter}
-              </SelectItem>
-            ))}
+            {Array.from({ length: maxChapter }, (_, i) => i + 1).map(
+              (chapter) => (
+                <SelectItem key={chapter} value={chapter.toString()}>
+                  {chapter}
+                </SelectItem>
+              ),
+            )}
           </SelectContent>
         </Select>
       </div>

@@ -41,6 +41,9 @@ export class Bible {
         }
 
         if (Array.isArray(verseSelector)) {
+            if (verseSelector.length === 0) {
+                return verses;
+            }
             return verses.filter((v: BibleVerse) => verseSelector.includes(v.verse))
         }
 

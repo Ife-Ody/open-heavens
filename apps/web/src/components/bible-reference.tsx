@@ -1,134 +1,73 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import { createRoot } from 'react-dom/client';
-import { BibleTagger } from '../lib/bible-tagger';
-import { BiblePopover } from './bible-popover';
-import { useSettings } from 'src/app/context/settings-context';
+import { useMemo } from "react";
+import { toast } from "sonner";
+import { useBible } from "src/app/context/bible-context";
 
 interface BibleReferenceProps {
-  content: string;
+  reference: string;
 }
 
-export default function BibleReference({ content }: BibleReferenceProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [tagger] = useState(() => new BibleTagger());
-  const [isProcessing, setIsProcessing] = useState(true);
-  const [processedContent, setProcessedContent] = useState(content);
-  const [references, setReferences] = useState<Array<{
-    reference: string;
-    content: string;
-  }>>([]);
-  const settings = useSettings();
-  const { fontSize } = settings;
+interface ParsedReference {
+  book: string;
+  chapter: number;
+  verses: number[];
+}
 
-  // Keep track of roots to clean up
-  const rootsRef = useRef<Array<{ root: ReturnType<typeof createRoot>; element: HTMLElement }>>([]);
-  const mountedRef = useRef(true);
+export function BibleReference({ reference }: BibleReferenceProps) {
+  const { openDialog, setBook, setChapter, setSelectedVerses } = useBible();
 
-  // Cleanup helper function
-  const cleanupRoots = () => {
-    if (rootsRef.current.length > 0) {
-      requestAnimationFrame(() => {
-        if (mountedRef.current) {
-          rootsRef.current.forEach(({ root }) => {
-            try {
-              root.unmount();
-            } catch (e) {
-              console.error('Error unmounting root:', e);
+  const parsedReference = useMemo<ParsedReference | null>(() => {
+    try {
+      if (!reference) return null;
+
+      const [book, passage] = reference.split(" ");
+      if (!book || !passage) return null;
+
+      const [chapter, verseRange] = passage.split(":");
+      if (!chapter || !verseRange) return null;
+
+      const verses: number[] = [];
+      verseRange.split(/[,]/).forEach((part) => {
+        const range = part.split(/[-–—]/).map((v) => parseInt(v.trim()));
+        if (range.length === 1) {
+          if (!isNaN(range[0])) verses.push(range[0]);
+        } else if (range.length === 2) {
+          const [start, end] = range;
+          if (!isNaN(start) && !isNaN(end)) {
+            for (let i = start; i <= end; i++) {
+              verses.push(i);
             }
-          });
-          rootsRef.current = [];
+          }
         }
       });
+
+      return {
+        book,
+        chapter: parseInt(chapter),
+        verses,
+      };
+    } catch (error) {
+      console.error("Error parsing reference:", error);
+      return null;
     }
-  };
+  }, [reference]);
 
-  useEffect(() => {
-    mountedRef.current = true;
-    setIsProcessing(true);
-
-    if (!containerRef.current) return;
-
-    const container = containerRef.current;
-    
-    // Create a temporary div to parse HTML content
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = content;
-    
-    // Get text content to process
-    const textContent = tempDiv.textContent || tempDiv.innerText;
-    
-    // Find all Bible references
-    const matches = tagger.findReferences(textContent);
-    
-    // Create the formatted content with references
-    const formattedContent = textContent.replace(
-      tagger.getReferenceRegex(),
-      (match) => `<span class="bible-reference-placeholder text-[${fontSize}px]" data-reference="${match}">${match}</span>`
-    );
-
-    // Set the initial content with references marked but not yet processed
-    setProcessedContent(formattedContent);
-    
-    // Fetch scripture content for each reference
-    Promise.all(
-      matches.map(async (reference) => {
-        const content = await tagger.getScripture(reference);
-        return { reference, content };
-      })
-    ).then((refs) => {
-      if (mountedRef.current) {
-        setReferences(refs);
-        setIsProcessing(false);
-      }
-    });
-
-    return () => {
-      mountedRef.current = false;
-      cleanupRoots();
-    };
-  }, [content]);
-
-  useEffect(() => {
-    if (!containerRef.current || !mountedRef.current || isProcessing) return;
-
-    // Clean up existing roots before creating new ones
-    cleanupRoots();
-
-    const container = containerRef.current;
-    
-    // Replace placeholders with React components
-    container.querySelectorAll('.bible-reference-placeholder').forEach((placeholder) => {
-      const reference = placeholder.getAttribute('data-reference');
-      const referenceData = references.find(r => r.reference === reference);
-      
-      if (reference && referenceData) {
-        const span = document.createElement('span');
-        span.className = 'bible-reference-mount';
-        placeholder.replaceWith(span);
-        
-        try {
-          const root = createRoot(span);
-          root.render(
-            <BiblePopover 
-              reference={referenceData.reference} 
-              content={referenceData.content} 
-            />
-          );
-          rootsRef.current.push({ root, element: span });
-        } catch (e) {
-          console.error('Error creating root:', e);
-        }
-      }
-    });
-  }, [references, isProcessing]);
+  if (!parsedReference) {
+    return <span className="text-muted-foreground">{reference}</span>;
+  }
 
   return (
-    <div 
-      ref={containerRef} 
-      className={`bible-reference-container text-[${fontSize}px]`}
-      dangerouslySetInnerHTML={{ __html: processedContent }}
-    />
+    <button
+      className="text-primary"
+      onClick={() => {
+        setBook(parsedReference.book);
+        setChapter(parsedReference.chapter);
+        setSelectedVerses(parsedReference.verses);
+        openDialog();
+      }}
+    >
+      {reference}
+    </button>
   );
-} 
+}

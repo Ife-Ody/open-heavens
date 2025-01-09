@@ -8,17 +8,16 @@ import { useSettings } from "src/app/context/settings-context";
 import { UserDisplay } from "@repo/ui/components/user-display";
 import type { JSX } from "react";
 import { hymns } from "src/app/content/hymns";
-import BibleReference from "./bible-reference";
+import { BibleTagger } from "../lib/bible-tagger";
+import { BibleReference } from "./bible-reference";
 
-export function PostTemplate({ post }: { post: Post }): JSX.Element {
+export function PostTemplate({ post }: { post: Post }) {
+  const bibleTagger = new BibleTagger();
   const settings = useSettings();
   const { fontSize } = settings;
-  // const { openDialog, setBook, setChapter } = useBible();
-  if (!post) return <EmptyPost />;
 
   return (
     <article className="flex flex-col gap-8 whitespace-wrap">
-      {/* <button onClick={() => openDialog()}>Open Bible</button> */}
       <header className="flex flex-col gap-3">
         <h1
           className={cn(`text-[${fontSize * 1.5}px] font-semibold`)}
@@ -57,7 +56,10 @@ export function PostTemplate({ post }: { post: Post }): JSX.Element {
           {post.memorizeText}
         </blockquote>
         <p className={cn("font-semibold text-primary", `text-[${fontSize}px]`)}>
-          <cite>{post.memorizeVerse}</cite> (KJV)
+          <cite>
+            {bibleTagger.parseHTML(post.memorizeVerse, BibleReference)}
+          </cite>{" "}
+          (KJV)
         </p>
       </section>
 
@@ -68,7 +70,7 @@ export function PostTemplate({ post }: { post: Post }): JSX.Element {
         <div
           className={cn("font-semibold text-primary", `text-[${fontSize}px]`)}
         >
-          <BibleReference content={post.read} />
+          {bibleTagger.parseHTML(post.read, BibleReference)}
         </div>
       </section>
 
@@ -82,7 +84,7 @@ export function PostTemplate({ post }: { post: Post }): JSX.Element {
             `text-[${fontSize}px]`,
           )}
         >
-          {parse(post.bodyText)}
+          {bibleTagger.parseHTML(post.bodyText, BibleReference)}
         </div>
       </section>
 
@@ -111,7 +113,7 @@ export function PostTemplate({ post }: { post: Post }): JSX.Element {
           <div
             className={cn("font-semibold text-primary", `text-[${fontSize}px]`)}
           >
-            <BibleReference content={post.bibleInOneYear} />
+            {bibleTagger.parseHTML(post.bibleInOneYear, BibleReference)}
           </div>
         </section>
       )}
@@ -157,7 +159,6 @@ function Hymn({ hymn_id }: { hymn_id: number }): JSX.Element {
       </h3>
       <iframe
         src={`https://www.youtube.com/embed/${new URL(hymn?.hymn_url!).searchParams.get("v")}`}
-        frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
         className="w-full max-w-3xl rounded-lg aspect-video"
