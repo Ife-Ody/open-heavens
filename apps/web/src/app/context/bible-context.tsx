@@ -26,7 +26,7 @@ const BibleContext = createContext<BibleContextType | undefined>(undefined);
 export function BibleProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [book, setBook] = useState("");
+  const [book, setBook] = useState("Genesis");
   const [chapter, setChapter] = useState(1);
   const [version, setVersion] = useState("kjv");
   const [selectedVerses, setSelectedVerses] = useState<number[]>([]);
