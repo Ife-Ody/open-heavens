@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo } from "react";
-import { toast } from "sonner";
 import { useBible } from "src/app/context/bible-context";
 
 interface BibleReferenceProps {
@@ -10,8 +9,10 @@ interface BibleReferenceProps {
 
 interface ParsedReference {
   book: string;
-  chapter: number;
-  verses: number[];
+  startChapter: number;
+  endChapter: number;
+  startVerse?: number;
+  endVerse?: number;
 }
 
 export function BibleReference({ reference }: BibleReferenceProps) {
@@ -21,32 +22,57 @@ export function BibleReference({ reference }: BibleReferenceProps) {
     try {
       if (!reference) return null;
 
-      const [book, passage] = reference.split(" ");
+      // Improved splitting to handle numbered books (e.g. "1 Thessalonians")
+      const matches = reference.match(/^((?:\d\s+)?[A-Za-z]+)\s+(.+)$/);
+      if (!matches) return null;
+
+      const [_, book, passage] = matches;
       if (!book || !passage) return null;
 
-      const [chapter, verseRange] = passage.split(":");
-      if (!chapter || !verseRange) return null;
-
-      const verses: number[] = [];
-      verseRange.split(/[,]/).forEach((part) => {
-        const range = part.split(/[-–—]/).map((v) => parseInt(v.trim()));
-        if (range.length === 1) {
-          if (!isNaN(range[0])) verses.push(range[0]);
-        } else if (range.length === 2) {
-          const [start, end] = range;
-          if (!isNaN(start) && !isNaN(end)) {
-            for (let i = start; i <= end; i++) {
-              verses.push(i);
-            }
-          }
+      // Handle different passage formats
+      if (passage.includes("-") || passage.includes("–") || passage.includes("—")) {
+        // Handle chapter range (e.g., "32-35" or "32:1-35:10")
+        const [start, end] = passage.split(/[-–—]/);
+        
+        if (start.includes(":") || end.includes(":")) {
+          // Format: "32:1-35:10"
+          const [startChapter, startVerse] = start.split(":").map(Number);
+          const [endChapter, endVerse] = end.split(":").map(Number);
+          
+          return {
+            book,
+            startChapter,
+            endChapter,
+            startVerse,
+            endVerse
+          };
+        } else {
+          // Format: "32-35"
+          return {
+            book,
+            startChapter: parseInt(start),
+            endChapter: parseInt(end)
+          };
         }
-      });
-
-      return {
-        book,
-        chapter: parseInt(chapter),
-        verses,
-      };
+      } else if (passage.includes(":")) {
+        // Single chapter with verses (e.g., "32:1,3,5-7")
+        const [chapter, verseRange] = passage.split(":");
+        return {
+          book,
+          startChapter: parseInt(chapter),
+          endChapter: parseInt(chapter),
+          startVerse: parseInt(verseRange.split(/[-–—,]/)[0]),
+          endVerse: parseInt(verseRange.split(/[-–—,]/).pop() || verseRange)
+        };
+      } else {
+        // Single chapter only (e.g., "32")
+        const chapter = parseInt(passage);
+        return {
+          book,
+          startChapter: chapter,
+          endChapter: chapter
+        };
+      }
     } catch (error) {
       console.error("Error parsing reference:", error);
       return null;
@@ -57,16 +83,26 @@ export function BibleReference({ reference }: BibleReferenceProps) {
     return <span className="text-muted-foreground">{reference}</span>;
   }
 
+  const handleClick = () => {
+    setBook(parsedReference.book);
+    setChapter(parsedReference.startChapter);
+    
+    // Generate array of verses if verse range is specified
+    if (parsedReference.startVerse && parsedReference.endVerse) {
+      const verses = Array.from(
+        { length: parsedReference.endVerse - parsedReference.startVerse + 1 },
+        (_, i) => parsedReference.startVerse! + i
+      );
+      setSelectedVerses(verses);
+    } else {
+      setSelectedVerses([]);
+    }
+    
+    openDialog();
+  };
+
   return (
-    <button
-      className="text-primary"
-      onClick={() => {
-        setBook(parsedReference.book);
-        setChapter(parsedReference.chapter);
-        setSelectedVerses(parsedReference.verses);
-        openDialog();
-      }}
-    >
+    <button className="text-primary" onClick={handleClick}>
       {reference}
     </button>
   );

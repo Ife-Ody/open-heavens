@@ -52,8 +52,8 @@ export class BibleTagger {
   public tagText(text: string): string {
     const vols = "I+|1st|2nd|3rd|First|Second|Third|1|2|3";
     const books = this.getBooks();
-    const verse = "\\d+(:\\d+)?(?:\\s?[-–—&,]\\s?\\d+)*";
-    const passage = `((\\d+(\\.:|:)\\d+[-–—]\\d+(\\.:|:)\\d+)|(\\d+(\\.:|:)\\d+[-–—]\\d+)|(\\d+[-–—]\\d+)|(\\d+(\\.:|:)\\d+)|(\\d+))`;
+    const verse = "\\d+(?::\\d+)?(?:\\s?[-–—&,]\\s?\\d+(?::\\d+)?)*";
+    const passage = `((\\d+:\\d+[-–—]\\d+:\\d+)|(\\d+:\\d+[-–—]\\d+)|(\\d+[-–—]\\d+(?::\\d+)?)|(\\d+:\\d+)|(\\d+))`;
     const book = `((?:(${vols})\\s?)?(${books})\\.?\\s?)`;
     const regex = new RegExp(`\\b${book}${passage}`, "gm");
 
@@ -66,8 +66,8 @@ export class BibleTagger {
   public getReferenceRegex(): RegExp {
     const vols = "I+|1st|2nd|3rd|First|Second|Third|1|2|3";
     const books = this.getBooks();
-    const verse = "\\d+(:\\d+)?(?:\\s?[-–—&,]\\s?\\d+)*";
-    const passage = `((\\d+(\\.:|:)\\d+[-–—]\\d+(\\.:|:)\\d+)|(\\d+(\\.:|:)\\d+[-–—]\\d+)|(\\d+[-–—]\\d+)|(\\d+(\\.:|:)\\d+)|(\\d+))`;
+    const verse = "\\d+(?::\\d+)?(?:\\s?[-–—&,]\\s?\\d+(?::\\d+)?)*";
+    const passage = `((\\d+:\\d+[-–—]\\d+:\\d+)|(\\d+:\\d+[-–—]\\d+)|(\\d+[-–—]\\d+(?::\\d+)?)|(\\d+:\\d+)|(\\d+))`;
     const book = `((?:(${vols})\\s?)?(${books})\\.?\\s?)`;
     return new RegExp(`\\b${book}${passage}`, "gm");
   }
