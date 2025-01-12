@@ -2,6 +2,7 @@ import { cn } from "@repo/ui/utils";
 import { constructMetadata } from "@repo/utils";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { GoogleAnalytics } from '@next/third-parties/google'
 import "@repo/ui/styles.css";
 import "./globals.css";
 
@@ -26,6 +27,7 @@ export default function RootLayout({
         )}
       >
         <RootProviders>{children}</RootProviders>
+        <GoogleAnalytics gaId="GTM-TKGWSF3F" />
       </body>
     </html>
   );
