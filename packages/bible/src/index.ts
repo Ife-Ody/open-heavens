@@ -25,7 +25,12 @@ export class Bible {
             throw new Error('Book and chapter are required')
         }
 
-        const verses = versionBible.verses.filter((verse: BibleVerse) => verse.book_name === book && verse.chapter === chapter)
+        // Normalize the book name before searching
+        const normalizedBook = normalizeBookName(book)
+
+        const verses = versionBible.verses.filter(
+            (verse: BibleVerse) => verse.book_name === normalizedBook && verse.chapter === chapter
+        )
 
         if (verses.length === 0) {
             throw new Error(`No verses found for ${book} ${chapter}`)
@@ -54,12 +59,20 @@ export class Bible {
 
     getMaxChapter(book: string): number {
         const versionBible = versions[this.version as keyof typeof versions]
-        return Math.max(...versionBible.verses.filter((v: BibleVerse) => v.book_name === book).map((v: BibleVerse) => v.chapter))
+        // Also normalize book name here
+        const normalizedBook = normalizeBookName(book)
+        return Math.max(...versionBible.verses
+            .filter((v: BibleVerse) => v.book_name === normalizedBook)
+            .map((v: BibleVerse) => v.chapter))
     }
 
     getMaxVerse(book: string, chapter: number): number {
         const versionBible = versions[this.version as keyof typeof versions]
-        return Math.max(...versionBible.verses.filter((v: BibleVerse) => v.book_name === book && v.chapter === chapter).map((v: BibleVerse) => v.verse))
+        // And here
+        const normalizedBook = normalizeBookName(book)
+        return Math.max(...versionBible.verses
+            .filter((v: BibleVerse) => v.book_name === normalizedBook && v.chapter === chapter)
+            .map((v: BibleVerse) => v.verse))
     }
 }
 
@@ -67,3 +80,17 @@ export class Bible {
 export function getBibleVerseRange(version: string, book: string, chapter: number, verseSelector?: VerseSelector): BibleVerse[] {
     return new Bible(version).getVerses(book, chapter, verseSelector)
 }
+
+const normalizeBookName = (book: string): string => {
+    const normalizations: Record<string, string> = {
+        'psalm': 'Psalms',
+        'psalms': 'Psalms',
+        'revelations': 'Revelation',
+        'revelation': 'Revelation',
+        'song': 'Song of Solomon',
+        'songs': 'Song of Solomon',
+        // Add more normalizations as needed
+    };
+
+    return normalizations[book.toLowerCase()] || book;
+};
