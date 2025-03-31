@@ -15,7 +15,7 @@ import {
 } from "@repo/ui/components/select";
 import { cn } from "@repo/utils";
 import { useMemo } from "react";
-import { useBible } from "../../context/bible-context";
+import { useBibleDialog } from "../../context/bible-context";
 import { useSettings } from "../../context/settings-context";
 
 const versions = ["kjv", "net", "asv"] as const;
@@ -90,7 +90,7 @@ const books = [
 ] as const;
 
 export function BibleHeader({ className }: { className?: string }) {
-  const { bible, book, chapter, setVersion, setChapter, setBook, setSelectedVerses } = useBible();
+  const { bible, book, chapter, setVersion, setChapter, setBook, setSelectedVerses } = useBibleDialog();
   const { fontSize, setFontSize } = useSettings();
 
   const maxChapter = useMemo(() => bible.getMaxChapter(book), [book]);
@@ -120,7 +120,7 @@ export function BibleHeader({ className }: { className?: string }) {
             setVersion(value);
           }}
         >
-          <SelectTrigger className="w-20 rounded-r-none max-w-max">
+          <SelectTrigger className="w-20 h-8 rounded-r-none max-w-max">
             <SelectValue placeholder="Select Version" />
           </SelectTrigger>
           <SelectContent>
@@ -140,7 +140,7 @@ export function BibleHeader({ className }: { className?: string }) {
             setSelectedVerses([]);
           }}
         >
-          <SelectTrigger className="w-40 rounded-l-none max-w-max">
+          <SelectTrigger className="w-40 h-8 rounded-l-none max-w-max">
             <SelectValue placeholder="Select Book" />
           </SelectTrigger>
           <SelectContent>
@@ -163,7 +163,7 @@ export function BibleHeader({ className }: { className?: string }) {
             setSelectedVerses([]);
           }}
         >
-          <SelectTrigger className="w-16 ml-1">
+          <SelectTrigger className="w-16 h-8 ml-1">
             <SelectValue placeholder="Select Chapter" />
           </SelectTrigger>
           <SelectContent>
@@ -179,11 +179,11 @@ export function BibleHeader({ className }: { className?: string }) {
       </div>
 
       <div className="items-center hidden gap-4 sm:flex">
-        <Button onClick={decrease} size="icon" variant="ghost">
+        <Button onClick={decrease} size="icon" className="w-8 h-8" variant="ghost">
           A-
         </Button>
         <span className="text-sm">{fontSize}px</span>
-        <Button onClick={increase} variant="ghost" size="icon">
+        <Button onClick={increase} variant="ghost" size="icon" className="w-8 h-8">
           A+
         </Button>
       </div>

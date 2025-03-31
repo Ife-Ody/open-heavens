@@ -3,11 +3,7 @@ import { useEffect, useState } from 'react'
 function getDevice(): 'mobile' | 'tablet' | 'desktop' | null {
     if (typeof window === 'undefined') return null
 
-    return window.matchMedia('(min-width: 1024px)').matches
-        ? 'desktop'
-        : window.matchMedia('(min-width: 640px)').matches
-        ? 'tablet'
-        : 'mobile'
+    return window.matchMedia('(min-width: 1024px)').matches ? 'desktop' : window.matchMedia('(min-width: 640px)').matches ? 'tablet' : 'mobile'
 }
 
 function getDimensions() {

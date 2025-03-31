@@ -4,7 +4,7 @@ import { Button } from "@repo/ui/components/button";
 import { Skeleton } from "@repo/ui/components/skeleton";
 import { cn } from "@repo/ui/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useBible } from "../context/bible-context";
+import { useBibleDialog } from "../context/bible-context";
 import { useSettings } from "../context/settings-context";
 import { BibleHeader } from "./components/bible-header";
 
@@ -24,7 +24,7 @@ export function BibleReader({ className }: { className?: string }) {
 }
 
 export function BibleReaderBody({ className }: { className?: string }) {
-  const { book, chapter, loading, verses } = useBible();
+  const { book, chapter, loading, verses } = useBibleDialog();
   const { fontSize } = useSettings();
   return (
     <div
@@ -57,7 +57,7 @@ export function BibleReaderBody({ className }: { className?: string }) {
 }
 
 export function BibleReaderFooter({ className }: { className?: string }) {
-  const { bible, book, chapter, setChapter, setSelectedVerses } = useBible();
+  const { bible, book, chapter, setChapter, setSelectedVerses } = useBibleDialog();
   return (
     <div
       className={cn(
@@ -73,6 +73,7 @@ export function BibleReaderFooter({ className }: { className?: string }) {
         className="rounded-full"
         variant="outline"
         disabled={chapter <= 1}
+        size="sm"
       >
         <ChevronLeft className="w-4 h-4 mr-2" />
         Previous Chapter
@@ -86,6 +87,7 @@ export function BibleReaderFooter({ className }: { className?: string }) {
         className="rounded-full"
         variant="outline"
         disabled={chapter >= bible.getMaxChapter(book)}
+        size="sm"
       >
         Next Chapter <ChevronRight className="w-4 h-4 ml-2" />
       </Button>

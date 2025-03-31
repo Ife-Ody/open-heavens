@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { useBible } from "src/app/context/bible-context";
+import { useBibleDialog } from "src/app/context/bible-context";
 
 interface BibleReferenceProps {
   reference: string;
@@ -16,7 +16,7 @@ interface ParsedReference {
 }
 
 export function BibleReference({ reference }: BibleReferenceProps) {
-  const { openDialog, setBook, setChapter, setSelectedVerses } = useBible();
+  const { openDialog, setBook, setChapter, setSelectedVerses } = useBibleDialog();
 
   const parsedReference = useMemo<ParsedReference | null>(() => {
     try {

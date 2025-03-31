@@ -66,7 +66,7 @@ export function BibleProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useBible() {
+export function useBibleDialog() {
   const context = useContext(BibleContext);
   if (context === undefined) {
     throw new Error("useBible must be used within a BibleProvider");
