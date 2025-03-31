@@ -35,7 +35,7 @@ export const useSettings = () => {
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const { theme, setTheme } = useTheme();
-  const [fontSize, setFontSize] = useLocalStorage<number>("fontSize", 16);
+  const [fontSize, setFontSize] = useLocalStorage<number>("fontSize", 24);
   const router = useRouter();
   const [version, setVersion] = useLocalStorage<string>("version", "kjv");
   //attempt to get the date from the url

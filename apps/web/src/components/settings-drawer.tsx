@@ -9,10 +9,12 @@ import { Cog } from "lucide-react";
 import FontsizeSelector from "./fontsize-selector";
 import { ThemeToggle } from "./theme-toggle";
 import { Button } from "@repo/ui/components/button";
+import { Toaster } from "@repo/ui/components/sonner";
 
 export const SettingsDrawer = () => {
   return (
     <Drawer>
+      <Toaster position="top-center" />
       <DrawerTrigger asChild>
         <Button className="sm:hidden" variant="outline" size="icon" aria-label="Settings">
           <Cog size={16} />
