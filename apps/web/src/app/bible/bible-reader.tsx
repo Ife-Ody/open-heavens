@@ -24,7 +24,7 @@ export function BibleReader({ className }: { className?: string }) {
 }
 
 export function BibleReaderBody({ className }: { className?: string }) {
-  const { book, chapter, loading, verses } = useBibleDialog();
+  const { book, chapter, loading, verses, selectedVerses, setSelectedVerses } = useBibleDialog();
   const { fontSize } = useSettings();
   return (
     <div
@@ -51,6 +51,17 @@ export function BibleReaderBody({ className }: { className?: string }) {
             <p>{verse.text}</p>
           </div>
         ))
+      )}
+      {selectedVerses.length > 0 && (
+        <Button
+          variant="outline"
+          className="mx-auto my-4 rounded-full w-max"
+          onClick={() => {
+            setSelectedVerses([]);
+          }}
+        >
+          show full chapter
+        </Button>
       )}
     </div>
   );

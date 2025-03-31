@@ -106,7 +106,7 @@ export function BibleHeader({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "flex items-center flex-col sm:flex-row justify-between p-4 gap-4",
+        "flex items-center flex-col sm:flex-row justify-between p-2 sm:p-2 gap-4",
         className,
       )}
     >
@@ -114,9 +114,6 @@ export function BibleHeader({ className }: { className?: string }) {
         <Select
           value={bible.version}
           onValueChange={(value) => {
-            setBook("Genesis");
-            setChapter(1);
-            setSelectedVerses([]);
             setVersion(value);
           }}
         >
