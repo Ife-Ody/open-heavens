@@ -8,6 +8,7 @@ import "./globals.css";
 
 import type { JSX } from "react";
 import RootProviders from "./providers";
+import { Footer } from "@/components/layout/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
       >
         <RootProviders>{children}</RootProviders>
         <GoogleAnalytics gaId="GTM-TKGWSF3F" />
+        <Footer />
       </body>
     </html>
   );

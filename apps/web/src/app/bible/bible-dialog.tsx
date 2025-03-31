@@ -34,7 +34,7 @@ export function BibleDialog({
     return (
       <Drawer open={open} onOpenChange={onOpenChange}>
         {children}
-        <DrawerContent className="px-2 pb-6 h-[90svh]">
+        <DrawerContent className="px-2 pb-6 h-[95svh]">
           <DrawerHeader className="flex flex-row items-center w-full px-1 py-0">
             <BibleHeader className="flex-1" />
             <DrawerTitle className="sr-only">Bible</DrawerTitle>
