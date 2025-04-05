@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@repo/ui/components/button";
 import {
   Drawer,
   DrawerContent,
@@ -10,15 +11,17 @@ import {
 import { Cog } from "lucide-react";
 import FontsizeSelector from "./fontsize-selector";
 import { ThemeToggle } from "./theme-toggle";
-import { Button } from "@repo/ui/components/button";
-import { Toaster } from "@repo/ui/components/sonner";
 
 export const SettingsDrawer = () => {
   return (
     <Drawer>
-      <Toaster position="top-center" />
       <DrawerTrigger asChild>
-        <Button className="sm:hidden" variant="outline" size="icon" aria-label="Settings">
+        <Button
+          className="sm:hidden"
+          variant="outline"
+          size="icon"
+          aria-label="Settings"
+        >
           <Cog size={16} />
         </Button>
       </DrawerTrigger>
@@ -31,7 +34,7 @@ export const SettingsDrawer = () => {
           </div>
           <div className="flex flex-col items-center justify-center gap-2 py-6">
             <div>Theme</div>
-            <ThemeToggle iconOnly={true}  />
+            <ThemeToggle iconOnly={true} />
           </div>
         </DrawerHeader>
       </DrawerContent>

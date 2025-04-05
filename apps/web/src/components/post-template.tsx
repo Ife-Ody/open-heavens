@@ -1,20 +1,22 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { isSameDay } from "date-fns";
+import { isSameDay, addDays } from "date-fns";
 import parse from "html-react-parser";
 import { Post, posts } from "src/app/content/posts";
 import { useSettings } from "src/app/context/settings-context";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { UserDisplay } from "@repo/ui/components/user-display";
 import type { JSX } from "react";
 import { hymns } from "src/app/content/hymns";
 import { BibleTagger } from "../lib/bible-tagger";
 import { BibleReference } from "./bible-reference";
+import Link from "next/link";
 
 export function PostTemplate({ post }: { post: Post }) {
   const bibleTagger = new BibleTagger();
   const settings = useSettings();
-  const { fontSize } = settings;
+  const { fontSize, date } = settings;
 
   return (
     <article className="flex flex-col gap-8 whitespace-wrap">
@@ -133,6 +135,25 @@ export function PostTemplate({ post }: { post: Post }) {
           </div>
         </section>
       )}
+
+      <section aria-label="Navigation" className="flex justify-between mt-6">
+        <Link
+          prefetch={true}
+          href={`/${addDays(post.date, -1).toISOString().split('T')[0]}`}
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-md bg-secondary hover:bg-secondary/80"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          <span>Previous Day</span>
+        </Link>
+        <Link
+          prefetch={true}
+          href={`/${addDays(post.date, 1).toISOString().split('T')[0]}`}
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-md bg-secondary hover:bg-secondary/80"
+        >
+          <span>Next Day</span>
+          <ChevronRight className="w-4 h-4" />
+        </Link>
+      </section>
     </article>
   );
 }
