@@ -30,4 +30,4 @@ export default function Page(): JSX.Element {
   );
 }
 
-export const revalidate = 6*60*60; // Revalidate every 6 hours
+export const revalidate = 21600; // Revalidate every 6 hours
