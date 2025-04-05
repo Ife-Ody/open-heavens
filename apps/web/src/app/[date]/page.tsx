@@ -1,9 +1,10 @@
 import { SelectedPost } from "@/components/post-template";
-import { isSameDay } from "date-fns";
+import { isSameDay, isValid } from "date-fns";
+import { notFound } from "next/navigation";
 import { posts } from "src/app/content/posts";
 
-import { Header } from "../Header";
 import { constructMetadata, truncate } from "@repo/utils";
+import { Header } from "../Header";
 
 export const generateMetadata = async ({
   params,
@@ -13,19 +14,40 @@ export const generateMetadata = async ({
   const { date: dateParam } = await params;
   const date = new Date(dateParam);
 
+  if (!isValid(date)) {
+    return constructMetadata({
+      title: "Page Not Found - Open Heavens",
+      description: "The requested devotional could not be found.",
+    });
+  }
+
   const post = posts.find((post) => isSameDay(new Date(post.date), date));
   return constructMetadata({
-    title: `${truncate(`${date.toLocaleDateString("en-GB", {
-      weekday: "long",
-      day: "numeric",
-      month: "long", 
-      year: "numeric",
-    })} - ${post?.title} - Open Heavens today`, 60)}`,
+    title: `${truncate(
+      `${date.toLocaleDateString("en-GB", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })} - ${post?.title} - Open Heavens today`,
+      60,
+    )}`,
     description: `${truncate(post?.bodyText, 160)}...`,
   });
 };
 
-export default async function Page() {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ date: string }>;
+}) {
+  const { date: dateParam } = await params;
+  const date = new Date(dateParam);
+
+  if (!isValid(date)) {
+    notFound();
+  }
+
   return (
     <main className="container relative flex flex-col items-center justify-center min-h-screen gap-6 p-8 pb-16 md:px-24">
       <Header />
