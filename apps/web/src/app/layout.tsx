@@ -21,6 +21,9 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="apple-mobile-web-app-title" content="Open Heavens Devotional" />
+      </head>
       <body
         className={cn(
           inter.className,
