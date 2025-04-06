@@ -1,17 +1,17 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { isSameDay, addDays } from "date-fns";
+import { addDays, isSameDay } from "date-fns";
 import parse from "html-react-parser";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Post, posts } from "src/app/content/posts";
 import { useSettings } from "src/app/context/settings-context";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { UserDisplay } from "@repo/ui/components/user-display";
+import Link from "next/link";
 import type { JSX } from "react";
 import { hymns } from "src/app/content/hymns";
 import { BibleTagger } from "../lib/bible-tagger";
 import { BibleReference } from "./bible-reference";
-import Link from "next/link";
 
 export function PostTemplate({ post }: { post: Post }) {
   const bibleTagger = new BibleTagger();
@@ -139,7 +139,7 @@ export function PostTemplate({ post }: { post: Post }) {
       <section aria-label="Navigation" className="flex justify-between mt-6">
         <Link
           prefetch={true}
-          href={`/${addDays(post.date, -1).toISOString().split('T')[0]}`}
+          href={`/${addDays(post.date, -1).toISOString().split("T")[0]}`}
           className="flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-md bg-secondary hover:bg-secondary/80"
         >
           <ChevronLeft className="w-4 h-4" />
@@ -147,7 +147,7 @@ export function PostTemplate({ post }: { post: Post }) {
         </Link>
         <Link
           prefetch={true}
-          href={`/${addDays(post.date, 1).toISOString().split('T')[0]}`}
+          href={`/${addDays(post.date, 1).toISOString().split("T")[0]}`}
           className="flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-md bg-secondary hover:bg-secondary/80"
         >
           <span>Next Day</span>
@@ -193,7 +193,15 @@ export const SelectedPost = (): JSX.Element => {
   const settings = useSettings();
   const { date } = settings;
   const post = posts.find((post) => isSameDay(post.date, date)) as Post;
+  if (!post) return <EmptyPost />;
   return <PostTemplate post={post}></PostTemplate>;
 };
 
-const EmptyPost = () => <h1>Could not find the requested post</h1>;
+const EmptyPost = () => (
+  <div className="flex flex-col items-center justify-center gap-2 text-center min-h-96">
+    <h1 className="text-2xl font-bold">Could not find the requested post</h1>
+    <Link href="/" className="underline text-primary">
+      Go to today's post
+    </Link>
+  </div>
+);
