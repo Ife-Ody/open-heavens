@@ -16,6 +16,7 @@ export const generateMetadata = () => {
       day: "numeric",
     })}: ${post?.title}`,
     description: `${truncate(post?.bodyText, 160)}...`,
+    canonicalUrl: `/${new Date().toISOString().split("T")[0]}`,
   });
 };
 
