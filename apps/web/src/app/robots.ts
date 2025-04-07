@@ -8,5 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       disallow: "/private/",
     },
     sitemap: `${HOME_DOMAIN}/sitemap.xml`,
+    host: HOME_DOMAIN,
   };
 }
