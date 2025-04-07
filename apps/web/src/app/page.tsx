@@ -9,12 +9,15 @@ import type { JSX } from "react";
 export const generateMetadata = () => {
   const post = posts.find((post) => isToday(new Date(post.date)));
   return constructMetadata({
-    title: `Open Heavens for today - ${new Date().toLocaleDateString("en-GB", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    })}: ${post?.title}`,
+    title: `${truncate(
+      `Open Heavens for today - ${new Date().toLocaleDateString("en-GB", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })}: ${post?.title}...`,
+      60,
+    )}`,
     description: `${truncate(post?.bodyText, 160)}...`,
     canonicalUrl: `/${new Date().toISOString().split("T")[0]}`,
   });

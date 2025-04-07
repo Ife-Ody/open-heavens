@@ -24,7 +24,7 @@ export function Footer() {
     <footer className="bg-background">
       <div className="container px-4 py-8 mx-auto">
         <div className="flex flex-col items-center justify-center gap-4">
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:flex-wrap">
             {siteLinks.map((link, index) => (
               <Link
                 key={link.href+index}

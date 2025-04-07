@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { HOME_DOMAIN } from "@repo/utils";
 import { posts } from "./content/posts";
+import { hymns } from "./content/hymns";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -19,7 +20,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...posts.map((post) => ({
       url: `${HOME_DOMAIN}/${post.date}`,
       lastModified: new Date(post.date),
-      changeFrequency: "daily" as const,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    })),
+    ...hymns.map((hymn) => ({
+      url: `${HOME_DOMAIN}/hymn/${hymn.id}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
       priority: 0.5,
     })),
   ];
