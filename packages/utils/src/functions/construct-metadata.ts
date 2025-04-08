@@ -1,5 +1,6 @@
 import { type Metadata } from 'next'
 import { HOME_DOMAIN } from '../constants'
+import { truncate } from './truncate'
 
 export function constructMetadata({
     title = `${process.env.NEXT_PUBLIC_APP_NAME} - Open Heavens Devotional`,
@@ -32,20 +33,21 @@ export function constructMetadata({
 } = {}): Metadata {
     return {
         title,
-        description,
+        description: truncate(description, 157),
         openGraph: {
             title,
-            description,
+            description: truncate(description, 157)!,
             ...(image && {
                 images: image,
             }),
             ...(video && {
                 videos: video,
             }),
+            url: new URL(HOME_DOMAIN)
         },
         twitter: {
             title,
-            description,
+            description: truncate(description, 157)!,
             ...(image && {
                 card: 'summary_large_image',
                 images: [image],
