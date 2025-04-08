@@ -44,6 +44,7 @@ export function constructMetadata({
         videos: video,
       }),
       url: new URL(HOME_DOMAIN),
+      type: "website",
     },
     twitter: {
       title,
