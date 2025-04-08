@@ -2,7 +2,7 @@ import { cn } from "@repo/ui/utils";
 import { constructMetadata } from "@repo/utils";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "@repo/ui/styles.css";
 import "./globals.css";
 
@@ -22,7 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta name="apple-mobile-web-app-title" content="Open Heavens Devotional" />
+        <meta
+          name="apple-mobile-web-app-title"
+          content="Open Heavens Devotional"
+        />
       </head>
       <body
         className={cn(

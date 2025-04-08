@@ -27,7 +27,7 @@ export function Footer() {
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:flex-wrap">
             {siteLinks.map((link, index) => (
               <Link
-                key={link.href+index}
+                key={link.href + index}
                 href={link.href}
                 className="text-sm text-muted-foreground hover:text-primary"
               >
@@ -40,10 +40,7 @@ export function Footer() {
           </p>
           <p className="text-sm text-center text-muted-foreground">
             Powered by{" "}
-            <a
-              href="https://oxygne.com"
-              className="hover:text-primary"
-            >
+            <a href="https://oxygne.com" className="hover:text-primary">
               Oxygne
             </a>
           </p>

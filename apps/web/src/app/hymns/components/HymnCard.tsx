@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { getYouTubeEmbedUrl } from '../get-youtube-embed-url';
-import useIntersectionObserver from '@/lib/hooks/use-intersection-observer';
+import Link from "next/link";
+import { getYouTubeEmbedUrl } from "../get-youtube-embed-url";
+import useIntersectionObserver from "@/lib/hooks/use-intersection-observer";
 
 interface HymnCardProps {
   hymn: {
@@ -18,11 +18,11 @@ interface HymnCardProps {
 export default function HymnCard({ hymn }: HymnCardProps) {
   const [ref, isIntersecting] = useIntersectionObserver({
     threshold: 0.1,
-    rootMargin: '100px',
+    rootMargin: "100px",
   });
 
   return (
-    <Link 
+    <Link
       key={hymn.id}
       href={`/hymns/${hymn.id}`}
       className="p-4 transition-colors border rounded hover:bg-muted"
@@ -41,20 +41,20 @@ export default function HymnCard({ hymn }: HymnCardProps) {
             />
           )}
         </div>
-        <svg 
-          className="w-6 h-6 text-muted-foreground" 
-          fill="none" 
-          stroke="currentColor" 
+        <svg
+          className="w-6 h-6 text-muted-foreground"
+          fill="none"
+          stroke="currentColor"
           viewBox="0 0 24 24"
         >
-          <path 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            strokeWidth={2} 
-            d="M9 5l7 7-7 7" 
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5l7 7-7 7"
           />
         </svg>
       </div>
     </Link>
   );
-} 
+}

@@ -90,7 +90,15 @@ const books = [
 ] as const;
 
 export function BibleHeader({ className }: { className?: string }) {
-  const { bible, book, chapter, setVersion, setChapter, setBook, setSelectedVerses } = useBibleDialog();
+  const {
+    bible,
+    book,
+    chapter,
+    setVersion,
+    setChapter,
+    setBook,
+    setSelectedVerses,
+  } = useBibleDialog();
   const { fontSize, setFontSize } = useSettings();
 
   const maxChapter = useMemo(() => bible.getMaxChapter(book), [book]);
@@ -176,11 +184,21 @@ export function BibleHeader({ className }: { className?: string }) {
       </div>
 
       <div className="items-center hidden gap-4 sm:flex">
-        <Button onClick={decrease} size="icon" className="w-8 h-8" variant="ghost">
+        <Button
+          onClick={decrease}
+          size="icon"
+          className="w-8 h-8"
+          variant="ghost"
+        >
           A-
         </Button>
         <span className="text-sm">{fontSize}px</span>
-        <Button onClick={increase} variant="ghost" size="icon" className="w-8 h-8">
+        <Button
+          onClick={increase}
+          variant="ghost"
+          size="icon"
+          className="w-8 h-8"
+        >
           A+
         </Button>
       </div>

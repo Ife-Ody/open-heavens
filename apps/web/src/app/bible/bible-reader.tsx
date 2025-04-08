@@ -24,7 +24,8 @@ export function BibleReader({ className }: { className?: string }) {
 }
 
 export function BibleReaderBody({ className }: { className?: string }) {
-  const { book, chapter, loading, verses, selectedVerses, setSelectedVerses } = useBibleDialog();
+  const { book, chapter, loading, verses, selectedVerses, setSelectedVerses } =
+    useBibleDialog();
   const { fontSize } = useSettings();
   return (
     <div
@@ -68,7 +69,8 @@ export function BibleReaderBody({ className }: { className?: string }) {
 }
 
 export function BibleReaderFooter({ className }: { className?: string }) {
-  const { bible, book, chapter, setChapter, setSelectedVerses } = useBibleDialog();
+  const { bible, book, chapter, setChapter, setSelectedVerses } =
+    useBibleDialog();
   return (
     <div
       className={cn(

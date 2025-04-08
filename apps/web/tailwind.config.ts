@@ -78,7 +78,7 @@ const config: Pick<Config, "content" | "presets" | "theme" | "plugins"> = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"),],
+  plugins: [require("tailwindcss-animate")],
 };
 
 export default config;

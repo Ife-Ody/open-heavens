@@ -1,6 +1,6 @@
-import { hymns as defaultHymns } from '../content/hymns';
-import SearchHeader from './components/SearchHeader';
-import HymnCard from './components/HymnCard';
+import { hymns as defaultHymns } from "../content/hymns";
+import SearchHeader from "./components/SearchHeader";
+import HymnCard from "./components/HymnCard";
 
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -9,15 +9,17 @@ interface PageProps {
 export default async function HymnsListPage({ searchParams }: PageProps) {
   // Get the search term, ensuring it's a string
   const params = await searchParams;
-  const searchTerm = typeof params.q === 'string' ? params.q : '';
-  
+  const searchTerm = typeof params.q === "string" ? params.q : "";
+
   // In a real app, you would fetch this from your API
   // For now, we'll use the default hymns and filter them
   const hymns = defaultHymns;
 
   const filteredHymns = hymns
-    .filter(hymn => {
-      const titleMatch = hymn.title.toLowerCase().includes(searchTerm.toLowerCase());
+    .filter((hymn) => {
+      const titleMatch = hymn.title
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
       const numberMatch = hymn.hymn_number.toString().includes(searchTerm);
       return titleMatch || numberMatch;
     })
@@ -27,10 +29,10 @@ export default async function HymnsListPage({ searchParams }: PageProps) {
     <div className="max-w-4xl p-4 mx-auto">
       <SearchHeader />
       <div className="grid gap-4">
-        {filteredHymns.map(hymn => (
+        {filteredHymns.map((hymn) => (
           <HymnCard key={hymn.id} hymn={hymn} />
         ))}
       </div>
     </div>
   );
-} 
+}

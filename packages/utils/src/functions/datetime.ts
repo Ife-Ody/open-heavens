@@ -14,11 +14,11 @@
  * datetime(1672531200000); // "2023-01-01T12:00:00"
  */
 export function datetime(date: Date | number): string {
-  if (!date) return ''
+  if (!date) return "";
   if (typeof date === "number") {
     date = new Date(date);
   }
 
   // Use toISOString to get date in the format "YYYY-MM-DDTHH:MM:SS.sssZ"
-  return date.toISOString().split('.')[0]; // Removes milliseconds for "YYYY-MM-DDTHH:MM:SS"
+  return date.toISOString().split(".")[0]; // Removes milliseconds for "YYYY-MM-DDTHH:MM:SS"
 }

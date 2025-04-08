@@ -1,37 +1,37 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from "react";
 
 interface IntersectionObserver extends IntersectionObserverInit {
-    keepObserving?: boolean
+  keepObserving?: boolean;
 }
 
 const useIntersectionObserver = (options: IntersectionObserver) => {
-    const [isIntersecting, setIsIntersecting] = useState(false)
-    const ref = useRef(null)
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const ref = useRef(null);
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(([entry]) => {
-            if (options.keepObserving) {
-                setIsIntersecting(entry.isIntersecting)
-                return
-            }
-            if (entry.isIntersecting) {
-                setIsIntersecting(entry.isIntersecting)
-                observer.disconnect()
-            }
-        }, options)
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (options.keepObserving) {
+        setIsIntersecting(entry.isIntersecting);
+        return;
+      }
+      if (entry.isIntersecting) {
+        setIsIntersecting(entry.isIntersecting);
+        observer.disconnect();
+      }
+    }, options);
 
-        if (ref.current) {
-            observer.observe(ref.current)
-        }
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
 
-        return () => {
-            if (ref.current) {
-                observer.unobserve(ref.current)
-            }
-        }
-    }, [options])
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, [options]);
 
-    return [ref, isIntersecting]
-}
+  return [ref, isIntersecting];
+};
 
-export default useIntersectionObserver
+export default useIntersectionObserver;

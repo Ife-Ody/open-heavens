@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useLocalStorage } from "@/lib/hooks/use-local-storage";
 import { useTheme } from "next-themes";
 import { useParams, useRouter } from "next/navigation";
@@ -43,14 +43,29 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const date = dateParam ? new Date(dateParam) : new Date();
 
   const setDate = (date: Date) => {
-    router.push(`/${date.toISOString().split('T')[0]}`);
-  }
+    router.push(`/${date.toISOString().split("T")[0]}`);
+  };
 
   return (
     <SettingsContext.Provider
-      value={{ theme: theme || "light", setTheme, fontSize, setFontSize, date, setDate, version, setVersion }}
+      value={{
+        theme: theme || "light",
+        setTheme,
+        fontSize,
+        setFontSize,
+        date,
+        setDate,
+        version,
+        setVersion,
+      }}
     >
-      <div className="h-full" style={{ fontSize: `${fontSize}px` }} suppressHydrationWarning>{children}</div>
+      <div
+        className="h-full"
+        style={{ fontSize: `${fontSize}px` }}
+        suppressHydrationWarning
+      >
+        {children}
+      </div>
     </SettingsContext.Provider>
   );
 }

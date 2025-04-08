@@ -13,7 +13,6 @@ import { ArrowLeft, PencilLine } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { hymns } from "src/app/content/hymns";
 import { hymns as defaultHymns } from "../../content/hymns";
 import { getYouTubeEmbedUrl } from "../get-youtube-embed-url";
 

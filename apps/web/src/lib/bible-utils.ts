@@ -1,5 +1,5 @@
 // Comprehensive list of Bible book names and their abbreviations
-export const BIBLE_BOOKS_PATTERN = 
+export const BIBLE_BOOKS_PATTERN =
   "Genesis|Gen|Ge|Gn|Exodus|Ex|Exod?|Leviticus|Lev?|Lv|Levit?|Numbers|" +
   "Nu|Nm|Hb|Nmb|Numb?|Deuteronomy|Deut?|De|Dt|Joshua|Josh?|Jsh|Judges|Jdgs?|Judg?|Jd|Ruth|Ru|Rth|" +
   "(?:1|2|First|Second)\\s*Samuel|Sam?|Sml|(?:1|2|First|Second)\\s*Kings|Kngs?|Kgs|Kin?|" +
@@ -20,35 +20,35 @@ export const BIBLE_BOOKS_PATTERN =
 // A map of book name variants to their canonical names
 export const BOOK_NAME_MAP: Record<string, string> = {
   // Old Testament
-  "gen": "Genesis",
-  "ge": "Genesis",
-  "gn": "Genesis",
-  "ex": "Exodus",
-  "exod": "Exodus",
-  "exo": "Exodus",
-  "lev": "Leviticus",
-  "le": "Leviticus",
-  "lv": "Leviticus",
-  "levit": "Leviticus",
-  "num": "Numbers",
-  "nu": "Numbers",
-  "nm": "Numbers",
-  "hb": "Numbers",
-  "nmb": "Numbers",
-  "numb": "Numbers",
-  "deut": "Deuteronomy",
-  "deu": "Deuteronomy",
-  "de": "Deuteronomy",
-  "dt": "Deuteronomy",
-  "josh": "Joshua",
-  "jos": "Joshua",
-  "jsh": "Joshua",
-  "jdgs": "Judges",
-  "judg": "Judges",
-  "jdg": "Judges",
-  "jd": "Judges",
-  "ru": "Ruth",
-  "rth": "Ruth",
+  gen: "Genesis",
+  ge: "Genesis",
+  gn: "Genesis",
+  ex: "Exodus",
+  exod: "Exodus",
+  exo: "Exodus",
+  lev: "Leviticus",
+  le: "Leviticus",
+  lv: "Leviticus",
+  levit: "Leviticus",
+  num: "Numbers",
+  nu: "Numbers",
+  nm: "Numbers",
+  hb: "Numbers",
+  nmb: "Numbers",
+  numb: "Numbers",
+  deut: "Deuteronomy",
+  deu: "Deuteronomy",
+  de: "Deuteronomy",
+  dt: "Deuteronomy",
+  josh: "Joshua",
+  jos: "Joshua",
+  jsh: "Joshua",
+  jdgs: "Judges",
+  judg: "Judges",
+  jdg: "Judges",
+  jd: "Judges",
+  ru: "Ruth",
+  rth: "Ruth",
   "1 sam": "1 Samuel",
   "1 sa": "1 Samuel",
   "1 samuel": "1 Samuel",
@@ -74,15 +74,18 @@ export function parseBibleReference(reference: string) {
     if (!reference) return null;
 
     // Normalize spaces - replace multiple spaces with a single space
-    reference = reference.trim().replace(/\s+/g, ' ');
+    reference = reference.trim().replace(/\s+/g, " ");
 
     // Step 1: Split the reference into book and passage
     // This regex will match book names with numbers (like "1 Corinthians") and spaces
-    const bookPattern = new RegExp(`^((?:\\d+\\s+)?[A-Za-z]+(?:\\s+(?:of|and|the|[A-Za-z]+))*?)\\s+(\\d+(?:.+)?)$`, 'i');
+    const bookPattern = new RegExp(
+      `^((?:\\d+\\s+)?[A-Za-z]+(?:\\s+(?:of|and|the|[A-Za-z]+))*?)\\s+(\\d+(?:.+)?)$`,
+      "i",
+    );
     const matches = reference.match(bookPattern);
 
     if (!matches) {
-      console.error('Failed to match book pattern for:', reference);
+      console.error("Failed to match book pattern for:", reference);
       return null;
     }
 
@@ -112,28 +115,28 @@ export function parseBibleReference(reference: string) {
  */
 export function normalizeBookName(bookName: string): string {
   // Convert to lowercase, trim, and normalize spaces for consistent matching
-  const normalizedName = bookName.toLowerCase().trim().replace(/\s+/g, ' ');
-  
+  const normalizedName = bookName.toLowerCase().trim().replace(/\s+/g, " ");
+
   // Check if it's in our map of variants
   if (BOOK_NAME_MAP[normalizedName]) {
     return BOOK_NAME_MAP[normalizedName];
   }
-  
+
   // If not in the map, use some basic rules to normalize
   // Handle numbered books like "1 john" -> "1 John"
   if (/^\d\s*[a-z]/.test(normalizedName)) {
     const [num, ...nameParts] = normalizedName.split(/\s+/);
-    const name = nameParts.join(' ');
+    const name = nameParts.join(" ");
     // Capitalize first letter of the name part
     const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
     return `${num} ${capitalizedName}`;
   }
-  
+
   // For other cases, just capitalize the first letter of each word
   return normalizedName
     .split(/\s+/)
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
 /**
@@ -146,15 +149,15 @@ export function extractBibleReferences(text: string): string[] {
   // This is a simplified version, you'll want to enhance it
   const referencePattern = new RegExp(
     `(${BIBLE_BOOKS_PATTERN})\\s+(\\d+)(?::(\\d+)(?:\\s*[-–—]\\s*(\\d+))?)?`,
-    'gi'
+    "gi",
   );
-  
+
   const matches = text.matchAll(referencePattern);
   const references: string[] = [];
-  
+
   for (const match of matches) {
     references.push(match[0]);
   }
-  
+
   return references;
-} 
+}
