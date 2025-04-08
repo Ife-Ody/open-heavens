@@ -1,10 +1,17 @@
 import { hymns as defaultHymns } from "../content/hymns";
 import SearchHeader from "./components/SearchHeader";
 import HymnCard from "./components/HymnCard";
+import { constructMetadata } from "@repo/utils";
 
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
+
+export const metadata = constructMetadata({
+  title: "Hymns Directory - Open Heavens Hymn",
+  description:
+    "These are the hymns available in the Open Heavens App. You can search for hymns by title or number. You can also search for hymns by the lyrics.",
+});
 
 export default async function HymnsListPage({ searchParams }: PageProps) {
   // Get the search term, ensuring it's a string
