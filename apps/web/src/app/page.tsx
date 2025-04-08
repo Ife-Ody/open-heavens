@@ -8,6 +8,11 @@ import type { JSX } from "react";
 
 export const generateMetadata = () => {
   const post = posts.find((post) => isToday(new Date(post.date)));
+  if (!post) {
+    return constructMetadata({
+      title: "Open Heavens Daily Devotional",
+    });
+  }
   return constructMetadata({
     title: `${truncate(
       `Open Heavens for today - ${new Date().toLocaleDateString("en-GB", {
@@ -18,8 +23,7 @@ export const generateMetadata = () => {
       })}: ${post?.title}...`,
       60,
     )}`,
-    description: `${truncate(post?.bodyText, 160)}...`,
-    canonicalUrl: `/${new Date().toISOString().split("T")[0]}`,
+    description: post?.bodyText ? `${truncate(post?.bodyText, 160)}` : undefined,
   });
 };
 
