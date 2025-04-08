@@ -32,7 +32,7 @@ export const generateMetadata = async ({
       })} - ${post?.title}`,
       60,
     )}`,
-    description: `${truncate(post?.bodyText, 160)}...`,
+    description: post?.bodyText ? `${truncate(post?.bodyText, 160)}` : undefined,
   });
 };
 
