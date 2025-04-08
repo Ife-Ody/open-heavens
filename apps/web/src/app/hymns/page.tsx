@@ -1,7 +1,7 @@
-import { hymns as defaultHymns } from "../content/hymns";
-import SearchHeader from "./components/SearchHeader";
-import HymnCard from "./components/HymnCard";
 import { constructMetadata } from "@repo/utils";
+import { hymns as defaultHymns } from "../content/hymns";
+import HymnCard from "./components/HymnCard";
+import SearchHeader from "./components/SearchHeader";
 
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -34,7 +34,12 @@ export default async function HymnsListPage({ searchParams }: PageProps) {
 
   return (
     <div className="max-w-4xl p-4 mx-auto">
-      <SearchHeader />
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold">Hymns Directory</h1>
+        <div className="w-64">
+          <SearchHeader />
+        </div>
+      </div>
       <div className="grid gap-4">
         {filteredHymns.map((hymn) => (
           <HymnCard key={hymn.id} hymn={hymn} />
