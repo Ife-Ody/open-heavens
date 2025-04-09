@@ -5,8 +5,18 @@
   "exports": {
     ".": "./tailwind.config.ts"
   },
+  "dependencies": {
+    "tailwindcss-animate": "^1.0.7"
+  },
   "devDependencies": {
     "@repo/typescript-config": "*",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.4"
+  },
+  "keywords": [
+    "tailwind",
+    "tailwindcss"
+  ],
+  "publishConfig": {
+    "access": "public"
   }
 }

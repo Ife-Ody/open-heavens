@@ -5,7 +5,8 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@repo/ui/*": ["./src/*"]
+      "@repo/ui/*": ["./src/*"],
+      "@repo/tailwind-config": ["../config-tailwind/tailwind.config.ts"]
     }
   },
   "exclude": ["dist", "build", "node_modules"]
