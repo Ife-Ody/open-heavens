@@ -34,8 +34,15 @@ export default async function HymnsListPage({ searchParams }: PageProps) {
 
   return (
     <div className="max-w-4xl p-4 mx-auto">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Hymns Directory</h1>
+      <div className="flex items-center justify-between gap-4 mb-6">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-2xl font-bold">Hymns Directory</h1>
+          <p className="text-sm text-muted-foreground">
+            This is the directory of all the hymns available in the Open Heavens
+            App. You can search for hymns by title or number. You can also
+            search for hymns by the lyrics.
+          </p>
+        </div>
         <div className="w-64">
           <SearchHeader />
         </div>

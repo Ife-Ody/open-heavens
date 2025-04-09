@@ -37,7 +37,7 @@ export default function SearchHeader() {
       placeholder="Search hymns..."
       value={searchTerm}
       onChange={handleSearch}
-      className="w-full p-2 border rounded"
+      className="w-full p-2 text-base border rounded"
     />
   );
 }

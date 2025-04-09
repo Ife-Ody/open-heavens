@@ -185,6 +185,10 @@ function Hymn({ hymn_id }: { hymn_id: number }): JSX.Element {
         className="w-full max-w-3xl rounded-lg aspect-video"
       />
       <div className={cn(`text-[${fontSize}px]`)}>{parse(hymn?.lyrics!)}</div>
+      <Link href={`/hymns/${hymn_id}`}>
+        Go to Hymn {hymn?.hymn_number}: {hymn?.title}
+      </Link>
+      <Link href={`/hymns`}> Browse all hymns</Link>
     </div>
   );
 }

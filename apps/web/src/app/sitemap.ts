@@ -23,6 +23,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
     })),
+    {
+      url: `${HOME_DOMAIN}/hymns`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    },
     ...hymns.map((hymn) => ({
       url: `${HOME_DOMAIN}/hymns/${hymn.id}`,
       lastModified: new Date(),

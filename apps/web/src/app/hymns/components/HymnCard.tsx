@@ -1,8 +1,6 @@
-"use client";
-
 import Link from "next/link";
-import { getYouTubeEmbedUrl } from "../get-youtube-embed-url";
-import useIntersectionObserver from "@/lib/hooks/use-intersection-observer";
+import YoutubeEmbed from "./YoutubeEmbed";
+import parse, { HTMLReactParserOptions, Element, Text } from "html-react-parser";
 
 interface HymnCardProps {
   hymn: {
@@ -15,34 +13,55 @@ interface HymnCardProps {
   };
 }
 
-export default function HymnCard({ hymn }: HymnCardProps) {
-  const [ref, isIntersecting] = useIntersectionObserver({
-    threshold: 0.1,
-    rootMargin: "100px",
-  });
+function truncateHtml(html: string, maxLength: number): string {
+  let textLength = 0;
+  let truncated = false;
 
+  const options: HTMLReactParserOptions = {
+    replace: (domNode) => {
+      if (truncated) return <></>;
+      
+      if (domNode instanceof Element && domNode.children) {
+        return;
+      }
+
+      if (domNode instanceof Text) {
+        const text = domNode.data;
+        if (textLength + text.length > maxLength) {
+          const remaining = maxLength - textLength;
+          domNode.data = text.slice(0, remaining) + "...";
+          truncated = true;
+        }
+        textLength += domNode.data.length;
+      }
+    }
+  };
+
+  return parse(html || "", options) as string;
+}
+
+export default function HymnCard({ hymn }: HymnCardProps) {
   return (
     <Link
       key={hymn.id}
       href={`/hymns/${hymn.id}`}
       className="p-4 transition-colors border rounded hover:bg-muted"
     >
-      <div className="flex items-center justify-between">
-        <div ref={ref as unknown as React.RefObject<HTMLDivElement>}>
+      <div className="flex flex-col items-start justify-between gap-4 md:flex-row">
+        <div className="flex-1 min-w-0">
           <span className="font-medium">#{hymn.hymn_number}</span>
           <h2 className="text-lg font-semibold">{hymn.title}</h2>
-          {isIntersecting && (
-            <iframe
-              src={getYouTubeEmbedUrl(hymn.hymn_url)}
-              title={hymn.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="h-56 rounded-lg w-96"
-            />
+          {hymn.lyrics && (
+            <div className="mt-2 text-sm text-muted-foreground">
+              {truncateHtml(hymn.lyrics, 160)}
+            </div>
           )}
         </div>
+        <div className="w-full md:w-auto">
+          <YoutubeEmbed url={hymn.hymn_url} title={hymn.title} />
+        </div>
         <svg
-          className="w-6 h-6 text-muted-foreground"
+          className="flex-shrink-0 hidden w-6 h-6 md:block text-muted-foreground"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
