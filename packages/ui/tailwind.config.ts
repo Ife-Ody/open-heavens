@@ -1,11 +1,15 @@
 import type { Config } from "tailwindcss";
 import sharedConfig from "@repo/tailwind-config";
+import { fontFamily } from "tailwindcss/defaultTheme"
 
 const config: Pick<
   Config,
   "prefix" | "presets" | "content" | "theme" | "plugins"
 > = {
-  content: ["./src/**/*.tsx", "./src/components/*.tsx"],
+  content: [
+    "./src/**/*.{ts,tsx}",
+    "./src/components/**/*.{ts,tsx}"
+  ],
   prefix: "ui-",
   presets: [sharedConfig],
   theme: {
@@ -56,6 +60,9 @@ const config: Pick<
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      fontFamily: {
+        sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {
