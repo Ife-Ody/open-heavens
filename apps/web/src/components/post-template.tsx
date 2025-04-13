@@ -94,7 +94,7 @@ export function PostTemplate({ post }: { post: Post }) {
         <section aria-label="Key Points">
           <h2
             className={cn(
-              `text-[${fontSize + 2}px] font-bold uppercase leading-0`,
+              `text-[${fontSize + 2}px] font-bold uppercase`,
             )}
           >
             {post.pointHeader}

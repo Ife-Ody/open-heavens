@@ -10,7 +10,11 @@ export function titleCase(str: string) {
     .toLowerCase()
     .split(" ")
     .map(function (word) {
-      return word.replace(word[0], word[0]?.toUpperCase());
+      if (!word) return "";
+      const firstChar = word[0];
+      return firstChar
+        ? word.replace(firstChar, firstChar.toUpperCase())
+        : word;
     })
     .join(" ");
 }

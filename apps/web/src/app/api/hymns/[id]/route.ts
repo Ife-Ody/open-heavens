@@ -17,8 +17,14 @@ export async function PUT(
 
     // Update the specific hymn
     const paramsData = await params;
+    if (!paramsData.id) {
+      return NextResponse.json(
+        { success: false, error: "Hymn ID is required" },
+        { status: 400 },
+      );
+    }
     data.hymns = data.hymns.map((h: any) =>
-      h.id === parseInt(paramsData.id) ? hymn : h,
+      h.id === parseInt(paramsData.id as string) ? hymn : h,
     );
 
     // Write the updated hymns back to the file

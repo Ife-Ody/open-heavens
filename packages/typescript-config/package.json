@@ -3,7 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "license": "PROPRIETARY",
+  "files": ["base.json", "nextjs.json", "react-library.json"],
   "publishConfig": {
     "access": "public"
+  },
+  "main": "nextjs.json",
+  "exports": {
+    "./nextjs.json": "./nextjs.json",
+    "./base.json": "./base.json",
+    "./react-library.json": "./react-library.json"
   }
 }

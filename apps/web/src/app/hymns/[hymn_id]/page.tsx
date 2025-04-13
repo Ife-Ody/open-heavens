@@ -46,7 +46,7 @@ export default async function HymnPage({
   const { hymn_id } = await params;
   // Get hymn data
   const hymn = hymns.find((h) => h.id === parseInt(hymn_id));
-  
+
   if (!hymn) {
     return notFound();
   }
@@ -56,7 +56,9 @@ export default async function HymnPage({
   const currentIndex = sortedHymns.findIndex((h) => h.id === hymn.id);
   const prevHymn = currentIndex > 0 ? sortedHymns[currentIndex - 1] : null;
   const nextHymn =
-    currentIndex < sortedHymns.length - 1 ? sortedHymns[currentIndex + 1] : null;
+    currentIndex < sortedHymns.length - 1
+      ? sortedHymns[currentIndex + 1]
+      : null;
 
   return (
     <div className="max-w-4xl p-4 py-6 mx-auto">
@@ -73,7 +75,9 @@ export default async function HymnPage({
                 <PaginationItem>
                   <PaginationPrevious
                     href={prevHymn ? `/hymns/${prevHymn.id}` : "#"}
-                    className={!prevHymn ? "pointer-events-none opacity-50" : ""}
+                    className={
+                      !prevHymn ? "pointer-events-none opacity-50" : ""
+                    }
                   />
                 </PaginationItem>
                 <PaginationItem>
@@ -86,14 +90,16 @@ export default async function HymnPage({
                 <PaginationItem>
                   <PaginationNext
                     href={nextHymn ? `/hymns/${nextHymn.id}` : "#"}
-                    className={!nextHymn ? "pointer-events-none opacity-50" : ""}
+                    className={
+                      !nextHymn ? "pointer-events-none opacity-50" : ""
+                    }
                   />
                 </PaginationItem>
               </PaginationContent>
             </Pagination>
           </div>
-          
-          {process.env.NODE_ENV === 'development' && (
+
+          {process.env.NODE_ENV === "development" && (
             <Link href={`/hymns/${hymn_id}/edit`}>
               <Button className="flex rounded-full min-w-32">
                 Edit <PencilLine className="w-4 h-4 ml-2" />

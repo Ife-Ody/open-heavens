@@ -114,7 +114,7 @@ export function BibleHeader({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "flex items-center flex-col sm:flex-row justify-between p-2 sm:p-2 gap-4",
+        "flex items-center flex-col sm:flex-row justify-between p-2 sm:pb-0 gap-4",
         className,
       )}
     >
@@ -168,7 +168,7 @@ export function BibleHeader({ className }: { className?: string }) {
             setSelectedVerses([]);
           }}
         >
-          <SelectTrigger className="w-16 h-8 ml-1">
+          <SelectTrigger className="w-20 h-8 ml-1">
             <SelectValue placeholder="Select Chapter" />
           </SelectTrigger>
           <SelectContent>

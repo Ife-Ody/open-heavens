@@ -1,14 +1,12 @@
-import { cn } from "@repo/ui/utils";
-import { constructMetadata } from "@repo/utils";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { GoogleAnalytics } from "@next/third-parties/google";
-import "@repo/ui/styles.css";
-import "./globals.css";
 
-import type { JSX } from "react";
-import RootProviders from "./providers";
 import { Footer } from "@/components/layout/footer";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { cn } from "@repo/ui/lib/utils";
+import { constructMetadata } from "@repo/utils";
+import RootProviders from "./providers";
+import "@repo/ui/globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,9 +14,9 @@ export const metadata: Metadata = constructMetadata();
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}): JSX.Element {
+}>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>

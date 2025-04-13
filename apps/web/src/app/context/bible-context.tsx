@@ -1,9 +1,8 @@
 "use client";
 
-import { createContext, useContext, useMemo, useState } from "react";
 import { Bible, BibleVerse } from "@repo/bible";
+import { createContext, useContext, useMemo, useState } from "react";
 import { BibleDialog } from "../bible/bible-dialog";
-import { toast } from "sonner";
 interface BibleContextType {
   bible: Bible;
   loading: boolean;
@@ -35,7 +34,7 @@ export function BibleProvider({ children }: { children: React.ReactNode }) {
   const verses = useMemo(() => {
     if (!book || !chapter) return [];
 
-    const allVerses = bible.getVerses(book, chapter, selectedVerses);
+    const allVerses = bible?.getVerses(book, chapter, selectedVerses);
 
     return allVerses;
   }, [bible, book, chapter, selectedVerses]);

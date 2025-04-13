@@ -3,8 +3,8 @@
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { PropsWithChildren, ReactNode } from "react";
 import { Drawer } from "vaul";
-import { cn } from "../lib/utils";
-import { useMediaQuery } from "../lib/hooks/use-media-query";
+import { useMediaQuery } from "@repo/ui/hooks/use-media-query";
+import { cn } from "@repo/ui/lib/utils";
 
 export type PopoverProps = PropsWithChildren<{
   content: ReactNode | string;

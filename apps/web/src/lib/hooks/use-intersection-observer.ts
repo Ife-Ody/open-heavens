@@ -10,6 +10,8 @@ const useIntersectionObserver = (options: IntersectionObserver) => {
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
+      if (!entry) return;
+
       if (options.keepObserving) {
         setIsIntersecting(entry.isIntersecting);
         return;

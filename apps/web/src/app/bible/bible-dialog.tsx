@@ -1,4 +1,3 @@
-import {} from "@/components/ui/drawer";
 import { Button } from "@repo/ui/components/button";
 import {
   Dialog,
@@ -15,10 +14,10 @@ import {
   DrawerTitle,
 } from "@repo/ui/components/drawer";
 import { ScrollArea } from "@repo/ui/components/scroll-area";
-import { useMediaQuery } from "@repo/ui/lib/hooks/use-media-query";
 import { X } from "lucide-react";
 import { BibleReaderBody, BibleReaderFooter } from "src/app/bible/bible-reader";
 import { BibleHeader } from "./components/bible-header";
+import { useMediaQuery } from "@repo/ui/hooks/use-media-query";
 
 export function BibleDialog({
   open,
@@ -52,7 +51,7 @@ export function BibleDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       {children}
-      <DialogContent className="h-[90svh] w-[95svw] max-w-3xl p-0 sm:px-2 py-2 bg-background [&>button]:hidden flex flex-col">
+      <DialogContent className="h-[90svh] w-[95svw] sm:max-w-4xl max-w-3xl p-0 sm:px-2 py-2 bg-background [&>button]:hidden flex flex-col">
         <DialogHeader className="flex flex-row items-center w-full px-1">
           <BibleHeader className="flex-1" />
           <Button

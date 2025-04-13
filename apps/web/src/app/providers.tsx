@@ -1,12 +1,12 @@
 "use client";
-import { ThemeProvider } from "@repo/ui/theme";
+import PostHogPageView from "@/components/layout/posthog-pageview";
+import { Toaster } from "@repo/ui/components/sonner";
+import { ThemeProvider } from "next-themes";
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
 import { ReactNode, useEffect } from "react";
-import PostHogPageView from "@/components/layout/posthog-pageview";
 import { BibleProvider } from "./context/bible-context";
 import { SettingsProvider } from "./context/settings-context";
-import { Toaster } from "@repo/ui/components/sonner";
 if (typeof window !== "undefined") {
 }
 

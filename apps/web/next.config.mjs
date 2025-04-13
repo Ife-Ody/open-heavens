@@ -3,6 +3,10 @@
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ["@repo/ui", "@repo/utils", "@repo/bible"],
+  experimental: {
+    reactCompiler: true,
+    esmExternals: true,
+  },
   async rewrites() {
     return [
       // for posthog proxy
@@ -21,9 +25,6 @@ const nextConfig = {
     ];
   },
   skipTrailingSlashRedirect: true,
-  experimental: {
-    reactCompiler: true,
-  },
 };
 
-module.exports = nextConfig;
+export default nextConfig

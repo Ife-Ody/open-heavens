@@ -27,4 +27,4 @@ export default function YoutubeEmbed({ url, title }: YoutubeEmbedProps) {
       )}
     </div>
   );
-} 
+}

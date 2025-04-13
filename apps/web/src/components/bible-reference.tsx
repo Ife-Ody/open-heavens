@@ -51,26 +51,55 @@ export function BibleReference({ reference }: BibleReferenceProps) {
       ) {
         // Handle chapter range (e.g., "32-35" or "32:1-35:10")
         const [start, end] = passage.split(/[-–—]/);
+        if (!start || !end) return null;
 
         // Same chapter verse range (e.g., "20:1-30")
         if (start.includes(":") && !end.includes(":")) {
-          const [chapter, startVerse] = start.split(":").map(Number);
+          const [chapter, startVerseStr] = start.split(":");
+          if (!chapter || !startVerseStr) return null;
+
+          const chapterNum = Number(chapter);
+          const startVerse = Number(startVerseStr);
           const endVerse = Number(end);
+
+          if (isNaN(chapterNum) || isNaN(startVerse) || isNaN(endVerse))
+            return null;
 
           return {
             book: normalizedBook,
-            startChapter: chapter,
-            endChapter: chapter,
+            startChapter: chapterNum,
+            endChapter: chapterNum,
             startVerse,
             endVerse,
           };
         }
         // Cross-chapter verse references (e.g., "32:1-35:10")
         else if (start.includes(":") || end.includes(":")) {
-          const [startChapter, startVerse] = start.split(":").map(Number);
-          const [endChapter, endVerse] = end.includes(":")
-            ? end.split(":").map(Number)
-            : [startChapter, Number(end)];
+          const [startChapterStr, startVerseStr] = start.split(":");
+          if (!startChapterStr || !startVerseStr) return null;
+
+          const startChapter = Number(startChapterStr);
+          const startVerse = Number(startVerseStr);
+
+          let endChapter: number, endVerse: number;
+
+          if (end.includes(":")) {
+            const [endChapterStr, endVerseStr] = end.split(":");
+            if (!endChapterStr || !endVerseStr) return null;
+            endChapter = Number(endChapterStr);
+            endVerse = Number(endVerseStr);
+          } else {
+            endChapter = startChapter;
+            endVerse = Number(end);
+          }
+
+          if (
+            isNaN(startChapter) ||
+            isNaN(startVerse) ||
+            isNaN(endChapter) ||
+            isNaN(endVerse)
+          )
+            return null;
 
           return {
             book: normalizedBook,
@@ -81,63 +110,71 @@ export function BibleReference({ reference }: BibleReferenceProps) {
           };
         } else {
           // Chapter range only (e.g., "32-35")
+          const startChapter = Number(start);
+          const endChapter = Number(end);
+
+          if (isNaN(startChapter) || isNaN(endChapter)) return null;
+
           return {
             book: normalizedBook,
-            startChapter: parseInt(start),
-            endChapter: parseInt(end),
+            startChapter,
+            endChapter,
           };
         }
       } else if (passage.includes(":")) {
-        // Single chapter with verses (e.g., "32:1,3,5-7")
-        const [chapter, verseRange] = passage.split(":");
-        const chapterNum = parseInt(chapter);
+        const [chapterStr, verseRange] = passage.split(":");
+        if (!chapterStr || !verseRange) return null;
 
-        // Verse range within chapter (e.g., "32:1-7")
-        if (
-          verseRange.includes("-") ||
-          verseRange.includes("–") ||
-          verseRange.includes("—")
-        ) {
-          const [startVerse, endVerse] = verseRange.split(/[-–—]/);
-          const startVerseNum = parseInt(startVerse.trim());
-          const endVerseNum = parseInt(endVerse.trim());
+        const chapter = Number(chapterStr);
+        if (isNaN(chapter)) return null;
+
+        if (verseRange.match(/[-–—]/)) {
+          const [startVerseStr, endVerseStr] = verseRange.split(/[-–—]/);
+          if (!startVerseStr || !endVerseStr) return null;
+
+          const startVerse = Number(startVerseStr.trim());
+          const endVerse = Number(endVerseStr.trim());
+
+          if (isNaN(startVerse) || isNaN(endVerse)) return null;
 
           return {
             book: normalizedBook,
-            startChapter: chapterNum,
-            endChapter: chapterNum,
-            startVerse: startVerseNum,
-            endVerse: endVerseNum,
+            startChapter: chapter,
+            endChapter: chapter,
+            startVerse,
+            endVerse,
           };
-        }
-        // Comma-separated verses (e.g., "32:1,3,5")
-        else if (verseRange.includes(",")) {
-          const verses = verseRange.split(",").map((v) => parseInt(v.trim()));
-          const firstVerse = Math.min(...verses);
-          const lastVerse = Math.max(...verses);
+        } else if (verseRange.includes(",")) {
+          const verses = verseRange
+            .split(",")
+            .map((v) => Number(v.trim()))
+            ?.filter((v) => !isNaN(v));
+
+          if (verses.length === 0) return null;
 
           return {
             book: normalizedBook,
-            startChapter: chapterNum,
-            endChapter: chapterNum,
-            startVerse: firstVerse,
-            endVerse: lastVerse,
+            startChapter: chapter,
+            endChapter: chapter,
+            startVerse: Math.min(...verses),
+            endVerse: Math.max(...verses),
           };
-        }
-        // Single verse (e.g., "32:1")
-        else {
-          const verseNum = parseInt(verseRange.trim());
+        } else {
+          const verse = Number(verseRange.trim());
+          if (isNaN(verse)) return null;
+
           return {
             book: normalizedBook,
-            startChapter: chapterNum,
-            endChapter: chapterNum,
-            startVerse: verseNum,
-            endVerse: verseNum,
+            startChapter: chapter,
+            endChapter: chapter,
+            startVerse: verse,
+            endVerse: verse,
           };
         }
       } else {
-        // Single chapter only (e.g., "32")
-        const chapter = parseInt(passage);
+        const chapter = Number(passage);
+        if (isNaN(chapter)) return null;
+
         return {
           book: normalizedBook,
           startChapter: chapter,

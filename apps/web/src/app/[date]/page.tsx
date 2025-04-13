@@ -51,7 +51,7 @@ export default async function Page({
   }
 
   return (
-    <main className="container relative flex flex-col items-center justify-center min-h-screen gap-6 p-8 pb-16 md:px-24">
+    <main className="mx-auto container relative flex flex-col items-center justify-center min-h-screen gap-6 p-8 pb-16 md:px-24">
       <Header />
       <div className="flex-1">{<SelectedPost />}</div>
     </main>

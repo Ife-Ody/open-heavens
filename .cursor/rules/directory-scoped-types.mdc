@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+When defining types for a component that is a directory which contains logic relating to the component, it is better to create a types.ts file that will contain all the types needed for relating to the component.

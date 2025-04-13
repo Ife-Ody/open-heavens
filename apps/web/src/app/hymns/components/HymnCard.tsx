@@ -1,6 +1,10 @@
 import Link from "next/link";
 import YoutubeEmbed from "./YoutubeEmbed";
-import parse, { HTMLReactParserOptions, Element, Text } from "html-react-parser";
+import parse, {
+  HTMLReactParserOptions,
+  Element,
+  Text,
+} from "html-react-parser";
 
 interface HymnCardProps {
   hymn: {
@@ -20,7 +24,7 @@ function truncateHtml(html: string, maxLength: number): string {
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
       if (truncated) return <></>;
-      
+
       if (domNode instanceof Element && domNode.children) {
         return;
       }
@@ -34,7 +38,7 @@ function truncateHtml(html: string, maxLength: number): string {
         }
         textLength += domNode.data.length;
       }
-    }
+    },
   };
 
   return parse(html || "", options) as string;

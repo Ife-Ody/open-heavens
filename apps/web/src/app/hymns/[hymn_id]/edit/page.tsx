@@ -20,7 +20,10 @@ export default function EditHymnPage() {
 
   useEffect(() => {
     // Redirect if not on localhost
-    if (typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) {
+    if (
+      typeof window !== "undefined" &&
+      !window.location.hostname.includes("localhost")
+    ) {
       window.location.href = `/hymns/${params.hymn_id}`;
       return;
     }
@@ -110,9 +113,7 @@ export default function EditHymnPage() {
           />
         </div>
         <div>
-          <label className="block mb-1 text-sm font-medium">
-            Hymn Number
-          </label>
+          <label className="block mb-1 text-sm font-medium">Hymn Number</label>
           <input
             type="number"
             value={editedHymn.hymn_number}
@@ -126,9 +127,7 @@ export default function EditHymnPage() {
           />
         </div>
         <div>
-          <label className="block mb-1 text-sm font-medium">
-            YouTube URL
-          </label>
+          <label className="block mb-1 text-sm font-medium">YouTube URL</label>
           <input
             type="text"
             value={editedHymn.hymn_url}

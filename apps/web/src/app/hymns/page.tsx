@@ -23,7 +23,7 @@ export default async function HymnsListPage({ searchParams }: PageProps) {
   const hymns = defaultHymns;
 
   const filteredHymns = hymns
-    .filter((hymn) => {
+    ?.filter((hymn) => {
       const titleMatch = hymn.title
         .toLowerCase()
         .includes(searchTerm.toLowerCase());
