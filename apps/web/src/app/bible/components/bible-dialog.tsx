@@ -15,8 +15,8 @@ import {
 } from "@repo/ui/components/drawer";
 import { ScrollArea } from "@repo/ui/components/scroll-area";
 import { X } from "lucide-react";
-import { BibleReaderBody, BibleReaderFooter } from "src/app/bible/bible-reader";
-import { BibleHeader } from "./components/bible-header";
+import { BibleReaderBody, BibleReaderFooter } from "./bible-reader";
+import { BibleHeader } from "./bible-header";
 import { useMediaQuery } from "@repo/ui/hooks/use-media-query";
 
 export function BibleDialog({

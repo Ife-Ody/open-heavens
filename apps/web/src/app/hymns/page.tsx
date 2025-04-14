@@ -1,5 +1,5 @@
 import { constructMetadata } from "@repo/utils";
-import { hymns as defaultHymns } from "../content/hymns";
+import { hymns as defaultHymns } from "@/content/hymns";
 import HymnCard from "./components/HymnCard";
 import SearchHeader from "./components/SearchHeader";
 

@@ -1,9 +1,9 @@
-import { hymns } from "../src/app/content/hymns";
+import { hymns } from "@/content/hymns";
 import { promises as fs } from "fs";
 import path from "path";
 
 async function initHymnsJson() {
-  const hymnsPath = path.join(process.cwd(), "src/app/content/hymns.json");
+  const hymnsPath = path.join(process.cwd(), "src/content/hymns.json");
   const data = { hymns };
 
   try {

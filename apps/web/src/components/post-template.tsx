@@ -3,14 +3,14 @@ import { cn } from "@repo/ui/lib/utils";
 import { addDays, isSameDay } from "date-fns";
 import parse from "html-react-parser";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Post, posts } from "src/app/content/posts";
-import { useSettings } from "src/app/context/settings-context";
+import { Post, posts } from "@/content/posts";
+import { useSettings } from "@/app/context/settings-context";
 
 import { UserDisplay } from "@repo/ui/components/user-display";
 import Link from "next/link";
 import type { JSX } from "react";
-import { hymns } from "src/app/content/hymns";
-import { BibleTagger } from "../lib/bible-tagger";
+import { hymns } from "@/content/hymns";
+import { BibleTagger } from "@/lib/bible-tagger";
 import { BibleReference } from "./bible-reference";
 
 export function PostTemplate({ post }: { post: Post }) {
@@ -92,11 +92,7 @@ export function PostTemplate({ post }: { post: Post }) {
 
       {post.pointHeader && (
         <section aria-label="Key Points">
-          <h2
-            className={cn(
-              `text-[${fontSize + 2}px] font-bold uppercase`,
-            )}
-          >
+          <h2 className={cn(`text-[${fontSize + 2}px] font-bold uppercase`)}>
             {post.pointHeader}
           </h2>
           {post.pointText && (

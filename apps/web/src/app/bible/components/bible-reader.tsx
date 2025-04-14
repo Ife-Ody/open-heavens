@@ -4,9 +4,9 @@ import { Button } from "@repo/ui/components/button";
 import { Skeleton } from "@repo/ui/components/skeleton";
 import { cn } from "@repo/ui/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useBibleDialog } from "../context/bible-context";
-import { useSettings } from "../context/settings-context";
-import { BibleHeader } from "./components/bible-header";
+import { useBibleDialog } from "@/app/context/bible-context";
+import { useSettings } from "@/app/context/settings-context";
+import { BibleHeader } from "./bible-header";
 
 export function BibleReader({ className }: { className?: string }) {
   return (

@@ -15,8 +15,8 @@ import {
 } from "@repo/ui/components/select";
 import { cn } from "@repo/ui/lib/utils";
 import { useMemo } from "react";
-import { useBibleDialog } from "../../context/bible-context";
-import { useSettings } from "../../context/settings-context";
+import { useBibleDialog } from "@/app/context/bible-context";
+import { useSettings } from "@/app/context/settings-context";
 
 const versions = ["kjv", "net", "asv"] as const;
 

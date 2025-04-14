@@ -1,5 +1,5 @@
 import { constructMetadata } from "@repo/utils";
-import { BibleReader } from "./bible-reader";
+import { BibleReader } from "./components/bible-reader";
 
 export const metadata = constructMetadata({
   title: "Open Heavens App - Bible",

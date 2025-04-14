@@ -1,6 +1,6 @@
 import { SelectedPost } from "@/components/post-template";
 import { isToday } from "date-fns";
-import { posts } from "src/app/content/posts";
+import { posts } from "@/content/posts";
 import { Header } from "./Header";
 
 import { constructMetadata, truncate } from "@repo/utils";

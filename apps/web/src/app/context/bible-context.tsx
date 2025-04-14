@@ -2,7 +2,7 @@
 
 import { Bible, BibleVerse } from "@repo/bible";
 import { createContext, useContext, useMemo, useState } from "react";
-import { BibleDialog } from "../bible/bible-dialog";
+import { BibleDialog } from "../bible/components/bible-dialog";
 interface BibleContextType {
   bible: Bible;
   loading: boolean;

@@ -1,7 +1,7 @@
 import { SelectedPost } from "@/components/post-template";
 import { isSameDay, isValid } from "date-fns";
 import { notFound } from "next/navigation";
-import { posts } from "src/app/content/posts";
+import { posts } from "@/content/posts";
 
 import { constructMetadata, truncate } from "@repo/utils";
 import { Header } from "../Header";

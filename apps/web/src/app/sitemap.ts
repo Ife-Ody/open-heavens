@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { HOME_DOMAIN } from "@repo/utils";
-import { posts } from "./content/posts";
-import { hymns } from "./content/hymns";
+import { posts } from "@/content/posts";
+import { hymns } from "@/content/hymns";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

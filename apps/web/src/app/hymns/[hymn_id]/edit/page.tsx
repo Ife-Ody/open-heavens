@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { hymns as defaultHymns } from "../../../content/hymns";
+import { hymns as defaultHymns } from "@/content/hymns";
 import { useParams } from "next/navigation";
 
 type Params = {

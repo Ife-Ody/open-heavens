@@ -1,4 +1,4 @@
-import { hymns } from "src/app/content/hymns";
+import { hymns } from "@/content/hymns";
 import { constructMetadata, truncate } from "@repo/utils";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
