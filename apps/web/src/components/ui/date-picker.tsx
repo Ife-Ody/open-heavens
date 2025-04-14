@@ -1,7 +1,6 @@
 "use client";
 
 import { addDays, format } from "date-fns";
-import { cn } from "@/lib/utils";
 import { Button } from "@repo/ui/components/button";
 import { Calendar } from "@repo/ui/components/calendar";
 import {
@@ -11,6 +10,7 @@ import {
 } from "@repo/ui/components/popover";
 import { CalendarIcon } from "lucide-react";
 import { useSettings } from "src/app/context/settings-context";
+import { cn } from "@repo/ui/lib/utils";
 
 export function DatePicker() {
   const settings = useSettings();

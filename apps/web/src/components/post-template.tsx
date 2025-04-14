@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/lib/utils";
+import { cn } from "@repo/ui/lib/utils";
 import { addDays, isSameDay } from "date-fns";
 import parse from "html-react-parser";
 import { ChevronLeft, ChevronRight } from "lucide-react";

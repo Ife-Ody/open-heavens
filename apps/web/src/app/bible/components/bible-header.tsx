@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@repo/ui/components/select";
-import { cn } from "@repo/utils";
+import { cn } from "@repo/ui/lib/utils";
 import { useMemo } from "react";
 import { useBibleDialog } from "../../context/bible-context";
 import { useSettings } from "../../context/settings-context";

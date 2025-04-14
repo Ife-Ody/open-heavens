@@ -1,4 +1,3 @@
-export * from "./cn";
 export * from "./construct-metadata";
 export * from "./truncate";
 export * from "./urls";
