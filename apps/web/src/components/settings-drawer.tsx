@@ -27,10 +27,10 @@ export const SettingsDrawer = () => {
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>Change Settings</DrawerTitle>
+          <DrawerTitle className="text-center">Change Settings</DrawerTitle>
           <div className="flex flex-col items-center justify-center gap-2 py-6">
             <div>Font Size</div>
-            <FontsizeSelector></FontsizeSelector>
+            <FontsizeSelector />
           </div>
           <div className="flex flex-col items-center justify-center gap-2 py-6">
             <div>Theme</div>

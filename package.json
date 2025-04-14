@@ -14,7 +14,8 @@
     },
     "devDependencies": {
         "@repo/eslint-config": "*",
-        "@repo/typescript-config": "*"
+        "@repo/typescript-config": "*",
+        "@typescript-eslint/parser": "^8.29.1"
     },
     "engines": {
         "node": ">=20"

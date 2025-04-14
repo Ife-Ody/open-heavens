@@ -45,7 +45,7 @@ const ThemeToggle = function ({ iconOnly = true }: { iconOnly?: boolean }) {
           </Button>
         )}
       </DropdownMenuTrigger>
-      <DropdownMenuContent side="right" className="w-48" align="end">
+      <DropdownMenuContent className="w-48" align="end" collisionPadding={20}>
         <DropdownMenuItem
           className="font-medium"
           onClick={() => setTheme("light")}
