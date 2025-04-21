@@ -1,0 +1,35 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Component Structure and Practices
+
+## Component Organization
+- For components used across multiple pages, place them in `/src/components`
+- Page-specific components should be co-located with their pages
+- Use subdirectories to group related components
+
+## Component Naming
+- Use kebab-case for directories/files containing components, component files and function names (e.g., `ui/button-group/`)
+
+## Component Types
+- Follow TypeScript best practices with interfaces for props
+
+## Component Structure
+- Server vs Client Components:
+  - Default to Server Components unless client-side interactivity is needed
+  - Add `"use client"` directive only when necessary
+  - Keep client components small and focused
+
+- Props definition:
+  ```tsx
+  interface ComponentProps {
+    children?: React.ReactNode;
+    // other props
+  }
+  
+  export function Component({ children, ...props }: ComponentProps) {
+    // component logic
+  }
+  ```

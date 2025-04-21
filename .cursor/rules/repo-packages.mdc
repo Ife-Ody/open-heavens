@@ -1,0 +1,41 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Repo Packages
+
+This monorepo contains several shared packages with specific purposes:
+
+## @repo/ui
+- Contains shared UI components used across apps
+- Built with React and Tailwind CSS
+- Use these components to maintain design consistency
+
+## @repo/utils
+- Contains utility functions and helpers
+- Includes date formatting, string manipulation, and other common utilities
+- Use these utilities rather than reimplementing common functionality
+
+## @repo/bible
+- Bible-related utilities and data
+- Provides access to Bible references, verses, and search functionality
+- Used for handling Bible content in the applications
+
+## @repo/eslint-config
+- Shared ESLint configuration
+- Ensures consistent code style across the monorepo
+- Do not modify unless updating linting rules for the entire project
+
+## @repo/typescript-config
+- Shared TypeScript configuration
+- Provides base tsconfig settings for all projects
+- Ensures consistent TypeScript behavior across the monorepo
+
+## Importing from Packages
+- Import from packages using the package name:
+  ```tsx
+  import { formatDate } from "@repo/utils";
+  import { Button } from "@repo/ui";
+  import { getVerse } from "@repo/bible";
+  ```

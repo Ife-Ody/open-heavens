@@ -1,9 +1,45 @@
 ---
 description: 
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
-
-# Your rule content
+# Directory-Scoped Types
 
 When defining types for a component that is a directory which contains logic relating to the component, it is better to create a types.ts file that will contain all the types needed for relating to the component.
+
+## Examples
+
+For a component with its own directory:
+
+```
+/components
+  /user-profile
+    /index.tsx       # Main component
+    /user-avatar.tsx # Sub-component
+    /user-info.tsx   # Sub-component
+    /types.ts        # Contains all types for the component
+```
+
+Example types.ts content:
+```tsx
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+}
+
+export interface UserProfileProps {
+  user: User;
+  showAvatar?: boolean;
+  editable?: boolean;
+}
+
+export interface UserAvatarProps {
+  src?: string;
+  alt: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+```
+
+This keeps all related types in one place and makes them easier to maintain and import.

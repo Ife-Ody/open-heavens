@@ -1,0 +1,45 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Data Fetching Patterns
+
+This project follows Next.js App Router data fetching best practices.
+
+## Server Component Data Fetching
+- Fetch data directly in Server Components where possible
+- Use async/await pattern for data fetching in Server Components
+- Cache responses with appropriate cache settings
+
+Example:
+```tsx
+// In a Server Component
+export default async function Page() {
+  const data = await fetchData();
+  return <Component data={data} />;
+}
+```
+
+## API Routes
+- Create API routes in `/app/api` directory
+- Use Route Handlers for API endpoints
+- Follow RESTful patterns
+
+Example:
+```tsx
+// In /app/api/resource/route.ts
+export async function GET() {
+  const data = await getData();
+  return Response.json(data);
+}
+```
+
+## Client-Side Data Fetching
+- Use SWR for client-side data fetching
+- Place client-side fetching logic in custom hooks
+- Handle loading and error states
+
+## Bible and Devotional Content
+- Bible content is accessed through the `@repo/bible` package
+- Content is typically pre-fetched at build time where possible to optimize performance

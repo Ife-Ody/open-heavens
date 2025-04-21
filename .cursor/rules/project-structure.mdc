@@ -1,0 +1,24 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Project Structure
+
+This is a monorepo project built with Next.js, React, and TypeScript. It uses Turborepo for managing the monorepo setup.
+
+- **/apps**: Contains the main applications
+  - **/web**: The main web application built with Next.js App Router
+    - **/src/app**: Next.js app router structure (pages, layouts, etc.)
+    - **/src/components**: React components used across the application
+    - **/src/lib**: Utility functions and configuration
+    - **/src/content**: Content-related data and utilities
+
+- **/packages**: Shared packages used across applications
+  - **/ui**: Shared UI components
+  - **/utils**: Common utility functions
+  - **/eslint-config**: Shared ESLint configuration
+  - **/typescript-config**: Shared TypeScript configuration
+  - **/bible**: Bible-related utilities and data
+
+The project follows Next.js App Router conventions with a focus on Server Components where possible.

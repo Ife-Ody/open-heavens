@@ -1,0 +1,32 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# UI Components
+
+This project uses a mix of custom UI components and shared components from `@repo/ui` package.
+
+## Using Shared UI Components
+- Import UI components from the shared package:
+  ```tsx
+  import { Button } from "@repo/ui";
+  ```
+- Prefer shared components over custom ones for consistency
+
+## Custom UI Components
+- Place custom, reusable UI components in `/src/components/ui`
+- Follow the `@repo/ui` component patterns for consistency
+- Use composition over inheritance for component variants
+
+## Styling
+- Use Tailwind CSS for styling components
+- For complex components, consider using a combination of:
+  - Tailwind classes
+  - CSS variables for theming
+  - CSS Modules for component-specific styles that are hard to express in Tailwind
+  
+## Responsive Design
+- Design mobile-first using Tailwind breakpoints
+- Test components at various screen sizes
+- Use fluid typography and spacing where appropriate
