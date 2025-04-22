@@ -1,5 +1,6 @@
 import parse, { DOMNode, Element, Text } from "html-react-parser";
 import React, { ReactElement } from "react";
+import { getBibleReferenceRegex, extractBibleReferences } from "./bible-utils";
 
 interface BibleTaggerConfig {
   element?: string;
@@ -28,38 +29,8 @@ export class BibleTagger {
     }
   }
 
-  private getBooks(): string {
-    if (this.translation === "kjv") {
-      return (
-        "Genesis|Gen|Ge|Gn|Exodus|Ex|Exod?|Leviticus|Lev?|Lv|Levit?|Numbers|" +
-        "Nu|Nm|Hb|Nmb|Numb?|Deuteronomy|Deut?|De|Dt|Joshua|Josh?|Jsh|Judges|Jdgs?|Judg?|Jd|Ruth|Ru|Rth|" +
-        "Samuel|Sam?|Sml|Kings|Kngs?|Kgs|Kin?|Chronicles|Chr?|Chron|Ezra|Ez|" +
-        "Nehemiah|Nehem?|Ne|Esther|Esth?|Es|Job|Jb|Psalms?|Psa?|Pss|Psm|Proverbs?|Prov?|Prv|Pr|" +
-        "Ecclesiastes|Eccl?|Eccles|Ecc?|Songs?ofSolomon|Song?|So|Songs|Isaiah|Isa|Is|Jeremiah|" +
-        "Jer?|Jr|Jerem|Lamentations|Lam|Lament?|Ezekiel|Ezek?|Ezk|Daniel|Dan?|Dn|Hosea|" +
-        "Hos?|Joel|Jo|Amos|Am|Obadiah|Obad?|Ob|Jonah|Jon|Jnh|Micah|Mi?c|Nahum|Nah?|" +
-        "Habakkuk|Ha?b|Habak|Zephaniah|Ze?ph?|Haggai|Ha?g|Hagg|Zechariah|Zech?|Ze?c|" +
-        "Malachi|Malac?|Ma?l|Mat{1,2}hew|Mat?|Matt?|Mt|Mark?|Mrk?|Mk|Luke|Lu?k|Lk|John?|Jhn|Jo|Jn|" +
-        "Acts?|Ac|Romans|Rom?|Rm|Corinthians|Cor?|Corin|Galatians|Gal?|Galat|" +
-        "Ephesians|Eph|Ephes|Philippians|Phili?|Php|Pp|Colossians|Col?|Colos|" +
-        "Thessalonians|Thess?|Th|Timothy|Tim?|Titus|Tts|Tit?|Philemon|Phm?|Philem|Pm|" +
-        "Hebrews|Hebr?|James|Jam|Jms?|Jas|Peter|Pete?|Pe|Pt|Jude?|Jd|Ju|Revelations?|Rev?|Revel"
-      );
-    }
-    return "";
-  }
-
   public tagText(text: string): string {
-    const vols = "I+|1st|2nd|3rd|First|Second|Third|1|2|3";
-    const books = this.getBooks();
-    
-    // More comprehensive regex pattern for Bible references
-    const bookPattern = `((?:(${vols})\\s?)?(${books})\\.?\\s?)`;
-    
-    // This pattern matches chapter:verse with various separators and combinations
-    const versePattern = `\\d+(?::\\d+(?:(?:\\s*[-–—]\\s*\\d+(?::\\d+)?)|(?:\\s*,\\s*\\d+))*)?`;
-    
-    const regex = new RegExp(`\\b${bookPattern}${versePattern}\\b`, "gm");
+    const regex = getBibleReferenceRegex();
 
     return text.replace(regex, (match) => {
       const reference = encodeURIComponent(match);
@@ -68,36 +39,15 @@ export class BibleTagger {
   }
 
   public getReferenceRegex(): RegExp {
-    const vols = "I+|1st|2nd|3rd|First|Second|Third|1|2|3";
-    const books = this.getBooks();
-    
-    // More comprehensive regex pattern for Bible references
-    const bookPattern = `((?:(${vols})\\s?)?(${books})\\.?\\s?)`;
-    
-    // This pattern matches chapter:verse with various separators and combinations
-    const versePattern = `\\d+(?::\\d+(?:(?:\\s*[-–—]\\s*\\d+(?::\\d+)?)|(?:\\s*,\\s*\\d+))*)?`;
-    
-    return new RegExp(`\\b${bookPattern}${versePattern}\\b`, "gm");
+    return getBibleReferenceRegex(true); // true for capturing groups
   }
 
   public findReferences(text: string): string[] {
-    const regex = this.getReferenceRegex();
-    const matches = text.match(regex);
-    return matches ? [...new Set(matches)] : [];
+    return extractBibleReferences(text);
   }
 
   public parseTextToSegments(text: string): TextSegment[] {
-    const vols = "I+|1st|2nd|3rd|First|Second|Third|1|2|3";
-    const books = this.getBooks();
-    
-    // More comprehensive regex pattern for Bible references
-    const bookPattern = `((?:(${vols})\\s?)?(${books})\\.?\\s?)`;
-    
-    // This pattern matches chapter:verse with various separators and combinations
-    const versePattern = `\\d+(?:(?:\\.:|:)\\d+(?:(?:\\s*[-–—]\\s*\\d+(?:(?:\\.:|:)\\d+)?)|(?:\\s*,\\s*\\d+))*)?`;
-    
-    const regex = new RegExp(`\\b${bookPattern}${versePattern}\\b`, "gm");
-
+    const regex = this.getReferenceRegex();
     const segments: TextSegment[] = [];
     let lastIndex = 0;
 
