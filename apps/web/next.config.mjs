@@ -22,6 +22,11 @@ const nextConfig = {
         source: "/_proxy/posthog/ingest/decide",
         destination: "https://eu.i.posthog.com/decide",
       },
+      // Redirect hymn URLs to hymns
+      {
+        source: "/hymn/:id",
+        destination: "/hymns/:id",
+      },
     ];
   },
   skipTrailingSlashRedirect: true,
