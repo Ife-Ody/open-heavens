@@ -1,7 +1,7 @@
 /**
  * Sunday School lesson type
  */
-export type LessonType = 'adult' | 'youth' | 'children';
+export type LessonType = "adult" | "youth" | "children";
 
 /**
  * Sunday School lesson interface

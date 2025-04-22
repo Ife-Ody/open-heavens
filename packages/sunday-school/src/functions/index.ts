@@ -15,7 +15,7 @@ export function formatLessonTitle(title: string): string {
  * @returns The appropriate lesson type
  */
 export function getLessonTypeByAge(age: number): string {
-  if (age < 13) return 'children';
-  if (age < 18) return 'youth';
-  return 'adult';
-} 
+  if (age < 13) return "children";
+  if (age < 18) return "youth";
+  return "adult";
+}

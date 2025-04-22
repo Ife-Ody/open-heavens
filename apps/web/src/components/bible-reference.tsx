@@ -2,7 +2,11 @@
 
 import { useMemo } from "react";
 import { useBibleDialog } from "src/app/context/bible-context";
-import { ParsedReference, parseBibleReference, extractSelectedVerses } from "src/lib/bible-utils";
+import {
+  ParsedReference,
+  parseBibleReference,
+  extractSelectedVerses,
+} from "src/lib/bible-utils";
 
 interface BibleReferenceProps {
   reference: string;

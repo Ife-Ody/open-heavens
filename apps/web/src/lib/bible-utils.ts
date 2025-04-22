@@ -81,18 +81,20 @@ export interface ParsedReference {
  * @param includeCapture Whether to include capturing groups in the regex
  * @returns RegExp that matches Bible references
  */
-export function getBibleReferenceRegex(includeCapture: boolean = false): RegExp {
+export function getBibleReferenceRegex(
+  includeCapture: boolean = false,
+): RegExp {
   const vols = VOLUME_PREFIXES;
   const books = BIBLE_BOOKS_PATTERN;
-  
+
   // Pattern to match book name with optional volume prefix
-  const bookPattern = includeCapture 
+  const bookPattern = includeCapture
     ? `((?:(${vols})\\s?)?(${books})\\.?\\s?)`
     : `(?:(?:${vols})\\s?)?(?:${books})\\.?\\s?`;
-  
+
   // Pattern to match chapter:verse with various separators and combinations
   const versePattern = `\\d+(?::\\d+(?:(?:\\s*[-–—]\\s*\\d+(?::\\d+)?)|(?:\\s*,\\s*\\d+))*)?`;
-  
+
   return new RegExp(`\\b${bookPattern}${versePattern}\\b`, "gm");
 }
 
@@ -109,7 +111,8 @@ export function parseBibleReference(reference: string): ParsedReference | null {
     const normalizedReference = reference.trim().replace(/\s+/g, " ");
 
     // Step 1: Split the reference into book and passage
-    const bookPattern = /^((?:\d+\s+)?[A-Za-z]+(?:(?:\s+(?:of|and|the|[A-Za-z]+))*)?)\s+(.+)$/i;
+    const bookPattern =
+      /^((?:\d+\s+)?[A-Za-z]+(?:(?:\s+(?:of|and|the|[A-Za-z]+))*)?)\s+(.+)$/i;
     const matches = normalizedReference.match(bookPattern);
 
     if (!matches) {
@@ -125,28 +128,32 @@ export function parseBibleReference(reference: string): ParsedReference | null {
 
     // Handle comma-separated verse references (e.g. "3:16, 18, 20")
     if (passage.includes(",")) {
-      const parts = passage.split(",").map(p => p.trim());
+      const parts = passage.split(",").map((p) => p.trim());
       const allVerses: number[] = [];
       let mainChapter: number | null = null;
-      
+
       // Process each comma-separated part
       for (const part of parts) {
         if (part.includes(":")) {
           // This part has a chapter:verse format
           const [chapterStr, verseStr] = part.split(":");
           const chapter = Number(chapterStr);
-          
+
           // Store the chapter from the first part for parts that only have verse numbers
           if (mainChapter === null) {
             mainChapter = chapter;
           }
-          
-          if (verseStr.includes("-") || verseStr.includes("–") || verseStr.includes("—")) {
+
+          if (
+            verseStr.includes("-") ||
+            verseStr.includes("–") ||
+            verseStr.includes("—")
+          ) {
             // Handle verse ranges (e.g., "5-7")
             const [startVerseStr, endVerseStr] = verseStr.split(/[-–—]/);
             const startVerse = Number(startVerseStr.trim());
             const endVerse = Number(endVerseStr.trim());
-            
+
             if (!isNaN(startVerse) && !isNaN(endVerse)) {
               for (let v = startVerse; v <= endVerse; v++) {
                 allVerses.push(v);
@@ -159,12 +166,16 @@ export function parseBibleReference(reference: string): ParsedReference | null {
               allVerses.push(verse);
             }
           }
-        } else if (part.includes("-") || part.includes("–") || part.includes("—")) {
+        } else if (
+          part.includes("-") ||
+          part.includes("–") ||
+          part.includes("—")
+        ) {
           // Just a verse range without chapter (e.g., "5-7")
           const [startVerseStr, endVerseStr] = part.split(/[-–—]/);
           const startVerse = Number(startVerseStr.trim());
           const endVerse = Number(endVerseStr.trim());
-          
+
           if (!isNaN(startVerse) && !isNaN(endVerse) && mainChapter !== null) {
             for (let v = startVerse; v <= endVerse; v++) {
               allVerses.push(v);
@@ -178,7 +189,7 @@ export function parseBibleReference(reference: string): ParsedReference | null {
           }
         }
       }
-      
+
       if (allVerses.length > 0 && mainChapter !== null) {
         return {
           book: normalizedBook,
@@ -186,13 +197,17 @@ export function parseBibleReference(reference: string): ParsedReference | null {
           endChapter: mainChapter,
           startVerse: Math.min(...allVerses),
           endVerse: Math.max(...allVerses),
-          selectedVerses: allVerses
+          selectedVerses: allVerses,
         };
       }
     }
-    
+
     // Handle different passage formats
-    if (passage.includes("-") || passage.includes("–") || passage.includes("—")) {
+    if (
+      passage.includes("-") ||
+      passage.includes("–") ||
+      passage.includes("—")
+    ) {
       // Handle chapter range (e.g., "32-35" or "32:1-35:10")
       const [start, end] = passage.split(/[-–—]/);
       if (!start || !end) return null;
@@ -206,7 +221,8 @@ export function parseBibleReference(reference: string): ParsedReference | null {
         const startVerse = Number(startVerseStr);
         const endVerse = Number(end);
 
-        if (isNaN(chapterNum) || isNaN(startVerse) || isNaN(endVerse)) return null;
+        if (isNaN(chapterNum) || isNaN(startVerse) || isNaN(endVerse))
+          return null;
 
         return {
           book: normalizedBook,
@@ -321,34 +337,39 @@ export function parseBibleReference(reference: string): ParsedReference | null {
  * @param parsedRef Already parsed reference (optional, to avoid parsing twice)
  * @returns Array of verse numbers
  */
-export function extractSelectedVerses(reference: string, parsedRef?: ParsedReference | null): number[] {
+export function extractSelectedVerses(
+  reference: string,
+  parsedRef?: ParsedReference | null,
+): number[] {
   // If we already have the parsed reference with selected verses, return them
   if (parsedRef?.selectedVerses) {
     return parsedRef.selectedVerses;
   }
-  
+
   // Otherwise, parse the reference
   const parsed = parsedRef || parseBibleReference(reference);
   if (!parsed) return [];
-  
+
   // If we have a straightforward verse range
   if (parsed.startVerse !== undefined && parsed.endVerse !== undefined) {
     // Check if the original reference contains commas, which indicates specific verses
     if (reference.includes(",")) {
       const verses: number[] = [];
-      
+
       // Extract the verse part from the reference (everything after the book and chapter)
       const bookAndChapterMatch = reference.match(/^(.*?\d+):/);
       if (bookAndChapterMatch) {
         const versePart = reference.substring(bookAndChapterMatch[0].length);
-        
+
         // Split by commas and process each part
-        const parts = versePart.split(",").map(p => p.trim());
-        
+        const parts = versePart.split(",").map((p) => p.trim());
+
         for (const part of parts) {
           if (part.match(/[-–—]/)) {
             // Handle ranges like "5-7"
-            const [start, end] = part.split(/[-–—]/).map(v => parseInt(v.trim(), 10));
+            const [start, end] = part
+              .split(/[-–—]/)
+              .map((v) => parseInt(v.trim(), 10));
             if (!isNaN(start) && !isNaN(end)) {
               for (let v = start; v <= end; v++) {
                 verses.push(v);
@@ -363,12 +384,12 @@ export function extractSelectedVerses(reference: string, parsedRef?: ParsedRefer
           }
         }
       }
-      
+
       if (verses.length > 0) {
         return verses;
       }
     }
-    
+
     // For non-comma references or as fallback
     const startVerse = parsed.startVerse;
     const endVerse = parsed.endVerse;
@@ -378,7 +399,7 @@ export function extractSelectedVerses(reference: string, parsedRef?: ParsedRefer
     }
     return verses;
   }
-  
+
   return [];
 }
 

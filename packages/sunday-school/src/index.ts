@@ -1,7 +1,7 @@
-import { mistral } from '@ai-sdk/mistral';
-import { CoreMessage, streamText } from 'ai';
-import dotenv from 'dotenv';
-import * as readline from 'node:readline/promises';
+import { mistral } from "@ai-sdk/mistral";
+import { CoreMessage, streamText } from "ai";
+import dotenv from "dotenv";
+import * as readline from "node:readline/promises";
 
 dotenv.config();
 
@@ -14,24 +14,24 @@ const messages: CoreMessage[] = [];
 
 async function main() {
   while (true) {
-    const userInput = await terminal.question('You: ');
+    const userInput = await terminal.question("You: ");
 
-    messages.push({ role: 'user', content: userInput });
+    messages.push({ role: "user", content: userInput });
 
     const result = streamText({
-      model: mistral('mistral-small-latest'),
+      model: mistral("mistral-small-latest"),
       messages,
     });
 
-    let fullResponse = '';
-    process.stdout.write('\nAssistant: ');
+    let fullResponse = "";
+    process.stdout.write("\nAssistant: ");
     for await (const delta of result.textStream) {
       fullResponse += delta;
       process.stdout.write(delta);
     }
-    process.stdout.write('\n\n');
+    process.stdout.write("\n\n");
 
-    messages.push({ role: 'assistant', content: fullResponse });
+    messages.push({ role: "assistant", content: fullResponse });
   }
 }
 
