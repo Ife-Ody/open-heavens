@@ -43,7 +43,74 @@ export function BibleReference({ reference }: BibleReferenceProps) {
       // Normalize the book name
       const normalizedBook = normalizeBookName(book);
 
-      // Handle different passage formats
+      // Handle comma-separated verse references (e.g. "3:16, 18, 20")
+      if (passage.includes(",")) {
+        const parts = passage.split(",").map(p => p.trim());
+        const allVerses: number[] = [];
+        let mainChapter: number | null = null;
+        
+        // Process each comma-separated part
+        for (const part of parts) {
+          if (part.includes(":")) {
+            // This part has a chapter:verse format
+            const [chapterStr, verseStr] = part.split(":");
+            const chapter = Number(chapterStr);
+            
+            // Store the chapter from the first part for parts that only have verse numbers
+            if (mainChapter === null) {
+              mainChapter = chapter;
+            }
+            
+            if (verseStr.includes("-") || verseStr.includes("–") || verseStr.includes("—")) {
+              // Handle verse ranges (e.g., "5-7")
+              const [startVerseStr, endVerseStr] = verseStr.split(/[-–—]/);
+              const startVerse = Number(startVerseStr.trim());
+              const endVerse = Number(endVerseStr.trim());
+              
+              if (!isNaN(startVerse) && !isNaN(endVerse)) {
+                for (let v = startVerse; v <= endVerse; v++) {
+                  allVerses.push(v);
+                }
+              }
+            } else {
+              // Single verse
+              const verse = Number(verseStr);
+              if (!isNaN(verse)) {
+                allVerses.push(verse);
+              }
+            }
+          } else if (part.includes("-") || part.includes("–") || part.includes("—")) {
+            // Just a verse range without chapter (e.g., "5-7")
+            const [startVerseStr, endVerseStr] = part.split(/[-–—]/);
+            const startVerse = Number(startVerseStr.trim());
+            const endVerse = Number(endVerseStr.trim());
+            
+            if (!isNaN(startVerse) && !isNaN(endVerse) && mainChapter !== null) {
+              for (let v = startVerse; v <= endVerse; v++) {
+                allVerses.push(v);
+              }
+            }
+          } else {
+            // Just a verse number
+            const verse = Number(part);
+            if (!isNaN(verse) && mainChapter !== null) {
+              allVerses.push(verse);
+            }
+          }
+        }
+        
+        if (allVerses.length > 0 && mainChapter !== null) {
+          return {
+            book: normalizedBook,
+            startChapter: mainChapter,
+            endChapter: mainChapter,
+            startVerse: Math.min(...allVerses),
+            endVerse: Math.max(...allVerses),
+          };
+        }
+      }
+      
+      // Handle different passage formats (the original logic for non-comma cases)
       if (
         passage.includes("-") ||
         passage.includes("–") ||
@@ -144,21 +211,6 @@ export function BibleReference({ reference }: BibleReferenceProps) {
             startVerse,
             endVerse,
           };
-        } else if (verseRange.includes(",")) {
-          const verses = verseRange
-            .split(",")
-            .map((v) => Number(v.trim()))
-            ?.filter((v) => !isNaN(v));
-
-          if (verses.length === 0) return null;
-
-          return {
-            book: normalizedBook,
-            startChapter: chapter,
-            endChapter: chapter,
-            startVerse: Math.min(...verses),
-            endVerse: Math.max(...verses),
-          };
         } else {
           const verse = Number(verseRange.trim());
           if (isNaN(verse)) return null;
@@ -200,16 +252,62 @@ export function BibleReference({ reference }: BibleReferenceProps) {
       parsedReference.startVerse !== undefined &&
       parsedReference.endVerse !== undefined
     ) {
-      const startVerse = parsedReference.startVerse;
-      const endVerse = parsedReference.endVerse;
+      // Check if the original reference contains commas, which indicates specific verses
+      if (reference.includes(",")) {
+        const verses: number[] = [];
+        
+        // Extract the verse part from the reference (everything after the book and chapter)
+        const bookAndChapterMatch = reference.match(/^(.*?\d+):/);
+        if (bookAndChapterMatch) {
+          const versePart = reference.substring(bookAndChapterMatch[0].length);
+          
+          // Split by commas and process each part
+          const parts = versePart.split(",").map(p => p.trim());
+          
+          for (const part of parts) {
+            if (part.match(/[-–—]/)) {
+              // Handle ranges like "5-7"
+              const [start, end] = part.split(/[-–—]/).map(v => parseInt(v.trim(), 10));
+              if (!isNaN(start) && !isNaN(end)) {
+                for (let v = start; v <= end; v++) {
+                  verses.push(v);
+                }
+              }
+            } else {
+              // Handle single verses
+              const verse = parseInt(part, 10);
+              if (!isNaN(verse)) {
+                verses.push(verse);
+              }
+            }
+          }
+        }
+        
+        if (verses.length > 0) {
+          setSelectedVerses(verses);
+        } else {
+          // Fallback to the original calculation if parsing fails
+          const startVerse = parsedReference.startVerse;
+          const endVerse = parsedReference.endVerse;
+          const verses = [];
+          for (let v = startVerse; v <= endVerse; v++) {
+            verses.push(v);
+          }
+          setSelectedVerses(verses);
+        }
+      } else {
+        // Handle non-comma references (ranges like "5-7")
+        const startVerse = parsedReference.startVerse;
+        const endVerse = parsedReference.endVerse;
 
-      // Create an array with all verses in the range
-      const verses = [];
-      for (let v = startVerse; v <= endVerse; v++) {
-        verses.push(v);
+        // Create an array with all verses in the range
+        const verses = [];
+        for (let v = startVerse; v <= endVerse; v++) {
+          verses.push(v);
+        }
+
+        setSelectedVerses(verses);
       }
-
-      setSelectedVerses(verses);
     } else {
       setSelectedVerses([]);
     }

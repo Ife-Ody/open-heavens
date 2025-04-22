@@ -52,10 +52,14 @@ export class BibleTagger {
   public tagText(text: string): string {
     const vols = "I+|1st|2nd|3rd|First|Second|Third|1|2|3";
     const books = this.getBooks();
-    const verse = "\\d+(?::\\d+)?(?:\\s?[-–—&,]\\s?\\d+(?::\\d+)?)*";
-    const passage = `((\\d+:\\d+[-–—]\\d+:\\d+)|(\\d+:\\d+[-–—]\\d+)|(\\d+[-–—]\\d+(?::\\d+)?)|(\\d+:\\d+)|(\\d+))`;
-    const book = `((?:(${vols})\\s?)?(${books})\\.?\\s?)`;
-    const regex = new RegExp(`\\b${book}${passage}`, "gm");
+    
+    // More comprehensive regex pattern for Bible references
+    const bookPattern = `((?:(${vols})\\s?)?(${books})\\.?\\s?)`;
+    
+    // This pattern matches chapter:verse with various separators and combinations
+    const versePattern = `\\d+(?::\\d+(?:(?:\\s*[-–—]\\s*\\d+(?::\\d+)?)|(?:\\s*,\\s*\\d+))*)?`;
+    
+    const regex = new RegExp(`\\b${bookPattern}${versePattern}\\b`, "gm");
 
     return text.replace(regex, (match) => {
       const reference = encodeURIComponent(match);
@@ -66,10 +70,14 @@ export class BibleTagger {
   public getReferenceRegex(): RegExp {
     const vols = "I+|1st|2nd|3rd|First|Second|Third|1|2|3";
     const books = this.getBooks();
-    const verse = "\\d+(?::\\d+)?(?:\\s?[-–—&,]\\s?\\d+(?::\\d+)?)*";
-    const passage = `((\\d+:\\d+[-–—]\\d+:\\d+)|(\\d+:\\d+[-–—]\\d+)|(\\d+[-–—]\\d+(?::\\d+)?)|(\\d+:\\d+)|(\\d+))`;
-    const book = `((?:(${vols})\\s?)?(${books})\\.?\\s?)`;
-    return new RegExp(`\\b${book}${passage}`, "gm");
+    
+    // More comprehensive regex pattern for Bible references
+    const bookPattern = `((?:(${vols})\\s?)?(${books})\\.?\\s?)`;
+    
+    // This pattern matches chapter:verse with various separators and combinations
+    const versePattern = `\\d+(?::\\d+(?:(?:\\s*[-–—]\\s*\\d+(?::\\d+)?)|(?:\\s*,\\s*\\d+))*)?`;
+    
+    return new RegExp(`\\b${bookPattern}${versePattern}\\b`, "gm");
   }
 
   public findReferences(text: string): string[] {
@@ -81,10 +89,14 @@ export class BibleTagger {
   public parseTextToSegments(text: string): TextSegment[] {
     const vols = "I+|1st|2nd|3rd|First|Second|Third|1|2|3";
     const books = this.getBooks();
-    const verse = "\\d+(:\\d+)?(?:\\s?[-–—&,]\\s?\\d+)*";
-    const passage = `((\\d+(\\.:|:)\\d+[-–—]\\d+(\\.:|:)\\d+)|(\\d+(\\.:|:)\\d+[-–—]\\d+)|(\\d+[-–—]\\d+)|(\\d+(\\.:|:)\\d+)|(\\d+))`;
-    const book = `((?:(${vols})\\s?)?(${books})\\.?\\s?)`;
-    const regex = new RegExp(`\\b${book}${passage}`, "gm");
+    
+    // More comprehensive regex pattern for Bible references
+    const bookPattern = `((?:(${vols})\\s?)?(${books})\\.?\\s?)`;
+    
+    // This pattern matches chapter:verse with various separators and combinations
+    const versePattern = `\\d+(?:(?:\\.:|:)\\d+(?:(?:\\s*[-–—]\\s*\\d+(?:(?:\\.:|:)\\d+)?)|(?:\\s*,\\s*\\d+))*)?`;
+    
+    const regex = new RegExp(`\\b${bookPattern}${versePattern}\\b`, "gm");
 
     const segments: TextSegment[] = [];
     let lastIndex = 0;
