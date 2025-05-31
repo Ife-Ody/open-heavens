@@ -38,7 +38,7 @@ export function BibleDialog({
             <BibleHeader className="flex-1" />
             <DrawerTitle className="sr-only">Bible</DrawerTitle>
           </DrawerHeader>
-          <ScrollArea className="flex-1 w-full h-full border-t">
+          <ScrollArea className="flex-1 w-full h-[65svh] border-t">
             <BibleReaderBody className="w-full mt-3" />
           </ScrollArea>
           <DrawerFooter className="w-full p-0">
