@@ -157,7 +157,7 @@ export function BibleCommandSearch() {
     const [search, setSearch] = useState('')
     const { bible, setBook, setChapter, setSelectedVerses, openDialog } = useBibleDialog()
 
-    useKeyboardShortcut('f', () => setOpen(true), { enabled: true })
+    useKeyboardShortcut(['f', 's'], () => setOpen(true), { enabled: true })
 
     // Reset search when dialog closes
     useEffect(() => {
