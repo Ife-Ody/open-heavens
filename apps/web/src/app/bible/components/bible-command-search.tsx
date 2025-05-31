@@ -2,9 +2,11 @@
 import { useBibleDialog } from '@/app/context/bible-context'
 import { BOOK_NAME_MAP } from '@/lib/bible-utils'
 import { useKeyboardShortcut } from '@/lib/hooks/use-keyboard-shortcut'
+
 import { BibleVerse } from '@repo/bible'
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@repo/ui/components/command'
 import { useEffect, useMemo, useState } from 'react'
+import { toast } from 'sonner'
 
 const BIBLE_BOOKS = [
     'Genesis',
@@ -107,22 +109,25 @@ function findMatchingBook(input: string): string | null {
 }
 
 function parseReference(input: string, book: string, maxChapter: number): { chapter?: number; verse?: number; hasColon: boolean } {
-    // Match number after the book name, optionally followed by a colon and another number
-    const match = input.match(new RegExp(`${book}\\s+(\\d+)(?::(\\d+))?`))
-    const hasColon = input.includes(':')
+    // Extract the part after the book name (everything after the first sequence of non-digits)
+    const bookMatch = input.match(/^([^\d]+)(.*)/)
+    if (!bookMatch) return { hasColon: false }
+    
+    const afterBook = bookMatch[2].trim()
+    const hasColon = afterBook.includes(':')
 
     // If we have a colon, try to get the first valid chapter number from the input
     if (hasColon) {
-        const [beforeColon, afterColon] = input.split(':')
-        const numberBeforeColon = beforeColon.match(/\d+/)
-        const numberAfterColon = afterColon?.match(/\d+/)
+        const [beforeColon, afterColon] = afterBook.split(':')
+        const chapterMatch = beforeColon.match(/\d+/)
+        const verseMatch = afterColon?.match(/\d+/)
 
-        if (numberBeforeColon) {
-            const chapter = parseInt(numberBeforeColon[0])
+        if (chapterMatch) {
+            const chapter = parseInt(chapterMatch[0])
             if (chapter > 0 && chapter <= maxChapter) {
                 return {
                     chapter,
-                    verse: numberAfterColon ? parseInt(numberAfterColon[0]) : undefined,
+                    verse: verseMatch ? parseInt(verseMatch[0]) : undefined,
                     hasColon,
                 }
             }
@@ -130,14 +135,15 @@ function parseReference(input: string, book: string, maxChapter: number): { chap
         // If no valid chapter found before colon, default to chapter 1
         return {
             chapter: 1,
-            verse: numberAfterColon ? parseInt(numberAfterColon[0]) : undefined,
+            verse: verseMatch ? parseInt(verseMatch[0]) : undefined,
             hasColon,
         }
     }
 
-    // If we have a number match without colon, validate chapter
-    if (match) {
-        const chapter = parseInt(match[1])
+    // No colon, just look for a number after the book part
+    const chapterMatch = afterBook.match(/\d+/)
+    if (chapterMatch) {
+        const chapter = parseInt(chapterMatch[0])
         if (chapter > 0 && chapter <= maxChapter) {
             return { chapter, hasColon }
         }
@@ -199,7 +205,15 @@ export function BibleCommandSearch() {
     const searchResults = useMemo((): SearchResult => {
         if (!matchedBook) {
             // If no book match, show matching books based on current input
-            const bookPart = search.toLowerCase()
+            const bookPart = search.toLowerCase().trim()
+            
+            // If search is empty, show all books
+            if (bookPart === '') {
+                const allBooks = [...new Set(Object.values(BOOK_VARIANTS))] // Remove duplicates
+                return { type: 'books', books: allBooks }
+            }
+            
+            // Otherwise filter books based on input
             const matchingBooks = Object.entries(BOOK_VARIANTS)
                 .filter(([variant]) => variant.startsWith(bookPart))
                 .map(([_, fullName]) => fullName)
@@ -248,40 +262,46 @@ export function BibleCommandSearch() {
         }
 
         // If we're in verse entry, show verses
+        if (searchState.type === 'verse_entry') {
+            try {
+                const verses = bible.getVerses(searchState.book, searchState.chapter)
+                console.log('Got verses for', searchState.book, searchState.chapter, ':', verses.length, 'verses')
 
-        try {
-            const verses = bible.getVerses(searchState.book, searchState.chapter)
+                // If we have a verse number, filter verses
+                if (searchState.verse !== undefined) {
+                    const filteredVerses = verses.filter((v) => v.verse.toString().startsWith(searchState.verse!.toString()))
+                    return {
+                        type: 'verses',
+                        book: searchState.book,
+                        chapter: searchState.chapter,
+                        verses: filteredVerses,
+                    }
+                }
 
-            // If we have a verse number, filter verses
-            if (searchState.verse !== undefined) {
                 return {
                     type: 'verses',
                     book: searchState.book,
                     chapter: searchState.chapter,
-                    verses: verses.filter((v) => v.verse.toString().startsWith(searchState.verse!.toString())),
+                    verses,
                 }
+            } catch (error) {
+                console.error('Error getting verses:', error)
+                return { type: 'empty' }
             }
-
-            return {
-                type: 'verses',
-                book: searchState.book,
-                chapter: searchState.chapter,
-                verses,
-            }
-        } catch (error) {
-            console.error('Error getting verses:', error)
-            return { type: 'empty' }
         }
+
+        return { type: 'empty' }
     }, [search, bible, searchState, matchedBook])
 
     // Debug final results
     useEffect(() => {
         console.log('Final search state and results:', {
-            search,
+            search: search,
+            matchedBook,
             searchState,
             searchResults,
         })
-    }, [search, searchState, searchResults])
+    }, [search, matchedBook, searchState, searchResults])
 
     const handleSelect = (book: string, chapter?: number, verse?: number) => {
         console.log('Handle select called with:', { book, chapter, verse })
@@ -312,7 +332,13 @@ export function BibleCommandSearch() {
             onOpenChange={setOpen}
         >
             <CommandInput
-                placeholder={searchState.type === 'verse_entry' ? `Enter verse number...` : searchState.type === 'chapter_entry' ? `Enter chapter number...` : `Enter book name (e.g., 'gen' for Genesis)...`}
+                placeholder={
+                    searchState.type === 'verse_entry' 
+                        ? `Enter verse number (e.g., ${searchState.book} ${searchState.chapter}:1)...`
+                        : searchState.type === 'chapter_entry' 
+                        ? `Enter chapter number (e.g., ${searchState.book} 1)...`
+                        : `Search for a book (e.g., 'gen' for Genesis)...`
+                }
                 value={search}
                 onValueChange={setSearch}
             />
@@ -333,31 +359,16 @@ export function BibleCommandSearch() {
                 )}
 
                 {searchResults.type === 'chapters' && (
-                    <>
-                        <CommandGroup heading={`Chapters in ${searchResults.book}`}>
-                            {searchResults.chapters.map((chapterNum) => (
-                                <CommandItem
-                                    key={`chapter-${searchResults.book}-${chapterNum}`}
-                                    onSelect={() => handleSelect(searchResults.book, chapterNum)}
-                                >
-                                    {`${searchResults.book} ${chapterNum}`}
-                                </CommandItem>
-                            ))}
-                        </CommandGroup>
-                        <CommandGroup heading={`Verses in ${searchResults.book} ${searchResults.chapter}`}>
-                            {searchResults.verses?.map((verse) => (
-                                <CommandItem
-                                    key={`verse-${searchResults.book}-${searchResults.chapter}-${verse.verse}`}
-                                    onSelect={() => handleSelect(searchResults.book, searchResults.chapter, verse.verse)}
-                                >
-                                    <div className="flex flex-col">
-                                        <span>{`${searchResults.book} ${searchResults.chapter}:${verse.verse}`}</span>
-                                        <span className="text-sm text-muted-foreground">{verse.text}</span>
-                                    </div>
-                                </CommandItem>
-                            ))}
-                        </CommandGroup>
-                    </>
+                    <CommandGroup heading={`Chapters in ${searchResults.book}`}>
+                        {searchResults.chapters.map((chapterNum) => (
+                            <CommandItem
+                                key={`chapter-${searchResults.book}-${chapterNum}`}
+                                onSelect={() => handleSelect(searchResults.book, chapterNum)}
+                            >
+                                {`${searchResults.book} ${chapterNum}`}
+                            </CommandItem>
+                        ))}
+                    </CommandGroup>
                 )}
 
                 {searchResults.type === 'verses' && (
@@ -377,6 +388,7 @@ export function BibleCommandSearch() {
                             {searchResults.verses.map((verse) => (
                                 <CommandItem
                                     key={`verse-${searchResults.book}-${searchResults.chapter}-${verse.verse}`}
+                                    value={`${searchResults.book} ${searchResults.chapter}:${verse.verse}`}
                                     onSelect={() => handleSelect(searchResults.book, searchResults.chapter, verse.verse)}
                                 >
                                     <div className="flex flex-col">
