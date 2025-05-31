@@ -49,7 +49,7 @@ export default function HymnCard({ hymn }: HymnCardProps) {
     <Link
       key={hymn.id}
       href={`/hymns/${hymn.id}`}
-      className="p-4 transition-colors border rounded hover:bg-muted"
+      className="p-4 md:px-6 transition-colors border rounded-lg hover:bg-muted w-full"
     >
       <div className="flex flex-col items-start justify-between gap-4 md:flex-row">
         <div className="flex-1 min-w-0">
@@ -61,7 +61,7 @@ export default function HymnCard({ hymn }: HymnCardProps) {
             </div>
           )}
         </div>
-        <div className="w-full md:w-auto">
+        <div className="w-full md:w-auto max-w-96 h-56 rounded-lg bg-black">
           <YoutubeEmbed url={hymn.hymn_url} title={hymn.title} />
         </div>
         <svg

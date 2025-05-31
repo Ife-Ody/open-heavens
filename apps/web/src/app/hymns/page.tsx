@@ -34,7 +34,7 @@ export default async function HymnsListPage({ searchParams }: PageProps) {
 
   return (
     <div className="max-w-4xl p-4 mx-auto">
-      <div className="flex items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
         <div className="flex flex-col gap-2">
           <h1 className="text-2xl font-bold">Hymns Directory</h1>
           <p className="text-sm text-muted-foreground">
@@ -43,7 +43,7 @@ export default async function HymnsListPage({ searchParams }: PageProps) {
             search for hymns by the lyrics.
           </p>
         </div>
-        <div className="w-64">
+        <div className="w-full sm:max-w-72">
           <SearchHeader />
         </div>
       </div>

@@ -15,14 +15,14 @@ export default function YoutubeEmbed({ url, title }: YoutubeEmbedProps) {
   });
 
   return (
-    <div ref={ref as unknown as React.RefObject<HTMLDivElement>}>
+    <div className="w-full max-w-96 h-56 bg-black rounded-lg" ref={ref as unknown as React.RefObject<HTMLDivElement>}>
       {isIntersecting && (
         <iframe
           src={getYouTubeEmbedUrl(url)}
           title={title}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
-          className="h-56 rounded-lg w-96"
+          className="h-56 rounded-lg w-full max-w-96"
         />
       )}
     </div>
