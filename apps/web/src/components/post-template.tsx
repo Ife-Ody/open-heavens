@@ -22,7 +22,7 @@ export function PostTemplate({ post }: { post: Post }) {
         <article className="flex flex-col gap-8 whitespace-wrap">
             <header className="flex flex-col gap-3">
                 <time
-                    dateTime={new Date(post.date).toISOString({})}
+                    dateTime={new Date(post.date).toISOString()}
                     className="text-muted-foreground font-light"
                 >
                     {new Date(post.date).toLocaleDateString('en-GB', {
