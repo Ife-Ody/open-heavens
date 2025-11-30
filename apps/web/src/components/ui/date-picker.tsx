@@ -39,7 +39,7 @@ export function DatePicker() {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={(date) => setDate(addDays(date, 1))}
+          onSelect={(date) => setDate(date)}
           required
           disabled={{
             before: new Date(2023, 0, 1),
