@@ -1,13 +1,11 @@
 import { SelectedPost } from "@/components/post-template";
-import { isToday } from "date-fns";
-import { posts } from "@/content/posts";
 import { Header } from "./Header";
+import { getDevotionalPostByDate } from "@/lib/devotionals";
 
 import { constructMetadata, truncate } from "@repo/utils";
-import type { JSX } from "react";
 
-export const generateMetadata = () => {
-  const post = posts.find((post) => isToday(new Date(post.date)));
+export const generateMetadata = async () => {
+  const post = await getDevotionalPostByDate(new Date());
   if (!post) {
     return constructMetadata({
       title: "Open Heavens Daily Devotional",
@@ -29,12 +27,14 @@ export const generateMetadata = () => {
   });
 };
 
-export default function Page(): JSX.Element {
+export default async function Page() {
+  const todayPost = await getDevotionalPostByDate(new Date());
+
   return (
     <main className="mx-auto container relative flex flex-col items-center justify-center min-h-screen gap-6 p-8 pb-16 md:px-24">
       <Header />
       <div className="flex-1">
-        <SelectedPost />
+        <SelectedPost initialPost={todayPost} />
       </div>
     </main>
   );

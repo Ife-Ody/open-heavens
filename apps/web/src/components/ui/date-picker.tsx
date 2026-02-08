@@ -44,7 +44,7 @@ export function DatePicker() {
           disabled={{
             before: new Date(2023, 0, 1),
             // after: addDays(new Date(), 1),
-            after: new Date(2025, 11, 31),
+            after: new Date(2026, 11, 31),
           }}
         />
         <div className="flex justify-center p-3">

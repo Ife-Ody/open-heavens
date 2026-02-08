@@ -1,7 +1,7 @@
 import { SelectedPost } from "@/components/post-template";
-import { isSameDay, isValid } from "date-fns";
+import { isValid } from "date-fns";
 import { notFound } from "next/navigation";
-import { posts } from "@/content/posts";
+import { getDevotionalDates, getDevotionalPostByDate } from "@/lib/devotionals";
 
 import { constructMetadata, truncate } from "@repo/utils";
 import { Header } from "../Header";
@@ -21,7 +21,7 @@ export const generateMetadata = async ({
     });
   }
 
-  const post = posts.find((post) => isSameDay(new Date(post.date), date));
+  const post = await getDevotionalPostByDate(date);
   return constructMetadata({
     title: `${truncate(
       `Open Heavens for today - ${date.toLocaleDateString("en-GB", {
@@ -50,14 +50,20 @@ export default async function Page({
     notFound();
   }
 
+  const post = await getDevotionalPostByDate(date);
+  if (!post) {
+    notFound();
+  }
+
   return (
     <main className="mx-auto container relative flex flex-col items-center justify-center min-h-screen gap-6 p-8 pb-16 md:px-24">
       <Header />
-      <div className="flex-1">{<SelectedPost />}</div>
+      <div className="flex-1">{<SelectedPost initialPost={post} />}</div>
     </main>
   );
 }
 
 export async function generateStaticParams() {
-  return posts.map((post) => ({ date: post.date }));
+  const dates = await getDevotionalDates();
+  return dates.map((date) => ({ date }));
 }

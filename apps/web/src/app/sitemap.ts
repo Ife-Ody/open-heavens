@@ -1,9 +1,11 @@
 import type { MetadataRoute } from "next";
 import { HOME_DOMAIN } from "@repo/utils";
-import { posts } from "@/content/posts";
 import { hymns } from "@/content/hymns";
+import { getDevotionalDates } from "@/lib/devotionals";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const devotionalDates = await getDevotionalDates();
+
   return [
     {
       url: HOME_DOMAIN,
@@ -17,9 +19,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
-    ...posts.map((post) => ({
-      url: `${HOME_DOMAIN}/${post.date}`,
-      lastModified: new Date(post.date),
+    ...devotionalDates.map((date) => ({
+      url: `${HOME_DOMAIN}/${date}`,
+      lastModified: new Date(date),
       changeFrequency: "monthly" as const,
       priority: 0.5,
     })),

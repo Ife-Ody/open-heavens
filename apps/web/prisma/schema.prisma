@@ -1,0 +1,242 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model asset_cache {
+  id           String? @id
+  scope        String
+  ownerId      String?
+  url          String?
+  localPath    String?
+  size         Int?
+  pinned       Int?    @default(0)
+  expiresAt    String?
+  accessPolicy String?
+  updatedAt    String?
+
+  @@index([scope, ownerId], map: "idx_asset_cache_scope_owner")
+  @@ignore
+}
+
+model audio_items {
+  id        Int     @id @default(autoincrement())
+  key       String
+  type      String
+  url       String?
+  artist    String?
+  title     String?
+  imageUrl  String?
+  lyrics    String?
+  meta      String?
+  createdAt String?
+  updatedAt String?
+
+  @@index([key, type], map: "idx_audio_items_key_type")
+}
+
+model bible_books {
+  id                  Int                   @id @default(autoincrement())
+  apiId               String                @unique(map: "idx_bible_books_apiId")
+  name                String?
+  testament           String?
+  canonOrder          Int?
+  createdAt           String?
+  updatedAt           String?
+  bible_chapters      bible_chapters[]
+  bible_version_books bible_version_books[]
+
+  @@index([testament, canonOrder], map: "idx_bible_books_order")
+}
+
+model bible_chapters {
+  id                     Int                      @id @default(autoincrement())
+  apiId                  String                   @unique(map: "idx_bible_chapters_apiId")
+  bibleBookId            Int
+  chapterNumber          Int
+  canonOrder             Int?
+  createdAt              String?
+  updatedAt              String?
+  bible_books            bible_books              @relation(fields: [bibleBookId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  bible_verses           bible_verses[]
+  bible_version_chapters bible_version_chapters[]
+
+  @@unique([bibleBookId, chapterNumber], map: "idx_bible_chapters_unique_per_book")
+  @@index([bibleBookId, chapterNumber, canonOrder], map: "idx_bible_chapters_book_order")
+}
+
+model bible_verses {
+  id             Int            @id @default(autoincrement())
+  apiId          String         @unique(map: "idx_bible_verses_apiId")
+  bibleChapterId Int
+  verseNumber    Int
+  canonOrder     Int?
+  reference      String?
+  createdAt      String?
+  updatedAt      String?
+  bible_chapters bible_chapters @relation(fields: [bibleChapterId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([bibleChapterId, verseNumber], map: "idx_bible_verses_unique")
+  @@index([bibleChapterId, verseNumber, canonOrder], map: "idx_bible_verses_chapter_order")
+}
+
+model bible_version_books {
+  id                     Int                      @id @default(autoincrement())
+  bibleVersionId         Int
+  bibleBookId            Int
+  name                   String?
+  nameLong               String?
+  abbreviation           String?
+  chaptersCount          Int?
+  canonOrder             Int?
+  createdAt              String?
+  updatedAt              String?
+  bible_books            bible_books              @relation(fields: [bibleBookId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  bible_versions         bible_versions           @relation(fields: [bibleVersionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  bible_version_chapters bible_version_chapters[]
+
+  @@unique([bibleVersionId, bibleBookId], map: "idx_bible_version_books_unique")
+  @@index([bibleVersionId, canonOrder], map: "idx_bible_version_books_order")
+  @@index([bibleVersionId], map: "idx_bible_version_books_version")
+}
+
+model bible_version_chapters {
+  id                  Int                 @id @default(autoincrement())
+  bibleVersionId      Int
+  bibleVersionBookId  Int
+  bibleChapterId      Int
+  apiId               String?
+  chapterName         String?
+  chapterNumber       Int
+  canonOrder          Int?
+  verseCount          Int?
+  html                String?
+  json                String?
+  text                String?
+  revision            String?
+  contentHash         String?
+  createdAt           String?
+  updatedAt           String?
+  bible_chapters      bible_chapters      @relation(fields: [bibleChapterId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  bible_version_books bible_version_books @relation(fields: [bibleVersionBookId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  bible_versions      bible_versions      @relation(fields: [bibleVersionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([bibleVersionId, bibleChapterId], map: "idx_bible_version_chapters_unique")
+  @@index([bibleVersionId], map: "idx_bible_version_chapters_version")
+  @@index([bibleVersionId, bibleVersionBookId, canonOrder], map: "idx_bible_version_chapters_by_version_book")
+}
+
+model bible_version_downloads {
+  bibleVersionId  Int            @id @default(autoincrement())
+  status          String
+  progress        Float?
+  bytesEstimate   Int?
+  bytesDownloaded Int?
+  contentRevision String?
+  lastSyncedAt    String?
+  error           String?
+  createdAt       String?
+  updatedAt       String?
+  bible_versions  bible_versions @relation(fields: [bibleVersionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([status], map: "idx_bible_version_downloads_status")
+}
+
+model bible_versions {
+  id                      Int                      @id @default(autoincrement())
+  apiId                   String                   @unique(map: "idx_bible_versions_apiId")
+  name                    String?
+  nameLocal               String?
+  abbreviation            String?
+  abbreviationLocal       String?
+  languageApiId           String?
+  languageCode            String?
+  languageName            String?
+  languageScript          String?
+  copyright               String?
+  isActive                Int?                     @default(0)
+  bytesEstimate           Int?
+  contentRevision         String?
+  generatedAt             String?
+  createdAt               String?
+  updatedAt               String?
+  bible_version_books     bible_version_books[]
+  bible_version_chapters  bible_version_chapters[]
+  bible_version_downloads bible_version_downloads?
+
+  @@index([isActive], map: "idx_bible_versions_active")
+}
+
+model devotional_translations {
+  id             Int         @id @default(autoincrement())
+  devotionalId   Int
+  audioId        Int?
+  languageCode   String
+  languageName   String?
+  source         String?
+  title          String?
+  memoryText     String?
+  devotionalHtml String?
+  pointText      String?
+  pointType      String?
+  reviewTitle    String?
+  meta           String?
+  isActive       Int?        @default(0)
+  status         String?
+  publishedAt    String?
+  createdAt      String?
+  updatedAt      String?
+  devotionals    devotionals @relation(fields: [devotionalId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([devotionalId, languageCode], map: "idx_devotional_translations_unique")
+}
+
+model devotional_year_downloads {
+  year            Int
+  audience        String
+  status          String
+  progress        Float?
+  bytesEstimate   Int?
+  bytesDownloaded Int?
+  contentRevision String?
+  cursor          String?
+  lastSyncedAt    String?
+  error           String?
+  createdAt       String?
+  updatedAt       String?
+
+  @@id([year, audience])
+  @@index([status], map: "idx_devotional_year_downloads_status")
+}
+
+model devotionals {
+  id                      Int                       @id @default(autoincrement())
+  date                    String
+  audience                String
+  biblePlan               String?
+  bibleMemoryVerse        String?
+  bibleText               String?
+  imageUrl                String?
+  meta                    String?
+  reviewId                Int?
+  reviewImage             String?
+  reviewUrl               String?
+  hymnAudioId             Int?
+  createdAt               String?
+  updatedAt               String?
+  devotional_translations devotional_translations[]
+
+  @@unique([date, audience], map: "idx_devotionals_date_audience")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model sync_state {
+  key   String? @id
+  value String?
+
+  @@ignore
+}

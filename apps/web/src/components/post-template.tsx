@@ -1,14 +1,14 @@
 'use client'
 import { cn } from '@repo/ui/lib/utils'
-import { addDays, isSameDay } from 'date-fns'
+import { addDays, format } from 'date-fns'
 import parse from 'html-react-parser'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { Post, posts } from '@/content/posts'
+import type { Post } from '@/content/posts'
 import { useSettings } from '@/app/context/settings-context'
 
 import { UserDisplay } from '@repo/ui/components/user-display'
 import Link from 'next/link'
-import type { JSX } from 'react'
+import { useEffect, useState, type JSX } from 'react'
 import { hymns } from '@/content/hymns'
 import { BibleTagger } from '@/lib/bible-tagger'
 import { BibleReference } from './bible-reference'
@@ -174,13 +174,83 @@ function Hymn({ hymn_id }: { hymn_id: number }): JSX.Element {
     )
 }
 
-export const SelectedPost = (): JSX.Element => {
+type DevotionalApiResponse = {
+    success: boolean
+    data?: Post
+    error?: string
+}
+
+export const SelectedPost = ({ initialPost = null }: { initialPost?: Post | null }): JSX.Element => {
     const settings = useSettings()
     const { date } = settings
-    const post = posts.find((post) => isSameDay(post.date, date)) as Post
+    const selectedDate = format(date, 'yyyy-MM-dd')
+    const shouldUseInitialPost = initialPost?.date === selectedDate
+
+    const [post, setPost] = useState<Post | null>(shouldUseInitialPost ? initialPost : null)
+    const [isLoading, setIsLoading] = useState(!shouldUseInitialPost)
+
+    useEffect(() => {
+        let cancelled = false
+
+        if (initialPost?.date === selectedDate) {
+            setPost(initialPost)
+            setIsLoading(false)
+            return () => {
+                cancelled = true
+            }
+        }
+
+        const loadPost = async () => {
+            setIsLoading(true)
+            try {
+                const response = await fetch(`/api/devotionals?date=${selectedDate}`, {
+                    cache: 'no-store',
+                })
+
+                if (response.status === 404) {
+                    if (!cancelled) {
+                        setPost(null)
+                    }
+                    return
+                }
+
+                if (!response.ok) {
+                    throw new Error(`Failed to load devotional. Status: ${response.status}`)
+                }
+
+                const payload = (await response.json()) as DevotionalApiResponse
+                if (!cancelled) {
+                    setPost(payload.data ?? null)
+                }
+            } catch (error) {
+                console.error('Error fetching devotional post:', error)
+                if (!cancelled) {
+                    setPost(null)
+                }
+            } finally {
+                if (!cancelled) {
+                    setIsLoading(false)
+                }
+            }
+        }
+
+        void loadPost()
+
+        return () => {
+            cancelled = true
+        }
+    }, [initialPost, selectedDate])
+
+    if (isLoading) return <LoadingPost />
     if (!post) return <EmptyPost />
     return <PostTemplate post={post}></PostTemplate>
 }
+
+const LoadingPost = () => (
+    <div className="flex flex-col items-center justify-center gap-2 text-center min-h-96">
+        <h1 className="text-2xl font-bold">Loading devotional...</h1>
+    </div>
+)
 
 const EmptyPost = () => (
     <div className="flex flex-col items-center justify-center gap-2 text-center min-h-96">
