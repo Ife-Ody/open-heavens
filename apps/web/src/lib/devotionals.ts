@@ -115,5 +115,5 @@ export async function getDevotionalDates(audience?: string): Promise<string[]> {
     orderBy: { date: "asc" },
   });
 
-  return rows.map((row) => row.date);
+  return rows.map((row: { date: string }) => row.date);
 }
