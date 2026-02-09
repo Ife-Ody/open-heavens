@@ -30,10 +30,10 @@ const nextConfig = {
     ];
   },
   skipTrailingSlashRedirect: true,
-  typescript: {
-    ignoreBuildErrors: false,
-    tsconfigPath: "tsconfig.json",
-  },
+  // typescript: {
+  //   ignoreBuildErrors: false,
+  //   tsconfigPath: "tsconfig.json",
+  // },
 };
 
 export default nextConfig;
