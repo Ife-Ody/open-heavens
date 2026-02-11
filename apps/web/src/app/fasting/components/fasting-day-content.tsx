@@ -26,7 +26,7 @@ export function FastingDayContent({
 
   return (
     <main className="mx-auto container relative flex flex-col items-center justify-center min-h-screen gap-6 p-8 pb-16 md:px-24">
-      <article className="flex flex-1 flex-col gap-8 whitespace-normal wrap-break-word">
+      <article className="flex flex-1 flex-col gap-8 whitespace-normal break-all">
         <header className="flex flex-col gap-3">
           <DayPickerDialog days={days} selectedDay={selectedDay.day} />
           <time dateTime={selectedDay.date} className="font-light text-muted-foreground">
