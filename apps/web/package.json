@@ -18,6 +18,7 @@
     "@prisma/adapter-better-sqlite3": "^7.3.0",
     "@prisma/client": "^7.3.0",
     "@repo/bible": "*",
+    "@repo/fasting": "*",
     "@repo/ui": "*",
     "@repo/utils": "*",
     "babel-plugin-react-compiler": "^1.0.0",

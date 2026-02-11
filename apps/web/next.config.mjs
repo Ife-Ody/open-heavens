@@ -2,7 +2,7 @@
 
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ["@repo/ui", "@repo/utils", "@repo/bible"],
+  transpilePackages: ["@repo/ui", "@repo/utils", "@repo/bible", "@repo/fasting"],
   experimental: {
     reactCompiler: true,
     esmExternals: true,

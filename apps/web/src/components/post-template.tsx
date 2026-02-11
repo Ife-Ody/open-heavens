@@ -78,7 +78,7 @@ export function PostTemplate({ post }: { post: Post }) {
                 itemProp="articleBody"
             >
                 <h2 className={cn(`text-[${fontSize + 2}px] font-bold uppercase`)}>Message</h2>
-                <div className={cn('leading-7 text-justify whitespace-normal break-words', `text-[${fontSize}px]`)}>{bibleTagger.parseHTML(post.bodyText, BibleReference)}</div>
+                <div className={cn('leading-7 text-justify whitespace-normal wrap-break-word', `text-[${fontSize}px]`)}>{bibleTagger.parseHTML(post.bodyText, BibleReference)}</div>
             </section>
 
             {post.pointHeader && (
@@ -101,7 +101,7 @@ export function PostTemplate({ post }: { post: Post }) {
                     className="flex flex-col gap-3"
                 >
                     <h2 className={cn(`text-[${fontSize + 2}px] font-bold uppercase`)}>Hymn</h2>
-                    <div className={cn('leading-7 text-justify whitespace-normal break-words', `text-[${fontSize}px]`)}>
+                    <div className={cn('leading-7 text-justify whitespace-normal wrap-break-word', `text-[${fontSize}px]`)}>
                         <Hymn hymn_id={post.hymn_id} />
                     </div>
                 </section>

@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@repo/ui/lib/utils';
-import { BookOpenIcon, BookPlusIcon, MusicIcon } from 'lucide-react';
+import { BookOpenIcon, BookPlusIcon, FlameIcon, MusicIcon } from 'lucide-react';
 import {
   AnimatePresence,
   MotionValue,
@@ -29,6 +29,7 @@ const DEFAULT_DISTANCE = 150;
 const DEFAULT_PANEL_HEIGHT = 64;
 const bottomDockItems = [
   { label: 'Devotional', href: '/', icon: BookOpenIcon },
+  { label: 'Fasting', href: '/fasting', icon: FlameIcon },
   { label: 'Bible', href: '/bible', icon: BookPlusIcon },
   { label: 'Hymns', href: '/hymns', icon: MusicIcon },
 ] as const;
@@ -286,7 +287,9 @@ function BottomDock({ className }: BottomDockProps) {
           const isActive =
             href === '/'
               ? pathname === '/' ||
-                (!pathname.startsWith('/bible') && !pathname.startsWith('/hymns'))
+                (!pathname.startsWith('/bible') &&
+                  !pathname.startsWith('/hymns') &&
+                  !pathname.startsWith('/fasting'))
               : pathname.startsWith(href);
 
           return (
