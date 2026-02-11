@@ -24,9 +24,9 @@ import {
 } from 'react';
 
 const DOCK_HEIGHT = 128;
-const DEFAULT_MAGNIFICATION = 80;
+const DEFAULT_MAGNIFICATION = 40;
 const DEFAULT_DISTANCE = 150;
-const DEFAULT_PANEL_HEIGHT = 64;
+const DEFAULT_PANEL_HEIGHT = 60;
 const bottomDockItems = [
   { label: 'Devotional', href: '/', icon: BookOpenIcon },
   { label: 'Bible', href: '/bible', icon: BookPlusIcon },
@@ -280,8 +280,8 @@ function BottomDock({ className }: BottomDockProps) {
       )}
     >
       <Dock
-        panelHeight={64}
-        className='pointer-events-auto border border-border/50 bg-background/90 shadow-lg backdrop-blur-xs rounded-full px-8 gap-8'
+        panelHeight={56}
+        className='pointer-events-auto border border-border/50 bg-background/90 shadow-lg backdrop-blur-xs rounded-full px-6'
       >
         {bottomDockItems.map(({ label, href, icon: Icon }) => {
           const isActive =
