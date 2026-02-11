@@ -63,6 +63,7 @@ export type DocContextType = {
   spring: SpringOptions;
   magnification: number;
   distance: number;
+  resetDock: () => void;
 };
 
 export type DockProviderProps = {
@@ -98,6 +99,15 @@ function Dock({
 }: DockProps) {
   const mouseX = useMotionValue(Infinity);
   const ishovered = useMotionValue(0);
+  const resetDock = () => {
+    ishovered.set(0);
+    mouseX.set(Infinity);
+  };
+
+  const setDockHover = (pageX: number) => {
+    ishovered.set(1);
+    mouseX.set(pageX);
+  };
 
   const maxHeight = useMemo(() => {
     return Math.max(DOCK_HEIGHT, magnification + magnification / 2 + 4);
@@ -115,14 +125,23 @@ function Dock({
       className='mx-2 flex max-w-full items-end overflow-x-auto'
     >
       <motion.div
-        onMouseMove={({ pageX }) => {
-          ishovered.set(1);
-          mouseX.set(pageX);
+        onPointerMove={({ pageX, pointerType }) => {
+          if (pointerType !== 'mouse') {
+            return;
+          }
+
+          setDockHover(pageX);
         }}
-        onMouseLeave={() => {
-          ishovered.set(0);
-          mouseX.set(Infinity);
+        onPointerDown={({ pageX, pointerType }) => {
+          if (pointerType === 'mouse') {
+            return;
+          }
+
+          setDockHover(pageX);
         }}
+        onPointerLeave={resetDock}
+        onPointerUp={resetDock}
+        onPointerCancel={resetDock}
         className={cn(
           'mx-auto flex w-fit gap-4 rounded-2xl bg-muted/50 px-4',
           className
@@ -131,7 +150,9 @@ function Dock({
         role='toolbar'
         aria-label='Application dock'
       >
-        <DockProvider value={{ mouseX, spring, distance, magnification }}>
+        <DockProvider
+          value={{ mouseX, spring, distance, magnification, resetDock }}
+        >
           {children}
         </DockProvider>
       </motion.div>
@@ -142,7 +163,7 @@ function Dock({
 function DockItem({ children, className, onClick }: DockItemProps) {
   const ref = useRef<HTMLDivElement>(null);
 
-  const { distance, magnification, mouseX, spring } = useDock();
+  const { distance, magnification, mouseX, spring, resetDock } = useDock();
 
   const ishovered = useMotionValue(0);
 
@@ -166,7 +187,10 @@ function DockItem({ children, className, onClick }: DockItemProps) {
       onHoverStart={() => ishovered.set(1)}
       onHoverEnd={() => ishovered.set(0)}
       onFocus={() => ishovered.set(1)}
-      onBlur={() => ishovered.set(0)}
+      onBlur={() => {
+        ishovered.set(0);
+        resetDock();
+      }}
       className={cn(
         'relative inline-flex items-center justify-center',
         className
@@ -174,7 +198,10 @@ function DockItem({ children, className, onClick }: DockItemProps) {
       tabIndex={0}
       role='button'
       aria-haspopup='true'
-      onClick={onClick}
+      onClick={() => {
+        resetDock();
+        onClick?.();
+      }}
     >
       {Children.map(children, (child) =>
         cloneElement(
