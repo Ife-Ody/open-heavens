@@ -29,8 +29,8 @@ const DEFAULT_DISTANCE = 150;
 const DEFAULT_PANEL_HEIGHT = 64;
 const bottomDockItems = [
   { label: 'Devotional', href: '/', icon: BookOpenIcon },
-  { label: 'Fasting', href: '/fasting', icon: FlameIcon },
   { label: 'Bible', href: '/bible', icon: BookPlusIcon },
+  { label: 'Fasting', href: '/fasting', icon: FlameIcon },
   { label: 'Hymns', href: '/hymns', icon: MusicIcon },
 ] as const;
 

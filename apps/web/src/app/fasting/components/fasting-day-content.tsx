@@ -25,7 +25,7 @@ export function FastingDayContent({
     : `Day ${selectedDay.day} Fasting and Prayer`;
 
   return (
-    <main className="mx-auto container relative flex min-h-screen max-w-5xl flex-col gap-6 p-8 pb-16 md:px-24">
+    <main className="mx-auto container relative flex flex-col items-center justify-center min-h-screen gap-6 p-8 pb-16 md:px-24">
       <article className="flex flex-1 flex-col gap-8 whitespace-normal wrap-break-word">
         <header className="flex flex-col gap-3">
           <DayPickerDialog days={days} selectedDay={selectedDay.day} />
@@ -33,9 +33,6 @@ export function FastingDayContent({
             {formatFastingDateLong(selectedDay.date)}
           </time>
           <h1 className="text-3xl font-semibold md:text-4xl">{pageTitle}</h1>
-          <p className="text-muted-foreground">
-            2026 prayer guide, organized by day.
-          </p>
         </header>
 
         {selectedDay.prayerFocus && (
@@ -50,7 +47,7 @@ export function FastingDayContent({
         {selectedDay.introduction && (
           <section aria-label="Introduction">
             <h2 className="text-lg font-bold uppercase">Introduction</h2>
-            <p className="leading-7 text-justify">{selectedDay.introduction}</p>
+            <p className="text-justify">{selectedDay.introduction}</p>
           </section>
         )}
 
@@ -65,7 +62,7 @@ export function FastingDayContent({
 
         <section aria-label={pointsHeading}>
           <h2 className="text-lg font-bold uppercase">{pointsHeading}</h2>
-          <ol className="mt-3 list-decimal space-y-3 pl-5 leading-7">
+          <ol className="mt-3 list-decimal space-y-3 pl-5">
             {selectedDay.points.map((point) => (
               <li key={`${selectedDay.day}-${point.index}`}>{point.text}</li>
             ))}
