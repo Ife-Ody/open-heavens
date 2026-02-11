@@ -1,5 +1,6 @@
 "use client";
 import { useLocalStorage } from "@/lib/hooks/use-local-storage";
+import { format, isValid, parseISO } from "date-fns";
 import { useTheme } from "next-themes";
 import { useParams, useRouter } from "next/navigation";
 import { ReactNode, createContext, useContext } from "react";
@@ -33,6 +34,8 @@ export const useSettings = () => {
   return useContext(SettingsContext);
 };
 
+const DATE_PARAM_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const { theme, setTheme } = useTheme();
   const [fontSize, setFontSize] = useLocalStorage<number>("fontSize", 24);
@@ -40,10 +43,12 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const [version, setVersion] = useLocalStorage<string>("version", "kjv");
   //attempt to get the date from the url
   const dateParam = useParams().date as string | undefined;
-  const date = dateParam ? new Date(dateParam) : new Date();
+  const parsedDate =
+    dateParam && DATE_PARAM_PATTERN.test(dateParam) ? parseISO(dateParam) : null;
+  const date = parsedDate && isValid(parsedDate) ? parsedDate : new Date();
 
   const setDate = (date: Date) => {
-    router.push(`/${date.toISOString().split("T")[0]}`);
+    router.push(`/${format(date, "yyyy-MM-dd")}`);
   };
 
   return (

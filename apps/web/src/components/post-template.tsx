@@ -1,6 +1,6 @@
 'use client'
 import { cn } from '@repo/ui/lib/utils'
-import { addDays, format } from 'date-fns'
+import { addDays, format, isValid, parseISO } from 'date-fns'
 import parse from 'html-react-parser'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { Post } from '@/content/posts'
@@ -16,21 +16,20 @@ import { BibleReference } from './bible-reference'
 export function PostTemplate({ post }: { post: Post }) {
     const bibleTagger = new BibleTagger()
     const settings = useSettings()
-    const { fontSize, date } = settings
+    const { fontSize } = settings
+    const parsedPostDate = parseISO(post.date)
+    const postDate = isValid(parsedPostDate) ? parsedPostDate : new Date(post.date)
+    const previousDateKey = format(addDays(postDate, -1), 'yyyy-MM-dd')
+    const nextDateKey = format(addDays(postDate, 1), 'yyyy-MM-dd')
 
     return (
         <article className="flex flex-col gap-8 whitespace-wrap">
             <header className="flex flex-col gap-3">
                 <time
-                    dateTime={new Date(post.date).toISOString()}
+                    dateTime={post.date}
                     className="text-muted-foreground font-light"
                 >
-                    {new Date(post.date).toLocaleDateString('en-GB', {
-                        weekday: 'long',
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric',
-                    })}
+                    {format(postDate, 'EEEE, d MMM yyyy')}
                 </time>
                 <h1
                     className={cn(`text-[${fontSize * 1.5}px] font-semibold`)}
@@ -40,7 +39,7 @@ export function PostTemplate({ post }: { post: Post }) {
                 </h1>
                 <meta
                     itemProp="datePublished"
-                    content={new Date(post.date).toISOString()}
+                    content={post.date}
                 />
                 <div
                     className={cn(`text-[${fontSize}px] font-medium flex flex-col gap-2`)}
@@ -114,7 +113,7 @@ export function PostTemplate({ post }: { post: Post }) {
             >
                 <Link
                     prefetch={true}
-                    href={`/${addDays(post.date, -1).toISOString().split('T')[0]}`}
+                    href={`/${previousDateKey}`}
                     className="flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-md bg-secondary hover:bg-secondary/80"
                 >
                     <ChevronLeft className="w-4 h-4" />
@@ -122,7 +121,7 @@ export function PostTemplate({ post }: { post: Post }) {
                 </Link>
                 <Link
                     prefetch={true}
-                    href={`/${addDays(post.date, 1).toISOString().split('T')[0]}`}
+                    href={`/${nextDateKey}`}
                     className="flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-md bg-secondary hover:bg-secondary/80"
                 >
                     <span>Next Day</span>
@@ -180,7 +179,13 @@ type DevotionalApiResponse = {
     error?: string
 }
 
-export const SelectedPost = ({ initialPost = null }: { initialPost?: Post | null }): JSX.Element => {
+export const SelectedPost = ({
+    initialPost = null,
+    preserveInitialPostOnError = false,
+}: {
+    initialPost?: Post | null
+    preserveInitialPostOnError?: boolean
+}): JSX.Element => {
     const settings = useSettings()
     const { date } = settings
     const selectedDate = format(date, 'yyyy-MM-dd')
@@ -209,7 +214,7 @@ export const SelectedPost = ({ initialPost = null }: { initialPost?: Post | null
 
                 if (response.status === 404) {
                     if (!cancelled) {
-                        setPost(null)
+                        setPost(preserveInitialPostOnError ? initialPost : null)
                     }
                     return
                 }
@@ -225,7 +230,7 @@ export const SelectedPost = ({ initialPost = null }: { initialPost?: Post | null
             } catch (error) {
                 console.error('Error fetching devotional post:', error)
                 if (!cancelled) {
-                    setPost(null)
+                    setPost(preserveInitialPostOnError ? initialPost : null)
                 }
             } finally {
                 if (!cancelled) {
@@ -239,7 +244,7 @@ export const SelectedPost = ({ initialPost = null }: { initialPost?: Post | null
         return () => {
             cancelled = true
         }
-    }, [initialPost, selectedDate])
+    }, [initialPost, preserveInitialPostOnError, selectedDate])
 
     if (isLoading) return <LoadingPost />
     if (!post) return <EmptyPost />

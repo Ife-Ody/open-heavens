@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { Footer } from "@/components/layout/footer";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { cn } from "@repo/ui/lib/utils";
+import { BottomDock } from "@repo/ui/components/dock";
 import { constructMetadata } from "@repo/utils";
 import RootProviders from "./providers";
 import "@repo/ui/globals.css";
@@ -32,6 +33,7 @@ export default function RootLayout({
         )}
       >
         <RootProviders>{children}</RootProviders>
+        <BottomDock />
         <GoogleAnalytics gaId="GTM-TKGWSF3F" />
         <Footer />
       </body>

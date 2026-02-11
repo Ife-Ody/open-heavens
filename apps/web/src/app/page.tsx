@@ -1,11 +1,23 @@
 import { SelectedPost } from "@/components/post-template";
 import { Header } from "./Header";
-import { getDevotionalPostByDate } from "@/lib/devotionals";
+import {
+  getDevotionalPostByDate,
+  getLatestDevotionalPost,
+} from "@/lib/devotionals";
 
 import { constructMetadata, truncate } from "@repo/utils";
 
+const getHomepagePost = async () => {
+  const todayPost = await getDevotionalPostByDate(new Date());
+  if (todayPost) {
+    return todayPost;
+  }
+
+  return getLatestDevotionalPost();
+};
+
 export const generateMetadata = async () => {
-  const post = await getDevotionalPostByDate(new Date());
+  const post = await getHomepagePost();
   if (!post) {
     return constructMetadata({
       title: "Open Heavens Daily Devotional",
@@ -13,28 +25,21 @@ export const generateMetadata = async () => {
   }
   return constructMetadata({
     title: `${truncate(
-      `Open Heavens for today - ${new Date().toLocaleDateString("en-GB", {
-        weekday: "short",
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      })}: ${post?.title}...`,
+      `Open Heavens for ${post.date}: ${post.title}...`,
       60,
     )}`,
-    description: post?.bodyText
-      ? `${truncate(post?.bodyText, 160)}`
-      : undefined,
+    description: post.bodyText ? `${truncate(post.bodyText, 160)}` : undefined,
   });
 };
 
 export default async function Page() {
-  const todayPost = await getDevotionalPostByDate(new Date());
+  const post = await getHomepagePost();
 
   return (
     <main className="mx-auto container relative flex flex-col items-center justify-center min-h-screen gap-6 p-8 pb-16 md:px-24">
       <Header />
       <div className="flex-1">
-        <SelectedPost initialPost={todayPost} />
+        <SelectedPost initialPost={post} preserveInitialPostOnError />
       </div>
     </main>
   );

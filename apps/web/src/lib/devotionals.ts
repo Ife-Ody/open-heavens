@@ -107,6 +107,38 @@ export async function getDevotionalPostByDate(
   return mapToPost(devotional, translation);
 }
 
+export async function getLatestDevotionalPost(
+  options: GetDevotionalOptions = {},
+): Promise<Post | null> {
+  const languageCode = options.languageCode ?? DEFAULT_LANGUAGE_CODE;
+
+  const devotional = await prisma.devotionals.findFirst({
+    where: options.audience ? { audience: options.audience } : undefined,
+    include: {
+      devotional_translations: {
+        where: {
+          languageCode,
+        },
+        orderBy: [{ isActive: "desc" }, { id: "asc" }],
+      },
+    },
+    orderBy: [{ date: "desc" }, { id: "desc" }],
+  });
+
+  if (!devotional) {
+    return null;
+  }
+
+  const translation =
+    devotional.devotional_translations[0] ??
+    (await prisma.devotional_translations.findFirst({
+      where: { devotionalId: devotional.id },
+      orderBy: [{ isActive: "desc" }, { id: "asc" }],
+    }));
+
+  return mapToPost(devotional, translation);
+}
+
 export async function getDevotionalDates(audience?: string): Promise<string[]> {
   const rows = await prisma.devotionals.findMany({
     select: { date: true },

@@ -1,10 +1,12 @@
 import { SelectedPost } from "@/components/post-template";
-import { isValid } from "date-fns";
+import { isValid, parseISO } from "date-fns";
 import { notFound } from "next/navigation";
 import { getDevotionalDates, getDevotionalPostByDate } from "@/lib/devotionals";
 
 import { constructMetadata, truncate } from "@repo/utils";
 import { Header } from "../Header";
+
+const DATE_PARAM_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
 export const generateMetadata = async ({
   params,
@@ -12,7 +14,14 @@ export const generateMetadata = async ({
   params: Promise<{ date: string }>;
 }) => {
   const { date: dateParam } = await params;
-  const date = new Date(dateParam);
+  if (!DATE_PARAM_PATTERN.test(dateParam)) {
+    return constructMetadata({
+      title: "Page Not Found - Open Heavens",
+      description: "The requested devotional could not be found.",
+    });
+  }
+
+  const date = parseISO(dateParam);
 
   if (!isValid(date)) {
     return constructMetadata({
@@ -21,7 +30,7 @@ export const generateMetadata = async ({
     });
   }
 
-  const post = await getDevotionalPostByDate(date);
+  const post = await getDevotionalPostByDate(dateParam);
   return constructMetadata({
     title: `${truncate(
       `Open Heavens for today - ${date.toLocaleDateString("en-GB", {
@@ -44,13 +53,17 @@ export default async function Page({
   params: Promise<{ date: string }>;
 }) {
   const { date: dateParam } = await params;
-  const date = new Date(dateParam);
+  if (!DATE_PARAM_PATTERN.test(dateParam)) {
+    notFound();
+  }
+
+  const date = parseISO(dateParam);
 
   if (!isValid(date)) {
     notFound();
   }
 
-  const post = await getDevotionalPostByDate(date);
+  const post = await getDevotionalPostByDate(dateParam);
   if (!post) {
     notFound();
   }
