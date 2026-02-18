@@ -43,7 +43,7 @@ export function BibleReference({ reference }: BibleReferenceProps) {
   };
 
   return (
-    <button className="text-primary" onClick={handleClick}>
+    <button className="text-primary cursor-pointer" onClick={handleClick}>
       {reference}
     </button>
   );

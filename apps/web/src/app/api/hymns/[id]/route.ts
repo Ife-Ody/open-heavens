@@ -41,11 +41,25 @@ export async function PUT(
 }
 
 // Add a GET endpoint to fetch hymns
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const id = request.nextUrl.pathname.split("/").pop();
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: "Hymn ID is required" },
+        { status: 400 },
+      );
+    }
     const jsonData = await fs.readFile(hymnsPath, "utf8");
     const data = JSON.parse(jsonData);
-    return NextResponse.json({ success: true, data: data.hymns });
+    const hymn = data.hymns.find((h: any) => h.id === parseInt(id));
+    if (!hymn) {
+      return NextResponse.json(
+        { success: false, error: "Hymn not found" },
+        { status: 404 },
+      );
+    }
+    return NextResponse.json({ success: true, data: hymn });
   } catch (error) {
     console.error("Error reading hymns:", error);
     return NextResponse.json(
