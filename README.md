@@ -64,7 +64,7 @@ open-heavens/
 
 1. Clone the repository:
    ```sh
-   git clone [your-repository-url]
+   git clone [https://github.com/Ife-Ody/open-heavens](https://github.com/Ife-Ody/open-heavens)
    ```
 
 2. Install dependencies:
