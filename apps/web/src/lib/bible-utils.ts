@@ -1,21 +1,21 @@
 // Comprehensive list of Bible book names and their abbreviations
 export const BIBLE_BOOKS_PATTERN =
   "Genesis|Gen|Ge|Gn|Exodus|Ex|Exod?|Leviticus|Lev?|Lv|Levit?|Numbers|" +
-  "Nu|Nm|Hb|Nmb|Numb?|Deuteronomy|Deut?|De|Dt|Joshua|Josh?|Jsh|Judges|Jdgs?|Judg?|Jd|Ruth|Ru|Rth|" +
+  "Nu|Nm|Hb|Nmb|Numb?|Deuteronomy|Deut?|De|Dt|Joshua|Josh?|Jsh|Judges|Jdgs?|Judg?|Jug|Jd|Ruth|Rut|Ru|Rth|" +
   "(?:1|2|First|Second)\\s*Samuel|Sam?|Sml|(?:1|2|First|Second)\\s*Kings|Kngs?|Kgs|Kin?|" +
-  "(?:1|2|First|Second)\\s*Chronicles|Chr?|Chron|Ezra|Ez|" +
-  "Nehemiah|Nehem?|Ne|Esther|Esth?|Es|Job|Jb|Psalms?|Psa?|Pss|Psm|Proverbs?|Prov?|Prv|Pr|" +
-  "Ecclesiastes|Eccl?|Eccles|Ecc?|Song\\s*of\\s*Solomon|Songs?\\s*of\\s*Solomon|Song?|So|Songs|Isaiah|Isa|Is|Jeremiah|" +
-  "Jer?|Jr|Jerem|Lamentations|Lam|Lament?|Ezekiel|Ezek?|Ezk|Daniel|Dan?|Dn|Hosea|" +
-  "Hos?|Joel|Jo|Amos|Am|Obadiah|Obad?|Ob|Jonah|Jon|Jnh|Micah|Mi?c|Nahum|Nah?|" +
+  "(?:1|2|First|Second)\\s*Chronicles|(?:1|2)\\s*Chro|Chr?|Chron|Ezra|Ez|" +
+  "Nehemiah|Nehem?|Ne|Esther|Esth?|Es|Job|Jb|Psalms?|Psalm|Psam|Psa?|Pss|Psm|Proverbs?|Prov?|Prv|Pr|" +
+  "Ecclesiastes|Eccl?|Eccles|Ecc?|Song\\s*of\\s*Solomon|Songs?\\s*of\\s*Solomon|Song?|So|Songs|Isaiah|Isai|Isa|Is|Jeremiah|" +
+  "Jer?|Jr|Jerem|Lamentations|Lamentation|Lam|Lament?|Ezekiel|Ezek?|Ezk|Eze|Daniel|Dan?|Dn|Hosea|" +
+  "Hos?|Joel|Jo|Amos|Amo|Am|Obadiah|Obad?|Ob|Jonah|Jon|Jnh|Micah|Mi?c|Nahum|Nah?|" +
   "Habakkuk|Ha?b|Habak|Zephaniah|Ze?ph?|Haggai|Ha?g|Hagg|Zechariah|Zech?|Ze?c|" +
-  "Malachi|Malac?|Ma?l|Mat{1,2}hew|Mat?|Matt?|Mt|Mark?|Mrk?|Mk|Luke|Lu?k|Lk|John?|Jhn|Jo|Jn|" +
-  "Acts?|Ac|Romans|Rom?|Rm|" +
+  "Malachi|Malac?|Ma?l|Mat{1,2}hew|Mat?|Matt?|Mt|Mark?|Mar|Mrk?|Mk|Luke|Lu?k|Lk|John?|Jhn|Jo|Jn|" +
+  "Acts?|Act|Ac|Romans|Rom?|Rm|" +
   "(?:1|2|First|Second)\\s*Corinthians|Cor?|Corin|Galatians|Gal?|Galat|" +
-  "Ephesians|Eph|Ephes|Philippians|Phili?|Php|Pp|Colossians|Col?|Colos|" +
+  "Ephesians|Eph|Ephes|Philippians|Phi|Phili?|Php|Pp|Colossians|Col?|Colos|" +
   "(?:1|2|First|Second)\\s*Thessalonians|Thess?|Th|(?:1|2|First|Second)\\s*Timothy|Tim?|Titus|Tts|Tit?|Philemon|Phm?|Philem|Pm|" +
   "Hebrews|Hebr?|James|Jam|Jms?|Jas|(?:1|2|First|Second)\\s*Peter|Pete?|Pe|Pt|" +
-  "(?:1|2|3|First|Second|Third)\\s*John?|Jhn|Jo|Jn|Jude?|Jd|Ju|Revelations?|Rev?|Revel";
+  "(?:1|2|3|First|Second|Third)\\s*John?|Jhn|Jo|Jn|Jude?|Jd|Ju|Revelations?|Revelation|Rev?|Revel";
 
 // Volume prefixes for Bible books
 export const VOLUME_PREFIXES = "I+|1st|2nd|3rd|First|Second|Third|1|2|3";
@@ -48,10 +48,34 @@ export const BOOK_NAME_MAP: Record<string, string> = {
   jsh: "Joshua",
   jdgs: "Judges",
   judg: "Judges",
+  jug: "Judges",
   jdg: "Judges",
   jd: "Judges",
+  act: "Acts",
+  amo: "Amos",
+  mar: "Mark",
+  phi: "Philippians",
+  isai: "Isaiah",
+  psam: "Psalms",
+  lamentation: "Lamentations",
+  eze: "Ezekiel",
+  "1chro": "1 Chronicles",
+  "2chro": "2 Chronicles",
+  "1ki": "1 Kings",
+  "2ki": "2 Kings",
+  "1kings": "1 Kings",
+  "1thes": "1 Thessalonians",
+  ruth: "Ruth",
+  rut: "Ruth",
   ru: "Ruth",
   rth: "Ruth",
+  psa: "Psalms",
+  ps: "Psalms",
+  isa: "Isaiah",
+  jer: "Jeremiah",
+  lam: "Lamentations",
+  nah: "Nahum",
+  jam: "James",
   "1 sam": "1 Samuel",
   "1 sa": "1 Samuel",
   "1 samuel": "1 Samuel",
@@ -93,9 +117,9 @@ export function getBibleReferenceRegex(
     : `(?:(?:${vols})\\s?)?(?:${books})\\.?\\s?`;
 
   // Pattern to match chapter:verse with various separators and combinations
-  const versePattern = `\\d+(?::\\d+(?:(?:\\s*[-–—]\\s*\\d+(?::\\d+)?)|(?:\\s*,\\s*\\d+))*)?`;
+  const versePattern = `\\d+(?:[:;]\\d+(?:(?:\\s*[-–—]\\s*\\d+(?:[:;]\\d+)?)|(?:\\s*,\\s*(?:\\d+(?:[:;]\\d+)?(?:\\s*[-–—]\\s*\\d+)?))*)?)?`;
 
-  return new RegExp(`\\b${bookPattern}${versePattern}\\b`, "gm");
+  return new RegExp(`\\b${bookPattern}${versePattern}\\b`, "gmi");
 }
 
 /**
@@ -108,7 +132,13 @@ export function parseBibleReference(reference: string): ParsedReference | null {
     if (!reference) return null;
 
     // Normalize multiple spaces to single spaces before parsing
-    const normalizedReference = reference.trim().replace(/\s+/g, " ");
+    const normalizedReference = reference
+      .trim()
+      .replace(/\s+/g, " ")
+      // Handle compact references like "Exo33:15" -> "Exo 33:15"
+      .replace(/^((?:\d+\s*)?[A-Za-z]+(?:\s+(?:of|and|the|[A-Za-z]+))*)(\d)/i, "$1 $2")
+      // Normalize semicolon verse separators like "Ps.29;4" -> "Ps.29:4"
+      .replace(/(\d)\s*;\s*(\d)/g, "$1:$2");
 
     // Step 1: Split the reference into book and passage
     const bookPattern =
@@ -415,6 +445,17 @@ export function normalizeBookName(bookName: string): string {
   // Check if it's in our map of variants
   if (BOOK_NAME_MAP[normalizedName]) {
     return BOOK_NAME_MAP[normalizedName];
+  }
+
+  // Handle books with leading number stuck to the name, e.g. "1Chro"
+  const compactNumberedBookMatch = normalizedName.match(/^(\d)\s*([a-z].*)$/);
+  if (compactNumberedBookMatch) {
+    const [, num, rest] = compactNumberedBookMatch;
+    const withSpace = `${num} ${rest.trim()}`;
+    if (BOOK_NAME_MAP[withSpace]) {
+      return BOOK_NAME_MAP[withSpace];
+    }
+    return `${num} ${rest.charAt(0).toUpperCase()}${rest.slice(1)}`;
   }
 
   // If not in the map, use some basic rules to normalize
