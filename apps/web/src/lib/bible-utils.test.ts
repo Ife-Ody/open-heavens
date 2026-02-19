@@ -132,4 +132,37 @@ Father, I cancel by the blood of Jesus any generational curses affecting my fami
     expect(refs).toContain("Isai. 45:2");
     expect(refs).toContain("Act 2:3–4");
   });
+
+  it("handles punctuation and spacing variants for compact references", () => {
+    const input =
+      "1kings 21:28-29  1Pe 5:5 Rev. 14:8, 17:2 Matt. 5:32 1Cor. 6:18 Rom.8:2 Ps.51:17 Eph.5:3";
+
+    expect(extractBibleReferences(input)).toEqual([
+      "1kings 21:28-29",
+      "1Pe 5:5",
+      "Rev. 14:8, 17:2",
+      "Matt. 5:32",
+      "1Cor. 6:18",
+      "Rom.8:2",
+      "Ps.51:17",
+      "Eph.5:3",
+    ]);
+  });
+
+  it("normalizes compact numbered abbreviations", () => {
+    expect(parseBibleReference("1Pe 5:5")).toEqual({
+      book: "1 Peter",
+      startChapter: 5,
+      endChapter: 5,
+      startVerse: 5,
+      endVerse: 5,
+    });
+    expect(parseBibleReference("1Cor. 6:18")).toEqual({
+      book: "1 Corinthians",
+      startChapter: 6,
+      endChapter: 6,
+      startVerse: 18,
+      endVerse: 18,
+    });
+  });
 });

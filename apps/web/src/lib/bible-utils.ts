@@ -64,7 +64,26 @@ export const BOOK_NAME_MAP: Record<string, string> = {
   "1ki": "1 Kings",
   "2ki": "2 Kings",
   "1kings": "1 Kings",
+  "1pe": "1 Peter",
+  "2pe": "2 Peter",
+  "1pet": "1 Peter",
+  "2pet": "2 Peter",
+  "1cor": "1 Corinthians",
+  "2cor": "2 Corinthians",
+  "1co": "1 Corinthians",
+  "2co": "2 Corinthians",
   "1thes": "1 Thessalonians",
+  "2thes": "2 Thessalonians",
+  "1thess": "1 Thessalonians",
+  "2thess": "2 Thessalonians",
+  "1tim": "1 Timothy",
+  "2tim": "2 Timothy",
+  "1joh": "1 John",
+  "2joh": "2 John",
+  "3joh": "3 John",
+  "1john": "1 John",
+  "2john": "2 John",
+  "3john": "3 John",
   ruth: "Ruth",
   rut: "Ruth",
   ru: "Ruth",
@@ -135,6 +154,8 @@ export function parseBibleReference(reference: string): ParsedReference | null {
     const normalizedReference = reference
       .trim()
       .replace(/\s+/g, " ")
+      // Normalize book punctuation like "1Cor. 6:18" -> "1Cor 6:18"
+      .replace(/([A-Za-z])\.\s*(\d)/g, "$1 $2")
       // Handle compact references like "Exo33:15" -> "Exo 33:15"
       .replace(/^((?:\d+\s*)?[A-Za-z]+(?:\s+(?:of|and|the|[A-Za-z]+))*)(\d)/i, "$1 $2")
       // Normalize semicolon verse separators like "Ps.29;4" -> "Ps.29:4"
@@ -142,7 +163,7 @@ export function parseBibleReference(reference: string): ParsedReference | null {
 
     // Step 1: Split the reference into book and passage
     const bookPattern =
-      /^((?:\d+\s+)?[A-Za-z]+(?:(?:\s+(?:of|and|the|[A-Za-z]+))*)?)\s+(.+)$/i;
+      /^((?:\d+\s*)?[A-Za-z]+(?:(?:\s+(?:of|and|the|[A-Za-z]+))*)?)\s+(.+)$/i;
     const matches = normalizedReference.match(bookPattern);
 
     if (!matches) {
