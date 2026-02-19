@@ -9,3 +9,5 @@ export default function FastingRootPage() {
 
   redirect(`/fasting/${targetDay.day}`);
 }
+
+export const dynamic = "force-dynamic";

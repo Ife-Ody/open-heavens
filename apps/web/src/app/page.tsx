@@ -45,4 +45,4 @@ export default async function Page() {
   );
 }
 
-export const revalidate = 21600; // Revalidate every 6 hours
+export const dynamic = "force-dynamic";

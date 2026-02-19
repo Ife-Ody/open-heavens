@@ -1,8 +1,8 @@
 import "server-only";
 
-import { format } from "date-fns";
 import type { Post } from "@/content/posts";
 import { prisma } from "@/lib/prisma";
+import { getTodayDateKeyInAppTimeZone } from "@/lib/date";
 
 type GetDevotionalOptions = {
   audience?: string;
@@ -39,7 +39,7 @@ const normalizeDate = (input: Date | string): string => {
     return input.split("T")[0];
   }
 
-  return format(input, "yyyy-MM-dd");
+  return getTodayDateKeyInAppTimeZone(input);
 };
 
 const mapToPost = (

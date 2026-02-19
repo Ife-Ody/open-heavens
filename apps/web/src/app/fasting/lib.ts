@@ -1,4 +1,5 @@
 import { getPrayerGuideDays, type PrayerGuideDay } from "@repo/fasting";
+import { getTodayDateKeyInAppTimeZone } from "@/lib/date";
 
 const fastingDays = getPrayerGuideDays().slice().sort((a, b) => a.day - b.day);
 const fastingDayByNumber = new Map(fastingDays.map((day) => [day.day, day]));
@@ -15,8 +16,8 @@ export function getTodayFastingDayOrFirst(): PrayerGuideDay | null {
   const firstDay = fastingDays[0];
   if (!firstDay) return null;
 
-  const todayIsoUtc = new Date().toISOString().slice(0, 10);
-  const todayMatch = fastingDays.find((entry) => entry.date === todayIsoUtc);
+  const todayDateKey = getTodayDateKeyInAppTimeZone();
+  const todayMatch = fastingDays.find((entry) => entry.date === todayDateKey);
 
   return todayMatch ?? firstDay;
 }
