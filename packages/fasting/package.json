@@ -5,7 +5,8 @@
     "scripts": {
         "extract:prayer-guide": "tsx ./scripts/extract-prayer-guide.ts",
         "extract:prayer-guide-headers": "tsx ./scripts/extract-prayer-guide-headers.ts",
-        "verify:prayer-guide-points": "tsx ./scripts/verify-prayer-guide-points.ts"
+        "verify:prayer-guide-points": "tsx ./scripts/verify-prayer-guide-points.ts",
+        "rewrite:scripture-references": "tsx ./scripts/rewrite-scripture-references.ts"
     },
     "main": "./src/index.ts",
     "types": "./src/index.ts",

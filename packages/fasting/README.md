@@ -81,3 +81,23 @@ npm run verify:prayer-guide-points --workspace=packages/fasting -- \
   --retries 2 \
   --force
 ```
+
+## Rewrite Scripture References To Full Book Names
+
+Uses OpenAI with a strict schema prompt to normalize scripture references
+across all days (for example: `Gal 5:16` -> `Galatians 5:16`).
+
+Run from the repo root:
+
+```bash
+npm run rewrite:scripture-references --workspace=packages/fasting
+```
+
+Optional flags:
+
+```bash
+npm run rewrite:scripture-references --workspace=packages/fasting -- \
+  --day 23 \
+  --model "gpt-4o-2024-08-06" \
+  --retries 2
+```

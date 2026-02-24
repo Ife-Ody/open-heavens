@@ -34,9 +34,17 @@ export function BibleProvider({ children }: { children: React.ReactNode }) {
   const verses = useMemo(() => {
     if (!book || !chapter) return [];
 
-    const allVerses = bible?.getVerses(book, chapter, selectedVerses);
-
-    return allVerses;
+    try {
+      return bible?.getVerses(book, chapter, selectedVerses) ?? [];
+    } catch (error) {
+      console.warn("Failed to resolve bible reference", {
+        book,
+        chapter,
+        selectedVerses,
+        error,
+      });
+      return [];
+    }
   }, [bible, book, chapter, selectedVerses]);
 
   const value = {

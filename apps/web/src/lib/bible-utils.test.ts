@@ -120,17 +120,17 @@ Father, I cancel by the blood of Jesus any generational curses affecting my fami
     );
     const refs = extractBibleReferences(guide);
 
-    expect(refs).toContain("Ps.29;4");
-    expect(refs).toContain("Mat.6;9-10");
-    expect(refs).toContain("Exo33:15");
-    expect(refs).toContain("Jug 6:25");
-    expect(refs).toContain("Rut 1:20");
-    expect(refs).toContain("1Chro 16:8");
-    expect(refs).toContain("1Chro 4:10");
-    expect(refs).toContain("2Chro 7:14-15");
-    expect(refs).toContain("1kings 21:28-29");
-    expect(refs).toContain("Isai. 45:2");
-    expect(refs).toContain("Act 2:3–4");
+    expect(refs).toContain("Psalms 29:4");
+    expect(refs).toContain("Matthew 6:9-10");
+    expect(refs).toContain("Exodus 33:15");
+    expect(refs).toContain("Judges 6:25");
+    expect(refs).toContain("Ruth 1:20");
+    expect(refs).toContain("1 Chronicles 16:8");
+    expect(refs).toContain("1 Chronicles 4:10");
+    expect(refs).toContain("2 Chronicles 7:14-15");
+    expect(refs).toContain("1 Kings 21:28-29");
+    expect(refs).toContain("Isaiah 45:2");
+    expect(refs).toContain("Acts 2:3-4");
   });
 
   it("handles punctuation and spacing variants for compact references", () => {
@@ -163,6 +163,23 @@ Father, I cancel by the blood of Jesus any generational curses affecting my fami
       endChapter: 6,
       startVerse: 18,
       endVerse: 18,
+    });
+  });
+
+  it("normalizes Gal shorthand to Galatians", () => {
+    expect(parseBibleReference("Gal 5:16")).toEqual({
+      book: "Galatians",
+      startChapter: 5,
+      endChapter: 5,
+      startVerse: 16,
+      endVerse: 16,
+    });
+    expect(parseBibleReference("Gal. 5:22")).toEqual({
+      book: "Galatians",
+      startChapter: 5,
+      endChapter: 5,
+      startVerse: 22,
+      endVerse: 22,
     });
   });
 });
