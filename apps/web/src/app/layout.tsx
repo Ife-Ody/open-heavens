@@ -29,7 +29,7 @@ export default function RootLayout({
       <body
         className={cn(
           inter.className,
-          "min-h-screen bg-background font-sans antialiased selection:bg-orange-400",
+          "min-h-screen bg-background font-sans antialiased selection:bg-orange-400 dark:selection:bg-orange-800",
         )}
       >
         <RootProviders>{children}</RootProviders>
