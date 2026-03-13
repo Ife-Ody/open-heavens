@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@repo/ui/lib/utils';
-import { BookOpenIcon, BookPlusIcon, FlameIcon, MusicIcon } from 'lucide-react';
+import { BookOpenIcon, BookPlusIcon, MusicIcon } from 'lucide-react';
 import {
   AnimatePresence,
   MotionValue,
@@ -30,7 +30,6 @@ const DEFAULT_PANEL_HEIGHT = 60;
 const bottomDockItems = [
   { label: 'Devotional', href: '/', icon: BookOpenIcon },
   { label: 'Bible', href: '/bible', icon: BookPlusIcon },
-  { label: 'Fasting', href: '/fasting', icon: FlameIcon },
   { label: 'Hymns', href: '/hymns', icon: MusicIcon },
 ] as const;
 
