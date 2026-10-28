@@ -45,6 +45,7 @@ Before you begin, ensure you have the following installed:
 
 ```
 open-heavens/
+├── ios/              # Native SwiftUI iOS app (see ios/README.md)
 ├── apps/
 │   └── web/          # Next.js web application
 │       └── src/
