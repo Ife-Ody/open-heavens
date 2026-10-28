@@ -43,6 +43,8 @@ targets:
           - Inter-SemiBoldItalic.ttf
           - Inter-Bold.ttf
           - Inter-BoldItalic.ttf
+          - InterDisplay-SemiBold.ttf
+          - InterDisplay-Bold.ttf
         ITSAppUsesNonExemptEncryption: false
         LSApplicationCategoryType: public.app-category.lifestyle
     settings:

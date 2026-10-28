@@ -89,6 +89,7 @@ struct BookChapterPicker: View {
                                 .padding(.vertical, 10)
                                 .background(candidate == book ? Theme.secondary.opacity(0.6) : .clear)
                         }
+                        .buttonStyle(CellButtonStyle())
                         .id(candidate.number)
                         Rectangle().fill(Theme.border).frame(height: 1)
                     }
@@ -116,10 +117,19 @@ struct BookChapterPicker: View {
                             .overlay(alignment: .trailing) { Rectangle().fill(Theme.border).frame(width: 1) }
                             .overlay(alignment: .bottom) { Rectangle().fill(Theme.border).frame(height: 1) }
                     }
+                    .buttonStyle(CellButtonStyle())
                 }
             }
             .overlay(alignment: .top) { Rectangle().fill(Theme.border).frame(height: 1) }
             .overlay(alignment: .leading) { Rectangle().fill(Theme.border).frame(width: 1) }
         }
+    }
+}
+
+/// Grid cells and list rows: instant background highlight on touch-down.
+private struct CellButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(configuration.isPressed ? Theme.secondary : .clear)
     }
 }

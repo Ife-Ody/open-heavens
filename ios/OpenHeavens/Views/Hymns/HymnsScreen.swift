@@ -33,7 +33,7 @@ struct HymnsScreen: View {
                             NavigationLink(value: hymn) {
                                 HymnCard(hymn: hymn)
                             }
-                            .buttonStyle(.plain)
+                            .buttonStyle(CardButtonStyle())
                         }
                     }
                 }
@@ -86,7 +86,6 @@ private struct HymnCard: View {
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.radiusLG, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: Theme.radiusLG, style: .continuous).stroke(Theme.border, lineWidth: 1))
+        .contentShape(RoundedRectangle(cornerRadius: Theme.radiusLG, style: .continuous))
     }
 }

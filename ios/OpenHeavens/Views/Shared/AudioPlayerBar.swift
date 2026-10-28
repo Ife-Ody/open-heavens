@@ -30,11 +30,13 @@ struct AudioPlayerBar: View {
                                 .font(.system(size: 16, weight: .bold))
                                 .foregroundStyle(Theme.primaryForeground)
                                 .offset(x: isPlaying ? 0 : 1)
+                                .contentTransition(.symbolEffect(.replace))
                         }
                     }
                     .frame(width: 40, height: 40)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(PressableIconStyle())
+                .sensoryFeedback(.impact(weight: .light), trigger: isPlaying)
                 .accessibilityLabel(isPlaying ? "Pause" : "Play")
 
                 VStack(alignment: .leading, spacing: 2) {
@@ -52,6 +54,7 @@ struct AudioPlayerBar: View {
 
             if isCurrent && duration > 0 {
                 VStack(spacing: 2) {
+                    // Entered via transition below so the bar grows in rather than popping.
                     Slider(
                         value: Binding(
                             get: { isScrubbing ? scrubValue : progress },
@@ -72,8 +75,10 @@ struct AudioPlayerBar: View {
                     .monospacedDigit()
                     .foregroundStyle(Theme.mutedForeground)
                 }
+                .transition(.opacity.combined(with: .move(edge: .top)))
             }
         }
+        .animation(Motion.state, value: isCurrent && duration > 0)
         .padding(12)
         .background(Theme.muted, in: RoundedRectangle(cornerRadius: Theme.radiusLG, style: .continuous))
     }
@@ -81,5 +86,12 @@ struct AudioPlayerBar: View {
     private static func format(_ seconds: Double) -> String {
         let total = Int(seconds.rounded())
         return String(format: "%d:%02d", total / 60, total % 60)
+    }
+}
+
+/// Round icon buttons: scale on press, nothing else.
+private struct PressableIconStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label.pressScale(configuration.isPressed, amount: 0.92)
     }
 }

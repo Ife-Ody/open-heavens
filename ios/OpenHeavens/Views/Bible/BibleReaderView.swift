@@ -27,6 +27,7 @@ struct BibleReaderView: View {
                 }
                 .onChange(of: bible.chapter) { _, _ in proxy.scrollTo("top", anchor: .top) }
                 .onChange(of: bible.book) { _, _ in proxy.scrollTo("top", anchor: .top) }
+                .sensoryFeedback(.selection, trigger: bible.chapter)
             }
             footer
                 .padding(.horizontal, 12)
@@ -83,6 +84,7 @@ struct BibleReaderView: View {
                     .padding(.horizontal, 10)
                     .frame(width: 150, height: 32)
                 }
+                .buttonStyle(HeaderControlStyle())
                 .background(Theme.background)
                 .overlay(
                     UnevenRoundedRectangle(bottomTrailingRadius: Theme.radiusMD, topTrailingRadius: Theme.radiusMD)
@@ -103,6 +105,7 @@ struct BibleReaderView: View {
                 .padding(.horizontal, 10)
                 .frame(width: 72, height: 32)
             }
+            .buttonStyle(HeaderControlStyle())
             .background(Theme.background)
             .overlay(RoundedRectangle(cornerRadius: Theme.radiusMD, style: .continuous).stroke(Theme.border, lineWidth: 1))
 
@@ -200,5 +203,14 @@ struct BibleReaderView: View {
             .buttonStyle(OutlineButtonStyle(height: 32, horizontalPadding: 12, radius: 16))
             .webDisabled(bible.chapter >= bible.maxChapter)
         }
+    }
+}
+
+/// The joined version/book/chapter controls: highlight on press without scaling (they share edges).
+private struct HeaderControlStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(configuration.isPressed ? Theme.secondary : .clear)
+            .animation(Motion.press, value: configuration.isPressed)
     }
 }

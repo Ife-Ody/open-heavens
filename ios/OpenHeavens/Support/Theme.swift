@@ -40,9 +40,20 @@ private extension UIColor {
     }
 }
 
-/// Inter, the typeface the web app loads through next/font.
+/// Inter, the typeface the web app loads through next/font. The web gets Inter's optical-size
+/// axis for free (Google Fonts serves the variable font), so large headings render in the
+/// Display cut; we switch to the static Inter Display files at the same threshold.
 enum InterFont {
-    static func name(weight: Font.Weight, italic: Bool) -> String {
+    static let displayThreshold: CGFloat = 28
+
+    static func name(weight: Font.Weight, italic: Bool, size: CGFloat = 16) -> String {
+        if size >= displayThreshold, !italic {
+            switch weight {
+            case .semibold: return "InterDisplay-SemiBold"
+            case .bold, .heavy, .black: return "InterDisplay-Bold"
+            default: break
+            }
+        }
         let base: String
         switch weight {
         case .ultraLight, .thin, .light: base = "Inter-Light"
@@ -63,7 +74,7 @@ enum InterFont {
 
 extension Font {
     static func inter(_ size: CGFloat, weight: Font.Weight = .regular, italic: Bool = false) -> Font {
-        .custom(InterFont.name(weight: weight, italic: italic), size: size)
+        .custom(InterFont.name(weight: weight, italic: italic, size: size), size: size)
     }
 
     // Tailwind's text-* scale.
@@ -75,7 +86,22 @@ extension Font {
     static let text2XL = inter(24)
 }
 
+/// Motion tokens: critically damped springs by default, bounce only after a gesture.
+enum Motion {
+    /// Press feedback: 120ms ease-out.
+    static let press: Animation = .easeOut(duration: 0.12)
+    /// On-screen state changes (slider appearing, icon swaps).
+    static let state: Animation = .smooth(duration: 0.25)
+    /// Page/day changes.
+    static let page: Animation = .smooth(duration: 0.22)
+}
+
 extension View {
+    /// Tracking tightens as type grows: large headings read too loose at 0.
+    func opticalTracking(for size: CGFloat) -> some View {
+        tracking(size >= InterFont.displayThreshold ? -size * 0.02 : 0)
+    }
+
     /// Approximates a CSS line-height for Inter at the given size (Inter's natural leading is ~1.21×).
     func lineHeight(_ lineHeight: CGFloat, fontSize: CGFloat) -> some View {
         lineSpacing(max(0, lineHeight - fontSize * 1.21))

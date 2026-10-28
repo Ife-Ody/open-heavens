@@ -8,15 +8,10 @@ struct SettingsSheet: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Capsule()
-                .fill(Theme.mutedForeground.opacity(0.4))
-                .frame(width: 100, height: 4)
-                .padding(.top, 16)
-
             Text("Change Settings")
                 .font(.inter(18, weight: .semibold))
                 .foregroundStyle(Theme.foreground)
-                .padding(.top, 16)
+                .padding(.top, 28)
 
             VStack(spacing: 8) {
                 Text("Font Size").font(.inter(16)).foregroundStyle(Theme.foreground)
@@ -35,7 +30,7 @@ struct SettingsSheet: View {
         .frame(maxWidth: .infinity)
         .background(Theme.background)
         .presentationDetents([.height(340)])
-        .presentationDragIndicator(.hidden)
+        .presentationDragIndicator(.visible)
         .presentationBackground(Theme.background)
     }
 }
@@ -57,8 +52,11 @@ struct FontSizeSelector: View {
 
             Text("\(Int(settings.fontSize))px")
                 .font(.inter(18))
+                .monospacedDigit()
                 .foregroundStyle(Theme.foreground)
                 .frame(minWidth: 48)
+                .contentTransition(.numericText(value: settings.fontSize))
+                .animation(Motion.state, value: settings.fontSize)
 
             Button {
                 settings.increaseFontSize()
@@ -79,11 +77,15 @@ struct ThemeToggle: View {
 
     var body: some View {
         Button {
-            settings.toggleTheme(currentScheme: colorScheme)
+            // Ease the dark/light swap rather than cutting; abrupt brightness jumps are jarring.
+            withAnimation(.easeInOut(duration: 0.3)) {
+                settings.toggleTheme(currentScheme: colorScheme)
+            }
         } label: {
             Image(systemName: colorScheme == .dark ? "moon" : "sun.max")
                 .font(.system(size: 16))
                 .foregroundStyle(Theme.mutedForeground)
+                .contentTransition(.symbolEffect(.replace))
         }
         .buttonStyle(GhostButtonStyle())
         .accessibilityLabel("Toggle theme")

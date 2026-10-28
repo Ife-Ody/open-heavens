@@ -9,6 +9,9 @@ struct DevotionalScreen: View {
     @State private var devotional: Devotional?
     @State private var showingDatePicker = false
     @State private var showingSettings = false
+    /// +1 when moving to a later day, -1 for earlier: the new page enters from that side.
+    @State private var direction: CGFloat = 1
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var dateRange: ClosedRange<String>? { store?.dateKeyRange() }
 
@@ -42,8 +45,10 @@ struct DevotionalScreen: View {
                 .padding(.bottom, 64)
             }
             .id(dateKey)
+            .transition(pageTransition)
             .background(Theme.background)
             .simultaneousGesture(swipeGesture)
+            .sensoryFeedback(.selection, trigger: dateKey)
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: Hymn.self) { hymn in
                 HymnDetailView(hymn: hymn)
@@ -99,24 +104,40 @@ struct DevotionalScreen: View {
                 .font(.inter(16))
                 .foregroundStyle(Theme.primary)
                 .underline()
+                .buttonStyle(LinkButtonStyle())
         }
         .frame(maxWidth: .infinity, minHeight: 384)
     }
 
+    /// A horizontal swipe changes the day. Intent is read from where the gesture is *going*
+    /// (its projected end point), so a short flick commits just like a long drag.
     private var swipeGesture: some Gesture {
-        DragGesture(minimumDistance: 40, coordinateSpace: .local)
+        DragGesture(minimumDistance: 24, coordinateSpace: .local)
             .onEnded { value in
-                guard abs(value.translation.width) > abs(value.translation.height) * 2 else { return }
-                if value.translation.width < 0, let nextKey {
+                let projected = value.predictedEndTranslation
+                guard abs(projected.width) > 80, abs(projected.width) > abs(projected.height) * 1.5 else { return }
+                if projected.width < 0, let nextKey {
                     go(to: nextKey)
-                } else if value.translation.width > 0, let previousKey {
+                } else if projected.width > 0, let previousKey {
                     go(to: previousKey)
                 }
             }
     }
 
+    /// The incoming day slides in from the direction of travel while the old one blurs out,
+    /// so the swap reads as one page moving rather than two overlapping. Reduced motion keeps
+    /// only the fade.
+    private var pageTransition: AnyTransition {
+        if reduceMotion { return .opacity }
+        return .asymmetric(
+            insertion: .offset(x: 28 * direction).combined(with: .opacity).combined(with: .blur(radius: 4)),
+            removal: .offset(x: -16 * direction).combined(with: .opacity).combined(with: .blur(radius: 4))
+        )
+    }
+
     private func go(to key: String) {
-        withAnimation(.easeInOut(duration: 0.2)) {
+        direction = key > dateKey ? 1 : -1
+        withAnimation(Motion.page) {
             dateKey = key
         }
     }

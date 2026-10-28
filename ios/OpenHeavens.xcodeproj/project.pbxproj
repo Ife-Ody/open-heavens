@@ -19,6 +19,7 @@
 		4D7EDC72D562C90487A2AA5F /* HymnDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4036958E3B48B5A7C7BB942 /* HymnDetailView.swift */; };
 		4F0E983FD3A06B8DE1A6A40B /* AudioPlayerBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D656E51C85961A0A1D0E67 /* AudioPlayerBar.swift */; };
 		548D8F5308A8CB997C2662CD /* DevotionalStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31609332911AC4B1E2DDA1E /* DevotionalStore.swift */; };
+		57E1139B421C9400087D1C1D /* InterDisplay-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3AC6097F0D56F33356E15495 /* InterDisplay-SemiBold.ttf */; };
 		5DB4BE09AF81F05470A8959C /* BibleScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591656BF5C67F8883D783A5 /* BibleScreen.swift */; };
 		62E3A90A3725FCF093146CE5 /* Inter-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 79889042011A26A8BD502B42 /* Inter-MediumItalic.ttf */; };
 		7967A903DA1128C5F2E7280C /* DatePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E90C4082844EFE857FE89E /* DatePickerSheet.swift */; };
@@ -41,6 +42,7 @@
 		D000953711904493994639C7 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7068AD3F6C9790111936FF78 /* Inter-Regular.ttf */; };
 		D3AB5F71B7D7BA0EEC10793E /* BibleReferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264D9BCDBF15DE59EC18A5E5 /* BibleReferences.swift */; };
 		D4CFA7C6A1833CD12024BAA4 /* SettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67203A41646634DC8576DE7B /* SettingsSheet.swift */; };
+		D61B2B8E4386722D3F602F1E /* InterDisplay-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A663BEEE48C2B68362596ED /* InterDisplay-Bold.ttf */; };
 		D96D23485AC25479869CD162 /* RichText.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D31E1DF4A02DB5D7357197 /* RichText.swift */; };
 		EA3EBDF7BFB0FA01DF451C4F /* BibleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B368032E02454FA9AC801E /* BibleState.swift */; };
 		EE780193CBAC638860893D4E /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D8D096D9689362BEF4386686 /* Inter-Bold.ttf */; };
@@ -55,6 +57,7 @@
 		264D9BCDBF15DE59EC18A5E5 /* BibleReferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BibleReferences.swift; sourceTree = "<group>"; };
 		27E90C4082844EFE857FE89E /* DatePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerSheet.swift; sourceTree = "<group>"; };
 		3591656BF5C67F8883D783A5 /* BibleScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BibleScreen.swift; sourceTree = "<group>"; };
+		3AC6097F0D56F33356E15495 /* InterDisplay-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-SemiBold.ttf"; sourceTree = "<group>"; };
 		3AF4B55F28772E6854043789 /* Hymn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hymn.swift; sourceTree = "<group>"; };
 		3C5CEA5C7D86A07EE6D7C555 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		3DF3710A5B90CC96BE957AB0 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
@@ -77,6 +80,7 @@
 		9005B2CAB4232C04AF1818D6 /* BookChapterPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookChapterPicker.swift; sourceTree = "<group>"; };
 		9321A1AD70CE7BFC7EC9C166 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		96C955C1C4B3112113B0BDE5 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-SemiBold.ttf"; sourceTree = "<group>"; };
+		9A663BEEE48C2B68362596ED /* InterDisplay-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InterDisplay-Bold.ttf"; sourceTree = "<group>"; };
 		A4036958E3B48B5A7C7BB942 /* HymnDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HymnDetailView.swift; sourceTree = "<group>"; };
 		A5AD0F1BB1EAD9D5C138448F /* Inter-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-BoldItalic.ttf"; sourceTree = "<group>"; };
 		B31609332911AC4B1E2DDA1E /* DevotionalStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevotionalStore.swift; sourceTree = "<group>"; };
@@ -224,6 +228,8 @@
 				7068AD3F6C9790111936FF78 /* Inter-Regular.ttf */,
 				96C955C1C4B3112113B0BDE5 /* Inter-SemiBold.ttf */,
 				70170450AE1A37EE532CC314 /* Inter-SemiBoldItalic.ttf */,
+				9A663BEEE48C2B68362596ED /* InterDisplay-Bold.ttf */,
+				3AC6097F0D56F33356E15495 /* InterDisplay-SemiBold.ttf */,
 				BC48B4D3DFD6B37966C935BD /* LICENSE-Inter.txt */,
 			);
 			path = Fonts;
@@ -317,6 +323,8 @@
 				D000953711904493994639C7 /* Inter-Regular.ttf in Resources */,
 				8D59C1AB9F98C02F60B0AADE /* Inter-SemiBold.ttf in Resources */,
 				8BAFAA9AAB65B41AEADED17B /* Inter-SemiBoldItalic.ttf in Resources */,
+				D61B2B8E4386722D3F602F1E /* InterDisplay-Bold.ttf in Resources */,
+				57E1139B421C9400087D1C1D /* InterDisplay-SemiBold.ttf in Resources */,
 				FAA19341D2E9B1A39954E934 /* LICENSE-Inter.txt in Resources */,
 				8B883A8B9697D3679F3570E0 /* bible.sqlite in Resources */,
 				8CC026D36CF448F98AE76A36 /* openheavens.sqlite in Resources */,

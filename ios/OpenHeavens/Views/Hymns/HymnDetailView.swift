@@ -82,7 +82,7 @@ struct HymnDetailView: View {
                     .font(.inter(16))
                     .foregroundStyle(Theme.foreground)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(LinkButtonStyle())
 
                 Spacer()
 
@@ -122,8 +122,11 @@ struct HymnDetailView: View {
 
             Text("Hymn #\(current.number): \(current.title)")
                 .font(.inter(24, weight: .bold))
+                .lineHeight(30, fontSize: 24)
                 .foregroundStyle(Theme.foreground)
                 .textSelection(.enabled)
+                .contentTransition(.opacity)
+                .animation(Motion.page, value: current.id)
         }
         .padding(.bottom, 24)
         .overlay(alignment: .bottom) { Rectangle().fill(Theme.border).frame(height: 1) }

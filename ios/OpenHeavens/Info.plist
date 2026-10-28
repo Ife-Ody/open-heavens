@@ -35,6 +35,8 @@
 		<string>Inter-SemiBoldItalic.ttf</string>
 		<string>Inter-Bold.ttf</string>
 		<string>Inter-BoldItalic.ttf</string>
+		<string>InterDisplay-SemiBold.ttf</string>
+		<string>InterDisplay-Bold.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

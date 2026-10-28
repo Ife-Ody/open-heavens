@@ -78,6 +78,8 @@ struct DevotionalContentView: View {
 
             Text(devotional.title)
                 .font(.inter(fontSize * 1.5, weight: .semibold))
+                .opticalTracking(for: fontSize * 1.5)
+                .lineHeight(fontSize * 1.5 * 1.15, fontSize: fontSize * 1.5)
                 .foregroundStyle(Theme.foreground)
                 .textSelection(.enabled)
 
@@ -152,7 +154,7 @@ private struct HymnSection: View {
                     .foregroundStyle(Theme.primary)
                     .multilineTextAlignment(.leading)
             }
-            .buttonStyle(.plain)
+            .buttonStyle(LinkButtonStyle())
 
             BrowseAllHymnsLink()
         }
@@ -168,6 +170,6 @@ private struct BrowseAllHymnsLink: View {
         Button("Browse all hymns") { selectTab(.hymns) }
             .font(.inter(settings.fontSize))
             .foregroundStyle(Theme.primary)
-            .buttonStyle(.plain)
+            .buttonStyle(LinkButtonStyle())
     }
 }

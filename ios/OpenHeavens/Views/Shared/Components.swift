@@ -22,6 +22,34 @@ struct OutlineButtonStyle: ButtonStyle {
             .background(configuration.isPressed ? Theme.secondary : Theme.background, in: RoundedRectangle(cornerRadius: radius, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: radius, style: .continuous).stroke(Theme.border, lineWidth: 1))
             .contentShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
+            .pressScale(configuration.isPressed)
+    }
+}
+
+extension View {
+    /// Instant, subtle press feedback (scale 0.97, 120ms ease-out) so controls feel heard on touch-down.
+    func pressScale(_ isPressed: Bool, amount: CGFloat = 0.97) -> some View {
+        scaleEffect(isPressed ? amount : 1)
+            .animation(Motion.press, value: isPressed)
+    }
+}
+
+/// Card-style pressable (hymn cards): the card itself dims and settles under the finger.
+struct CardButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(configuration.isPressed ? Theme.secondary : Theme.card, in: RoundedRectangle(cornerRadius: Theme.radiusLG, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: Theme.radiusLG, style: .continuous).stroke(Theme.border, lineWidth: 1))
+            .pressScale(configuration.isPressed, amount: 0.985)
+    }
+}
+
+/// Inline text links ("Go to Hymn", "Browse all hymns"): dim on press like a tapped web link.
+struct LinkButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .opacity(configuration.isPressed ? 0.6 : 1)
+            .animation(Motion.press, value: configuration.isPressed)
     }
 }
 
@@ -34,6 +62,7 @@ struct SecondaryButtonStyle: ButtonStyle {
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
             .background(Theme.secondary.opacity(configuration.isPressed ? 0.8 : 1), in: RoundedRectangle(cornerRadius: Theme.radiusMD, style: .continuous))
+            .pressScale(configuration.isPressed)
     }
 }
 
@@ -47,6 +76,7 @@ struct GhostButtonStyle: ButtonStyle {
             .frame(minWidth: size, minHeight: size)
             .background(configuration.isPressed ? Theme.secondary : .clear, in: RoundedRectangle(cornerRadius: Theme.radiusMD, style: .continuous))
             .contentShape(RoundedRectangle(cornerRadius: Theme.radiusMD, style: .continuous))
+            .pressScale(configuration.isPressed)
     }
 }
 
@@ -59,6 +89,7 @@ struct PrimaryButtonStyle: ButtonStyle {
             .padding(.horizontal, 16)
             .frame(minHeight: 36)
             .background(Theme.primary.opacity(configuration.isPressed ? 0.9 : 1), in: RoundedRectangle(cornerRadius: Theme.radiusMD, style: .continuous))
+            .pressScale(configuration.isPressed)
     }
 }
 
@@ -227,5 +258,19 @@ struct SearchInput: View {
         .frame(height: 36)
         .background(Theme.background, in: RoundedRectangle(cornerRadius: Theme.radiusMD, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: Theme.radiusMD, style: .continuous).stroke(Theme.border, lineWidth: 1))
+    }
+}
+
+// MARK: - Transitions
+
+private struct BlurModifier: ViewModifier {
+    let radius: CGFloat
+    func body(content: Content) -> some View { content.blur(radius: radius) }
+}
+
+extension AnyTransition {
+    /// A light blur during a crossfade blends the two states into one apparent object.
+    static func blur(radius: CGFloat) -> AnyTransition {
+        .modifier(active: BlurModifier(radius: radius), identity: BlurModifier(radius: 0))
     }
 }
