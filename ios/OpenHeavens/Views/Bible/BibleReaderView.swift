@@ -15,8 +15,12 @@ struct BibleReaderView: View {
     var body: some View {
         VStack(spacing: 0) {
             header
-                .padding(.horizontal, 8)
-                .padding(.vertical, 8)
+                .padding(.leading, 8)
+                .padding(.trailing, 8)
+                // Inside the sheet the top corners are rounded and the grabber sits above the
+                // controls, so the bar starts a little lower than it does at the top of a tab.
+                .padding(.top, showsCloseButton ? 10 : 2)
+                .padding(.bottom, 2)
             Rectangle().fill(Theme.border).frame(height: 1)
             ScrollViewReader { proxy in
                 ScrollView {
@@ -46,70 +50,40 @@ struct BibleReaderView: View {
 
     // MARK: Header
 
+    /// Version | Book | Chapter as one flat bar: no outer border (the sheet's own rounded
+    /// corners would never match a bordered button's radius), only hairlines between controls.
     private var header: some View {
-        HStack(spacing: 4) {
-            HStack(spacing: 0) {
-                Menu {
-                    Picker("Version", selection: Binding(get: { settings.bibleVersion }, set: { settings.bibleVersion = $0 })) {
-                        ForEach(bible.store?.versions ?? []) { version in
-                            Text(version.shortName).tag(version.code)
-                        }
+        HStack(spacing: 0) {
+            Menu {
+                Picker("Version", selection: Binding(get: { settings.bibleVersion }, set: { settings.bibleVersion = $0 })) {
+                    ForEach(bible.store?.versions ?? []) { version in
+                        Text(version.shortName).tag(version.code)
                     }
-                } label: {
-                    HStack(spacing: 6) {
-                        Text(settings.bibleVersion.uppercased())
-                        Image(systemName: "chevron.down").font(.system(size: 11)).opacity(0.5)
-                    }
-                    .font(.inter(14))
-                    .foregroundStyle(Theme.foreground)
-                    .padding(.horizontal, 10)
-                    .frame(width: 80, height: 32)
                 }
-                .background(Theme.background)
-                .overlay(
-                    UnevenRoundedRectangle(topLeadingRadius: Theme.radiusMD, bottomLeadingRadius: Theme.radiusMD)
-                        .stroke(Theme.border, lineWidth: 1)
-                )
-
-                Button {
-                    showingBookPicker = true
-                } label: {
-                    HStack {
-                        Text(bible.book.name).lineLimit(1)
-                        Spacer(minLength: 4)
-                        Image(systemName: "chevron.down").font(.system(size: 11)).opacity(0.5)
-                    }
-                    .font(.inter(14))
-                    .foregroundStyle(Theme.foreground)
-                    .padding(.horizontal, 10)
-                    .frame(width: 150, height: 32)
-                }
-                .buttonStyle(HeaderControlStyle())
-                .background(Theme.background)
-                .overlay(
-                    UnevenRoundedRectangle(bottomTrailingRadius: Theme.radiusMD, topTrailingRadius: Theme.radiusMD)
-                        .stroke(Theme.border, lineWidth: 1)
-                )
+            } label: {
+                headerLabel(settings.bibleVersion.uppercased())
             }
+            .buttonStyle(HeaderControlStyle())
+
+            headerDivider
+
+            Button {
+                showingBookPicker = true
+            } label: {
+                headerLabel(bible.book.name)
+            }
+            .buttonStyle(HeaderControlStyle())
+
+            headerDivider
 
             Button {
                 showingChapterPicker = true
             } label: {
-                HStack {
-                    Text("\(bible.chapter)")
-                    Spacer(minLength: 4)
-                    Image(systemName: "chevron.down").font(.system(size: 11)).opacity(0.5)
-                }
-                .font(.inter(14))
-                .foregroundStyle(Theme.foreground)
-                .padding(.horizontal, 10)
-                .frame(width: 72, height: 32)
+                headerLabel("\(bible.chapter)")
             }
             .buttonStyle(HeaderControlStyle())
-            .background(Theme.background)
-            .overlay(RoundedRectangle(cornerRadius: Theme.radiusMD, style: .continuous).stroke(Theme.border, lineWidth: 1))
 
-            Spacer(minLength: 0)
+            Spacer(minLength: 4)
 
             Button {
                 showingSearch = true
@@ -118,7 +92,7 @@ struct BibleReaderView: View {
                     .font(.system(size: 15))
                     .foregroundStyle(Theme.mutedForeground)
             }
-            .buttonStyle(GhostButtonStyle(size: 32))
+            .buttonStyle(GhostButtonStyle(size: 36))
             .accessibilityLabel("Search the Bible")
 
             if showsCloseButton {
@@ -129,10 +103,29 @@ struct BibleReaderView: View {
                         .font(.system(size: 15))
                         .foregroundStyle(Theme.foreground)
                 }
-                .buttonStyle(GhostButtonStyle(size: 32))
+                .buttonStyle(GhostButtonStyle(size: 36))
                 .accessibilityLabel("Close")
             }
         }
+        .frame(height: 44)
+    }
+
+    private func headerLabel(_ text: String) -> some View {
+        HStack(spacing: 6) {
+            Text(text).lineLimit(1)
+            Image(systemName: "chevron.down")
+                .font(.system(size: 10, weight: .semibold))
+                .foregroundStyle(Theme.mutedForeground)
+        }
+        .font(.inter(15, weight: .medium))
+        .foregroundStyle(Theme.foreground)
+        .padding(.horizontal, 12)
+        .frame(height: 36)
+        .contentShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+    }
+
+    private var headerDivider: some View {
+        Rectangle().fill(Theme.border).frame(width: 1, height: 18)
     }
 
     // MARK: Body
@@ -206,11 +199,11 @@ struct BibleReaderView: View {
     }
 }
 
-/// The joined version/book/chapter controls: highlight on press without scaling (they share edges).
+/// The version/book/chapter controls: a soft highlight on press, no scaling (they sit flush in a bar).
 private struct HeaderControlStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .background(configuration.isPressed ? Theme.secondary : .clear)
+            .background(configuration.isPressed ? Theme.secondary : .clear, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
             .animation(Motion.press, value: configuration.isPressed)
     }
 }

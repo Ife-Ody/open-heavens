@@ -1,14 +1,14 @@
 # Open Heavens for iOS
 
-A native SwiftUI port of the Open Heavens web app. It keeps the web app's design decisions: the Inter typeface, the same colour tokens (blue primary, light/dark palettes from `globals.css`), the same page layouts and spacing, the header date picker and settings drawer (font size 12–32px, theme toggle), and the Devotional / Bible / Hymns navigation.
+A native SwiftUI port of the Open Heavens web app. It keeps the web app's design decisions: the Inter typeface, the same colour tokens (blue primary, light/dark palettes from `globals.css`), the same page layouts and spacing, the header date picker and the settings sheet (font size 12–32px, light / dark / system theme), and the Devotional / Bible / Hymns dock with Settings alongside.
 
 ## Features
 
 - Devotional reader (`/[date]`): memory verse, reading, message, key point, Bible-in-one-year and the day's hymn, with Previous/Next day and a calendar picker (2023–2026)
 - Every scripture reference in a devotional is tappable and opens the Bible at that passage with the verses selected, like the web's Bible dialog
 - Bible tab: KJV, NET and ASV readers with book/chapter pickers, verse selection, Previous/Next chapter, and the "gen 1:3" style search
-- Hymns Directory with search, YouTube embed per hymn, lyrics, and Previous/Next hymn
-- Settings drawer: font size (A- / 24px / A+) and light/dark theme toggle
+- Hymns Directory with search, YouTube embed per hymn and lyrics at the chosen text size; edge swipe goes back to the list
+- Settings, from the dock on every tab: text size slider with a live preview, and a light / dark / system switch
 
 Devotionals, hymns and all three Bible versions are bundled, so everything but video/audio works offline.
 

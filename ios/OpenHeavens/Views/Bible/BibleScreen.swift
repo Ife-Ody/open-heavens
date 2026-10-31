@@ -19,5 +19,6 @@ struct BibleSheet: View {
             .presentationDetents([.fraction(0.95)])
             .presentationDragIndicator(.visible)
             .presentationBackground(Theme.background)
+            .followsAppearance()
     }
 }

@@ -106,6 +106,7 @@ struct BibleSearchSheet: View {
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
         .presentationBackground(Theme.background)
+        .followsAppearance()
         .task {
             try? await Task.sleep(for: .milliseconds(350))
             focused = true

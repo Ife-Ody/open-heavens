@@ -13,6 +13,8 @@ enum Theme {
     static let muted = secondary
     static let mutedForeground = dynamic(light: 0x575757, dark: 0xA1A1A1)
     static let border = dynamic(light: 0xE5E5E5, dark: 0x262626)
+    /// A raised surface on top of `secondary` (the thumb of a segmented switch).
+    static let elevated = dynamic(light: 0xFFFFFF, dark: 0x3A3A3A)
     /// `selection:bg-orange-400` / `dark:selection:bg-orange-900/50`
     static let selection = dynamic(light: 0xFB923C, dark: 0x7C2D12)
 

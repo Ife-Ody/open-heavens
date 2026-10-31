@@ -261,6 +261,23 @@ struct SearchInput: View {
     }
 }
 
+// MARK: - Sheets
+
+/// A sheet is hosted outside the root view hierarchy, so the root's `preferredColorScheme`
+/// is applied once when it opens and never again. Re-applying the saved appearance inside the
+/// sheet keeps it in step when the theme changes while it is up.
+private struct FollowsAppearance: ViewModifier {
+    @Environment(AppSettings.self) private var settings
+
+    func body(content: Content) -> some View {
+        content.preferredColorScheme(settings.appearance.colorScheme)
+    }
+}
+
+extension View {
+    func followsAppearance() -> some View { modifier(FollowsAppearance()) }
+}
+
 // MARK: - Transitions
 
 private struct BlurModifier: ViewModifier {
@@ -272,5 +289,54 @@ extension AnyTransition {
     /// A light blur during a crossfade blends the two states into one apparent object.
     static func blur(radius: CGFloat) -> AnyTransition {
         .modifier(active: BlurModifier(radius: radius), identity: BlurModifier(radius: 0))
+    }
+}
+
+// MARK: - Navigation
+
+/// UIKit disables the edge swipe-back gesture once the navigation bar is hidden, which every
+/// screen here does. Placed in the background of a pushed screen, this hands the gesture a
+/// delegate that lets it begin whenever there is something to pop back to.
+struct SwipeBackEnabler: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> Controller { Controller() }
+    func updateUIViewController(_ controller: Controller, context: Context) {}
+
+    final class Controller: UIViewController {
+        override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            enableSwipeBack()
+        }
+
+        override func viewDidAppear(_ animated: Bool) {
+            super.viewDidAppear(animated)
+            enableSwipeBack()
+        }
+
+        private func enableSwipeBack() {
+            guard let navigationController, let gesture = navigationController.interactivePopGestureRecognizer else { return }
+            gesture.delegate = SwipeBackDelegate.shared(for: navigationController)
+            gesture.isEnabled = true
+        }
+    }
+}
+
+/// Lives as long as its navigation controller, so the gesture keeps a delegate after the screen
+/// that installed it is popped (a nil delegate would let the gesture fire on the root screen).
+private final class SwipeBackDelegate: NSObject, UIGestureRecognizerDelegate {
+    private static var associatedKey: UInt8 = 0
+    private weak var navigationController: UINavigationController?
+
+    static func shared(for navigationController: UINavigationController) -> SwipeBackDelegate {
+        if let existing = objc_getAssociatedObject(navigationController, &associatedKey) as? SwipeBackDelegate {
+            return existing
+        }
+        let delegate = SwipeBackDelegate()
+        delegate.navigationController = navigationController
+        objc_setAssociatedObject(navigationController, &associatedKey, delegate, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        return delegate
+    }
+
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        (navigationController?.viewControllers.count ?? 0) > 1
     }
 }

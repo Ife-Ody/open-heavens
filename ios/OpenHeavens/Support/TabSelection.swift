@@ -4,6 +4,8 @@ enum AppTab: Hashable {
     case devotional
     case bible
     case hymns
+    /// Not a page: opens the settings sheet over the current tab.
+    case settings
 }
 
 private struct SelectTabKey: EnvironmentKey {

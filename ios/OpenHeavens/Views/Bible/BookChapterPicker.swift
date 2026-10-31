@@ -32,6 +32,7 @@ struct BookChapterPicker: View {
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
         .presentationBackground(Theme.background)
+        .followsAppearance()
         .onAppear {
             step = mode == .bookAndChapter ? .book : .chapter
             selectedBook = bible.book

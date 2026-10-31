@@ -41,6 +41,7 @@ struct DatePickerSheet: View {
         .presentationDetents([.height(480)])
         .presentationDragIndicator(.visible)
         .presentationBackground(Theme.background)
+        .followsAppearance()
         .onAppear { selection = DateKey.date(from: dateKey) ?? .now }
     }
 }

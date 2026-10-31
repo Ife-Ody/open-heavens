@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// The web's `/[date]` page: Header (date picker + settings) above the post.
+/// The web's `/[date]` page: Header (date picker) above the post.
 struct DevotionalScreen: View {
     @Environment(\.devotionalStore) private var store
     @Environment(AppSettings.self) private var settings
@@ -8,7 +8,6 @@ struct DevotionalScreen: View {
     @State private var dateKey = DateKey.today()
     @State private var devotional: Devotional?
     @State private var showingDatePicker = false
-    @State private var showingSettings = false
     /// +1 when moving to a later day, -1 for earlier: the new page enters from that side.
     @State private var direction: CGFloat = 1
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -56,18 +55,15 @@ struct DevotionalScreen: View {
             .sheet(isPresented: $showingDatePicker) {
                 DatePickerSheet(dateKey: $dateKey, range: dateRange)
             }
-            .sheet(isPresented: $showingSettings) {
-                SettingsSheet()
-            }
             .task(id: dateKey) {
                 devotional = try? store?.devotional(on: dateKey)
             }
         }
     }
 
-    /// `<Header />`: date picker button on the left, settings cog on the right.
+    /// `<Header />`: the date picker button. Settings live in the dock, reachable from every tab.
     private var header: some View {
-        HStack(spacing: 12) {
+        HStack {
             Button {
                 showingDatePicker = true
             } label: {
@@ -81,16 +77,6 @@ struct DevotionalScreen: View {
             .buttonStyle(OutlineButtonStyle(horizontalPadding: 12, fontSize: 14))
 
             Spacer()
-
-            Button {
-                showingSettings = true
-            } label: {
-                Image(systemName: "gearshape")
-                    .font(.system(size: 15))
-                    .foregroundStyle(Theme.foreground)
-            }
-            .buttonStyle(OutlineButtonStyle(width: 36, horizontalPadding: 0))
-            .accessibilityLabel("Settings")
         }
         .padding(.vertical, 12)
     }
